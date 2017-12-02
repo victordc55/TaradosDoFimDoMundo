@@ -101,4 +101,6 @@ public interface ICalculoDatas {
      */
     public Optional<EstacaoTemperada> estaçãoDoAnoSul(TemporalAccessor data);
             
+    public DayOfWeek primeiroDiaDoAno(Year ano);
+    
 }

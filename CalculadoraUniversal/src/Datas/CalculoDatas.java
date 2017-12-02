@@ -140,4 +140,9 @@ public class CalculoDatas implements ICalculoDatas{
         return Estacoes.estacoesNorte.stream().filter( p -> p.isInSeason(data)).findFirst();
     }
     
+    
+    public DayOfWeek primeiroDiaDoAno(Year ano){
+        return ano.atDay(1).getDayOfWeek();
+    }
+            
 }
