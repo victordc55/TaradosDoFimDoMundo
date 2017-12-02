@@ -11,6 +11,7 @@ import java.time.Period;
 import java.time.Year;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -27,7 +28,7 @@ public interface ICalculoDatas {
      * @param fim
      * @return devolve o periodo entre as duas datas
      */
-    public Optional<Period> diferencaData(LocalDate inicio,LocalDate fim);
+    public Optional<Period> diferencaData(TemporalAccessor inicio,TemporalAccessor fim);
     
     /**
      *  Adiciona unidades de tempo a uma data.
@@ -36,21 +37,21 @@ public interface ICalculoDatas {
      * @param unidade : Pode ser DAYS,WEEKS,MONTHS,YEARS
      * @return 
      */
-    public Optional<LocalDate> addicionarAData(LocalDate inicio, long param, ChronoUnit unidade);
+    public Optional<LocalDate> addicionarAData(TemporalAccessor inicio, long param, ChronoUnit unidade);
     
     /**
      * Devolve o dia da semana correspondente a esta data
      * @param data
      * @return 
      */
-    public Optional<DayOfWeek> diaDaSemana(LocalDate data);
+    public Optional<DayOfWeek> diaDaSemana(TemporalAccessor data);
     
     /**
      * Devolve o numero do dia neste ano (ex: dia 56 do ano)
      * @param data
      * @return 
      */
-    public OptionalInt numeroDoDiaNoAno(LocalDate data);
+    public OptionalInt numeroDoDiaNoAno(TemporalAccessor data);
 
     
     /**
@@ -58,14 +59,14 @@ public interface ICalculoDatas {
      * @param ano
      * @return 
      */
-    public OptionalInt numeroDeDiasNoAno(LocalDate ano);
+    public OptionalInt numeroDeDiasNoAno(TemporalAccessor ano);
     public OptionalInt numeroDeDiasNoAno(Year ano);
     /**
      * Devolve o numero de semanas no ano assinalado
      * @param ano
      * @return 
      */
-    public OptionalInt numeroDeSemanasNoAno(LocalDate ano);
+    public OptionalInt numeroDeSemanasNoAno(TemporalAccessor ano);
     public OptionalInt numeroDeSemanasNoAno(Year ano);
     
     /**
@@ -73,20 +74,31 @@ public interface ICalculoDatas {
      * @param data
      * @return 
      */
-    public OptionalInt semanaNoAno(LocalDate data);
+    public OptionalInt semanaNoAno(TemporalAccessor data);
     
     
     
     /** A VER SE FICA **/
-    public Optional<Year> ano(LocalDate data);
+    public Optional<Year> ano(TemporalAccessor data);
     
-    public Optional<YearMonth> mesDoAno(LocalDate data);
+    public Optional<YearMonth> mesDoAno(TemporalAccessor data);
     
-    public OptionalInt trimestre(LocalDate data);
+    public OptionalInt trimestre(TemporalAccessor data);
     
-    public boolean isLeap(LocalDate data);
+    public boolean isLeap(TemporalAccessor data);
     
+    /**
+     * Dada a data representada pelo TemporalAcessor devolve a estação temperada correspondente no hemisferio norte.
+     * @param data
+     * @return 
+     */
+    public Optional<EstacaoTemperada> estaçãoDoAnoNorte(TemporalAccessor data);
     
-    
+    /**
+     * Dada a data representada pelo TemporalAcessor devolve a estação temperada correspondente no hemisferio sul.
+     * @param data
+     * @return 
+     */
+    public Optional<EstacaoTemperada> estaçãoDoAnoSul(TemporalAccessor data);
             
 }

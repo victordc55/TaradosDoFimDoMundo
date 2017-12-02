@@ -16,11 +16,17 @@ import java.time.temporal.TemporalQuery;
  */
 public class QueryFactory {
     
-    
+    /**
+     * Query that recover the day of week
+     * @return 
+     */
     public static TemporalQuery<Integer> dayOfWeek(){
         return (d) -> d.get(ChronoField.DAY_OF_WEEK);
     }
-    
+    /**
+     * Query that recover the day of the Year.
+     * @return 
+     */
     public static TemporalQuery<Integer> dayOfYear(){
         return (d) -> d.get(ChronoField.DAY_OF_YEAR);
     }
