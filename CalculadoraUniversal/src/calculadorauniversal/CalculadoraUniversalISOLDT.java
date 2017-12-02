@@ -9,13 +9,8 @@ package calculadorauniversal;
  *
  * @author VICTOR CUNHA
  */
-public class CalculadoraUniversal {
+public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+
     
 }
