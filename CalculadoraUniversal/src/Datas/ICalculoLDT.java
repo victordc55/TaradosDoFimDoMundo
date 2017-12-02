@@ -8,6 +8,7 @@ package Datas;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 
 
 /**
@@ -23,7 +24,8 @@ public interface ICalculoLDT extends ICalculoDatas, ICalculoTempo {
      * @param fim
      * @return 
      */
-    public Duration diferencaDateTime(LocalDateTime inicio, LocalDateTime fim);
+    public Duration diferencaDateTime(TemporalAccessor inicio, TemporalAccessor fim);
+    
     /**
      * Adiciona param unidades de tempo a um localDateTime
      * @param data
@@ -31,7 +33,7 @@ public interface ICalculoLDT extends ICalculoDatas, ICalculoTempo {
      * @param unit
      * @return 
      */
-    public LocalDateTime addicionarADateTime(LocalDateTime data, int param, ChronoUnit unit);
+    public LocalDateTime addicionarADateTime(TemporalAccessor data, int param, ChronoUnit unit);
     
     
     

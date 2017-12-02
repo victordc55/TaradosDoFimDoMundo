@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.Period;
 import java.time.Year;
 import java.time.YearMonth;
@@ -23,10 +24,11 @@ import java.util.OptionalInt;
  * @author Pedro
  */
 public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
-
+    
     private ICalculoDatas datas;
     private ICalculoTempo tempos;
-    // Construtor 
+    
+    // Construtor da Classe
     public CalculoLDT (){
     
     datas = new CalculoDatas();
@@ -36,78 +38,100 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
     
     // Calcula os LocalDateTime
     @Override
-    public Duration diferencaDateTime(LocalDateTime inicio, LocalDateTime fim) {
-    
-        Duration duracao = Duration.between(inicio, fim);
+    public Duration diferencaDateTime(TemporalAccessor inicio, TemporalAccessor fim) {
+        Duration duracao = Duration.between(LocalDateTime.from(inicio), LocalDateTime.from(fim));
         return duracao;
     }
 
     @Override
-    public LocalDateTime addicionarADateTime(LocalDateTime data, int param, ChronoUnit unit) {
-        
-        LocalDateTime novoDateTime = data.plus(param, unit);
+    public LocalDateTime addicionarADateTime(TemporalAccessor data, int param, ChronoUnit unit) {
+        LocalDateTime novoDateTime = LocalDateTime.from(data).plus(param, unit);
         return novoDateTime;
     }
-    
     
     //------------------------------------------------------------------------------------------------------------
     // Calcula os LocalDate
 
-    public Optional<Period> diferencaData(TemporalAccessor inicio,TemporalAccessor fim);
-    
-
-    public Optional<LocalDate> addicionarAData(TemporalAccessor inicio, long param, ChronoUnit unidade);
-    
-  
-    public Optional<DayOfWeek> diaDaSemana(TemporalAccessor data);
-    
-
-    public OptionalInt numeroDoDiaNoAno(TemporalAccessor data);
-
-    
- 
-    public OptionalInt numeroDeDiasNoAno(TemporalAccessor ano);
-    public OptionalInt numeroDeDiasNoAno(Year ano);
- 
-    public OptionalInt numeroDeSemanasNoAno(TemporalAccessor ano);
-    public OptionalInt numeroDeSemanasNoAno(Year ano);
-    
-    public OptionalInt semanaNoAno(TemporalAccessor data);
-    
-    
-    
-    /** A VER SE FICA **/
-    public Optional<Year> ano(TemporalAccessor data);
-    
-    public Optional<YearMonth> mesDoAno(TemporalAccessor data);
-    
-    public OptionalInt trimestre(TemporalAccessor data);
-    
-    public boolean isLeap(TemporalAccessor data){
-         return this.datas.isLeap(data);
+    public Optional<Period> diferencaData(TemporalAccessor inicio,TemporalAccessor fim){
+        return datas.diferencaData(inicio, fim);
     }
     
-    public Optional<EstacaoTemperada> estaçãoDoAnoNorte(TemporalAccessor data);
+
+    public Optional<LocalDate> addicionarAData(TemporalAccessor inicio, long param, ChronoUnit unidade){
+        return datas.addicionarAData(inicio, param, unidade);
+    }
+    
+  
+    public Optional<DayOfWeek> diaDaSemana(TemporalAccessor data){
+        return datas.diaDaSemana(data);
+    }
     
 
-    public Optional<EstacaoTemperada> estaçãoDoAnoSul(TemporalAccessor data);
+    public OptionalInt numeroDoDiaNoAno(TemporalAccessor data){
+        return datas.numeroDoDiaNoAno(data);    
+    }
+ 
+    public OptionalInt numeroDeDiasNoAno(TemporalAccessor ano){
+        return datas.numeroDeDiasNoAno(ano);
+    }
+    
+    public OptionalInt numeroDeDiasNoAno(Year ano){
+        return datas.numeroDeDiasNoAno(ano);
+    }
+ 
+    public OptionalInt numeroDeSemanasNoAno(TemporalAccessor ano){
+        return datas.numeroDeSemanasNoAno(ano);
+    }
+        
+    public OptionalInt numeroDeSemanasNoAno(Year ano){
+        return datas.numeroDeSemanasNoAno(ano);
+    }
+    
+    public OptionalInt semanaNoAno(TemporalAccessor data){
+        return datas.semanaNoAno(data);
+    }
+        
+    /** A VER SE FICA **/
+    public Optional<Year> ano(TemporalAccessor data){
+        return datas.ano(data);
+    }
+    
+    public Optional<YearMonth> mesDoAno(TemporalAccessor data){
+        return datas.mesDoAno(data);
+    }
+    
+    public OptionalInt trimestre(TemporalAccessor data){
+        return datas.trimestre(data);
+    }
+    
+    public boolean isLeap(TemporalAccessor data){
+         return datas.isLeap(data);
+    }
+    
+    public Optional<EstacaoTemperada> estaçãoDoAnoNorte(TemporalAccessor data){
+        return datas.estaçãoDoAnoNorte(data);
+    }
+    
 
+    public Optional<EstacaoTemperada> estaçãoDoAnoSul(TemporalAccessor data){
+        return datas.estaçãoDoAnoSul(data);
+    }
+
+    public DayOfWeek primeiroDiaDoAno(Year ano) {
+        return datas.primeiroDiaDoAno(ano);
+    }
     
     //-------------------------------------------------------------------------------------------------------------
     // Calcula o LocalTime
     
-    @Override
-    public Duration diferençaTempos(LocalTime inicio, LocalTime fim) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Optional<Duration> diferençaTempos(TemporalAccessor inicio, TemporalAccessor fim) {
+       return tempos.diferençaTempos(inicio, fim);
     }
 
-    @Override
-    public LocalTime adicionarTempos(LocalTime tempo, long valor, ChronoUnit unidade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LocalTime adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade) {
+       return tempos.adicionarTempos(tempo, valor, unidade);
     }
 
-    @Override
-    public Duration temporizador(LocalTime tempo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Optional<Duration> temporizador(TemporalAccessor tempo) {
+       return tempos.temporizador(tempo); }
     }
-}
