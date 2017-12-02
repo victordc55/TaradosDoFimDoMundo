@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
  * Interface que representa os metodos que fazem operações entre local date times.
  * @author EVERYONE
  */
-public interface ICalculoLDT extends ICalculoDatas {
+public interface ICalculoLDT extends ICalculoDatas, ICalculoTempo {
 
     // Metodos para comparar datas com tempo
     /**

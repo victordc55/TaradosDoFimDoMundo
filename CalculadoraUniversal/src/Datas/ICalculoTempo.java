@@ -1,9 +1,10 @@
 package Datas;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
+import java.util.Optional;
 
 /**
  *
@@ -18,7 +19,7 @@ public interface ICalculoTempo {
      * @param tempo
      * @return 
      */
-    public Duration diferençaTempos(LocalTime inicio, LocalTime fim); 
+    public Optional<Duration> diferençaTempos(TemporalAccessor inicio, TemporalAccessor fim); 
     
     
     /**
@@ -28,7 +29,7 @@ public interface ICalculoTempo {
      * @param unidade
      * @return 
      */
-    public LocalTime adicionarTempos(LocalTime tempo, long valor, ChronoUnit unidade);
+    public LocalTime adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade);
     
     
     /** 
@@ -36,7 +37,7 @@ public interface ICalculoTempo {
      * @param tempo
      * @return 
      */
-    public Duration temporizador(LocalTime tempo);
+    public Optional<Duration> temporizador(TemporalAccessor tempo);
     
 }
 

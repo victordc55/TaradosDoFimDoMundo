@@ -3,6 +3,8 @@ package Datas;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
+import java.util.Optional;
 
 /**
  *
@@ -10,23 +12,24 @@ import java.time.temporal.ChronoUnit;
  */
 public class CalculoTempo implements ICalculoTempo {
 
-    @Override
-    public Duration diferençaTempos(LocalTime inicio, LocalTime fim) {
     
-        Duration duracao = Duration.between(inicio, fim);
-        return duracao;
-    }
-
-    @Override
-    public LocalTime adicionarTempos(LocalTime tempo, long valor, ChronoUnit unidade) {
-    
-        LocalTime novoTempo = tempo.plus(valor, unidade);
-        return novoTempo;
+    public Optional<Duration> diferençaTempos(TemporalAccessor inicio, TemporalAccessor fim) {
         
+        if (inicio != null && fim != null) {
+          return Optional.of( Duration.between(LocalTime.from(inicio), LocalTime.from(fim) ) );
+        }
+        return Optional.empty();
     }
 
     @Override
-    public Duration temporizador(LocalTime tempo) {
+    public LocalTime adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade) {
+    
+        LocalTime novoTempo = LocalTime.from(tempo).plus(valor, unidade);
+        return novoTempo;
+    }
+
+    @Override
+    public Optional<Duration> temporizador(TemporalAccessor tempo) {
         return diferençaTempos(LocalTime.now(), tempo);     
     }
     
