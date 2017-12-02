@@ -1,0 +1,143 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Datas;
+
+import Query.QueryFactory;
+import java.time.*;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.IsoFields;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.TemporalQuery;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+
+/**
+ *
+ * @author VICTOR CUNHA
+ */
+public class CalculoDatas implements ICalculoDatas{
+    
+    public Optional<Period> diferencaData(TemporalAccessor inicio,TemporalAccessor fim){
+        if( inicio != null && fim != null){
+            return Optional.of( Period.between( LocalDate.from(inicio), LocalDate.from(fim) ) );
+        }    
+        else 
+            return Optional.empty();
+    }
+    
+    public long diferencaData(TemporalAccessor inicio,TemporalAccessor fim, ChronoUnit units){
+        return Period.between(LocalDate.from(inicio), LocalDate.from(fim)).get(units);
+    }
+    
+    
+     public Optional<LocalDate> addicionarAData(TemporalAccessor inicio, long param, ChronoUnit unidade){
+         if( inicio != null && unidade != null ){
+             LocalDate dinicio = LocalDate.from(inicio);
+             if(dinicio.isSupported(unidade))
+                return Optional.of(dinicio.plus(param, unidade) );
+         }      
+         return Optional.empty();
+     }
+     
+     public Optional<DayOfWeek> diaDaSemana(TemporalAccessor data){
+         if( data != null)
+                 return Optional.of(DayOfWeek.of( data.get(ChronoField.DAY_OF_WEEK)) );
+         else return Optional.empty();
+     }
+     
+     public OptionalInt numeroDoDiaNoAno(TemporalAccessor data){
+        // return data.query( d -> d.get(ChronoField.DAY_OF_YEAR));
+        if( data == null ) return OptionalInt.empty();
+        return OptionalInt.of( data.query(QueryFactory.dayOfYear()) );
+     }
+     
+     public OptionalInt numeroDeDiasNoAno(TemporalAccessor ano){
+         if( ano == null ) return OptionalInt.empty();
+         LocalDate bano = LocalDate.from(ano);
+         return  OptionalInt.of( bano.lengthOfYear() );
+     }
+     
+     public OptionalInt numeroDeDiasNoAno(Year ano){
+         if( ano == null) return OptionalInt.empty();
+         return OptionalInt.of( ano.atDay(ano.length()).get(ChronoField.DAY_OF_YEAR) ) ;
+         
+     }
+    
+    /**
+     * 
+     * @param ano
+     * @return 
+     */
+    public OptionalInt numeroDeSemanasNoAno(TemporalAccessor ano){
+        if( ano == null) return OptionalInt.empty();
+        LocalDate fano = LocalDate.from(ano).with(TemporalAdjusters.lastDayOfYear());
+        
+        //return date.get(IsoFields.WEEK_BASED_YEAR);
+        return OptionalInt.of((int) IsoFields.WEEK_OF_WEEK_BASED_YEAR.getFrom(fano));
+   }
+    
+    public OptionalInt numeroDeSemanasNoAno(Year ano){
+       
+        return OptionalInt.of( (int) IsoFields.WEEK_OF_WEEK_BASED_YEAR.getFrom( ano.atDay( ano.length())));
+    }
+    
+    /**
+     * Devolve a que semana do ano pertence a data passada.
+     * @param data
+     * @return 
+     */
+    public OptionalInt semanaNoAno(TemporalAccessor data){
+        return OptionalInt.of( (int) data.getLong( IsoFields.WEEK_OF_WEEK_BASED_YEAR));
+       //return OptionalInt.of( (int) IsoFields.WEEK_OF_WEEK_BASED_YEAR.getFrom());
+    }
+    
+    
+    
+    /** A VER SE FICA **/
+    public Optional<Year> ano(TemporalAccessor data){
+        return Optional.ofNullable( Year.from(data));
+    }
+    
+    public Optional<YearMonth> mesDoAno(TemporalAccessor data){
+        return Optional.ofNullable( YearMonth.from(data));
+    }
+    
+    public OptionalInt trimestre(TemporalAccessor data){
+        return OptionalInt.of( (int) IsoFields.QUARTER_OF_YEAR.getFrom(data) );
+    }
+    
+    public boolean isLeap(TemporalAccessor data){
+        return Year.from(data).isLeap();
+     }
+    
+    /**
+     * Dada a data representada pelo TemporalAcessor devolve a estação temperada correspondente no hemisferio norte.
+     * @param data
+     * @return 
+     */
+   
+    public Optional<EstacaoTemperada> estaçãoDoAnoNorte(TemporalAccessor data){
+        EstacaoTemperada res = null;
+        // Versão mesmo meh
+        return Estacoes.estacoesNorte.stream().filter( p -> p.isInSeason(data)).findFirst();
+
+    }
+    /**
+     * Dada a data representada pelo TemporalAcessor devolve a estação temperada correspondente no hemisferio sul.
+     * @param data
+     * @return 
+     */
+    public Optional<EstacaoTemperada> estaçãoDoAnoSul(TemporalAccessor data){
+         EstacaoTemperada res = null;
+        // Versão mesmo meh
+        return Estacoes.estacoesNorte.stream().filter( p -> p.isInSeason(data)).findFirst();
+    }
+    
+}
