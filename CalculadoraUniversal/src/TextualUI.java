@@ -26,16 +26,42 @@ public class TextualUI {
         /*this.pageSize = pageSize;
         thisPage = 0;*/
     }
-    
+    /**
+     * Cria um TextualUI usando os parametros passados.
+     * @param opt
+     * @param head
+     * @return 
+     */
     public static TextualUI of(List<String> opt, String head){
         return new TextualUI(opt,head);
     }
-    
+    /**
+     * Imprima o header do menu.
+     * @return 
+     */
     public boolean printHeader(){
         Print.print(header+"\n");
         return true;
     }
-
+    /**
+     * Numera e imprima as opções do menu.
+     * @return 
+     */
+    public boolean printOptions(){
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
+        for(String s : options){
+             sb.append( i + "." + s + "\n");
+             i++;
+        }
+        Print.print(sb.toString());
+        return true;
+    }
+    
+    /**
+     * Imprima o menu como um todo e parse a opção escolhida pelo utilizador.
+     * @return A opção escolhida pelo utilizador ou -1 em caso de erro.
+     */
     public int printMenu(){
         lastChosenOption = -1;
         StringBuilder sb = new StringBuilder();
@@ -53,7 +79,10 @@ public class TextualUI {
         return lastChosenOption;
         
     }
-    
+    /**
+     * Devolve a ultima opção escolhida pelo utilizador.
+     * @return 
+     */
     public int getChosenOption(){
         return lastChosenOption;
     }

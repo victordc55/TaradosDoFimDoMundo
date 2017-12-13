@@ -6,7 +6,7 @@
 package Query;
 
 /**
- *
+ * Classe com DateTimeFormats... A ver
  * @author VICTOR CUNHA
  */
 public class Formatters {

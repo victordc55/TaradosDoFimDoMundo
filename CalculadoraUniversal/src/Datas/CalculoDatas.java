@@ -25,30 +25,42 @@ import java.util.OptionalInt;
 public class CalculoDatas implements ICalculoDatas{
     
     public Optional<Period> diferencaData(TemporalAccessor inicio,TemporalAccessor fim){
-        if( inicio != null && fim != null){
-            return Optional.of( Period.between( LocalDate.from(inicio), LocalDate.from(fim) ) );
+        LocalDate inicio1 = null;
+        LocalDate fim1 = null;
+        try{
+            inicio1 = LocalDate.from(inicio);
+            fim1 = LocalDate.from(fim);
+        }catch(Exception e ){
+            return Optional.empty();
+        }
+        
+        if( inicio1 != null && fim1 != null){
+            return Optional.ofNullable(Period.between( inicio1, fim1 ) );
         }    
         else 
             return Optional.empty();
     }
     
     public long diferencaData(TemporalAccessor inicio,TemporalAccessor fim, ChronoUnit units){
-        return Period.between(LocalDate.from(inicio), LocalDate.from(fim)).get(units);
+        try{ return Period.between(LocalDate.from(inicio), LocalDate.from(fim)).get(units); }
+        catch(Exception e){ return 0;}
+        
     }
     
     
      public Optional<LocalDate> addicionarAData(TemporalAccessor inicio, long param, ChronoUnit unidade){
          if( inicio != null && unidade != null ){
-             LocalDate dinicio = LocalDate.from(inicio);
-             if(dinicio.isSupported(unidade))
-                return Optional.of(dinicio.plus(param, unidade) );
+           try{  LocalDate dinicio = LocalDate.from(inicio);
+                 if(dinicio.isSupported(unidade))
+                    return Optional.of(dinicio.plus(param, unidade) );
+           }catch(Exception e){};
          }      
          return Optional.empty();
      }
      
      public Optional<DayOfWeek> diaDaSemana(TemporalAccessor data){
          if( data != null)
-                 return Optional.of(DayOfWeek.of( data.get(ChronoField.DAY_OF_WEEK)) );
+                 return Optional.ofNullable(DayOfWeek.of( data.get(ChronoField.DAY_OF_WEEK)) );
          else return Optional.empty();
      }
      
@@ -101,6 +113,7 @@ public class CalculoDatas implements ICalculoDatas{
     
     
     /** A VER SE FICA **/
+    /** A que ano pertence a data passada. **/
     public Optional<Year> ano(TemporalAccessor data){
         return Optional.ofNullable( Year.from(data));
     }

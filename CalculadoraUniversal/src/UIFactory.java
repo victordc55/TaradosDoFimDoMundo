@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class UIFactory {
     
+    /**
+     * Cria um TextualUI com diversas opções predefinidas.
+     * @return 
+     */
     public static TextualUI isoLocalDateTimeMainUI(){
             List<String> options = Arrays.asList( "Adicionar ou substrair datas.",
                                                   "Numero de dias até atingir o prazo.",
@@ -25,7 +29,10 @@ public class UIFactory {
             return TextualUI.of(options, head);       
     }
     
-    
+    /**
+     * Cria um TextualUI para a adicção ou substração de datas e tempos com um header e opções predefinidas.
+     * @return 
+     */
     public static TextualUI isoAdSubsDateTimeUI(){
             List<String> options = Arrays.asList( "Substrair duas datas ou tempo.",
                                                   "Substrair a uma data.",
@@ -39,6 +46,20 @@ public class UIFactory {
                           " 00/00/0000 01:00:00 irá adicionar/substrair uma hora.";
             return TextualUI.of(options, head);            
     }
+    
+    /**
+     * Cria um TextualUI para a adição e substração de datas e tempos com opções predifinidas e usando o header passado.
+     * @param head - header usado.
+     * @return uma interface com o utilizador no formato textual.
+     */
+    public static TextualUI isoAdsSubsUI(String head){
+        List<String> options = Arrays.asList( "Substrair duas datas ou tempo.",
+                                                  "Substrair a uma data.",
+                                                  "Adicionar a uma data.",
+                                                  "Quit.");
+        return TextualUI.of(options, head);      
+    }
+    
     
     
     

@@ -17,11 +17,19 @@ public class Print {
     // Every method for printing simple strings
     public static final PrintStream out = System.out;
     public static final Scanner in = new Scanner(System.in);
+    /**
+     * Imprima no output uma string e lê e devolve uma linha do output.
+     * @param s - string a imprimir.
+     * @return Linha lida.
+     */
     public static String ask(String s){
         out.print(s);
         return in.nextLine();
     }
-    
+    /**
+     * Imprima no output uma string.
+     * @param s - string a imprimir.
+     */
     public static void print(String s){
         out.print(s);
     }

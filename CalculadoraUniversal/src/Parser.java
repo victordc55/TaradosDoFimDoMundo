@@ -1,3 +1,6 @@
+
+import java.util.List;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,12 +8,11 @@
  */
 
 /**
- *
+ * Classe que faz o parsing de string segundo formatos especificados.
  * @author VICTOR CUNHA
  */
 public class Parser {
-    
-    
+
     private final String format;
     
     private Parser(String format){
@@ -26,9 +28,7 @@ public class Parser {
      * @return 
      */
     public String[] split(String in){
-        List<String> res;
-        
-        
-        
+        if( in != null)
+                return in.split(format);
     }
 }
