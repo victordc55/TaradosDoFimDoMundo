@@ -1,3 +1,9 @@
+package TUI;
+
+
+import TUI.Parser;
+import java.util.OptionalInt;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,5 +23,18 @@ public class Parsers {
      */
     public static Parser of(String format){
         return Parser.of(format);
+    }
+    
+    /**
+     * Recover an int from the passed string
+     * @param s
+     * @return 
+     */
+    public static OptionalInt getInt(String s){
+            try{
+                return OptionalInt.of( Integer.parseInt(s) );
+            }catch(Exception e){
+                return OptionalInt.empty();
+            }         
     }
 }

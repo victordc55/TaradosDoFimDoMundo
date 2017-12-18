@@ -1,5 +1,8 @@
+package TUI;
+
 
 import java.util.List;
+import java.util.OptionalInt;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -9,7 +12,6 @@ import java.util.List;
 
 /**
  * Classe que faz o parsing de string segundo formatos especificados.
- * @author VICTOR CUNHA
  */
 public class Parser {
 
@@ -22,6 +24,7 @@ public class Parser {
     public static Parser of(String format){
         return new Parser(format);
     }
+    
     /**
      * Split a string following the specified format
      * @param in
@@ -30,5 +33,7 @@ public class Parser {
     public String[] split(String in){
         if( in != null)
                 return in.split(format);
+        else return null;
     }
+    
 }

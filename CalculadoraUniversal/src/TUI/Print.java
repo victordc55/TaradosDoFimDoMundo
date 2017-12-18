@@ -1,6 +1,9 @@
+package TUI;
+
 
 import java.io.Console;
 import java.io.PrintStream;
+import java.util.OptionalInt;
 import java.util.Scanner;
 
 /*
@@ -9,10 +12,6 @@ import java.util.Scanner;
  * and open the template in the editor.
  */
 
-/**
- *
- * @author VICTOR CUNHA
- */
 public class Print {
     // Every method for printing simple strings
     public static final PrintStream out = System.out;
@@ -32,6 +31,20 @@ public class Print {
      */
     public static void print(String s){
         out.print(s);
+    }
+    
+   /**
+     * Le do input e devolve o inteiro lido
+     * @param s
+     * @return 
+     */
+    public static OptionalInt getInt(){
+            String input = in.nextLine();
+            try{
+                return OptionalInt.of( Integer.parseInt(input));
+            }catch(Exception e){
+                return OptionalInt.empty();
+            }
     }
     
 }

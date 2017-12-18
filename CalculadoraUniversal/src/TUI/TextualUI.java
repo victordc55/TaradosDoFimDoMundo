@@ -1,3 +1,5 @@
+package TUI;
+
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class TextualUI {
         /*this.pageSize = pageSize;
         thisPage = 0;*/
     }
+    
     /**
      * Cria um TextualUI usando os parametros passados.
      * @param opt
@@ -64,13 +67,9 @@ public class TextualUI {
      */
     public int printMenu(){
         lastChosenOption = -1;
-        StringBuilder sb = new StringBuilder();
-        int i = 1;
-        for(String s : options){
-             sb.append( i + "." + s + "\n");
-             i++;
-        }
-        String line = Print.ask(sb.toString());
+        printHeader();
+        printOptions();
+        String line = Print.ask("");
         try{
             lastChosenOption = Integer.parseInt(line);
         }catch(Exception e){

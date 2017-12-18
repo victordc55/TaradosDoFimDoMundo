@@ -133,5 +133,7 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
     }
 
     public Optional<Duration> temporizador(TemporalAccessor tempo) {
-       return tempos.temporizador(tempo); }
+       return tempos.temporizador(tempo); 
     }
+    
+}
