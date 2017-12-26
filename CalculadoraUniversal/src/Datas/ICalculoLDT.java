@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
+import java.util.Optional;
 
 
 /**
@@ -19,12 +20,12 @@ public interface ICalculoLDT extends ICalculoDatas, ICalculoTempo {
 
     // Metodos para comparar datas com tempo
     /**
-     * Calcula a diferença entre duas datas
+     * Calcula a diferença entre duas datas 
      * @param inicio
      * @param fim
      * @return 
      */
-    public Duration diferencaDateTime(TemporalAccessor inicio, TemporalAccessor fim);
+    public Optional<Duration> diferencaDateTime(TemporalAccessor inicio, TemporalAccessor fim);
     
     /**
      * Adiciona param unidades de tempo a um localDateTime
@@ -33,8 +34,7 @@ public interface ICalculoLDT extends ICalculoDatas, ICalculoTempo {
      * @param unit
      * @return 
      */
+    
     public LocalDateTime addicionarADateTime(TemporalAccessor data, int param, ChronoUnit unit);
-    
-    
-    
+   
 }

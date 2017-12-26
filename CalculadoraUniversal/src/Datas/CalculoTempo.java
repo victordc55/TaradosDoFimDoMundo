@@ -16,7 +16,7 @@ public class CalculoTempo implements ICalculoTempo {
     public Optional<Duration> diferençaTempos(TemporalAccessor inicio, TemporalAccessor fim) {
         
         if (inicio != null && fim != null) {
-          return Optional.of( Duration.between(LocalTime.from(inicio), LocalTime.from(fim) ) );
+          return Optional.of(Duration.between(LocalTime.from(inicio), LocalTime.from(fim) ) );
         }
         return Optional.empty();
     }

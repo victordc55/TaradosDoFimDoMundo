@@ -33,7 +33,7 @@ public interface ICalculoTempo {
     
     
     /** 
-     * 
+     * Faz a contagem decrescente do tempo.
      * @param tempo
      * @return 
      */
