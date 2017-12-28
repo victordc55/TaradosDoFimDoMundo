@@ -20,20 +20,18 @@ public class UserInterface{
     
     private static ICalculadoraUniversal calculadoraUniversal;
     private static TextualUI currentUI;
-    private static int formatingMode;
+    private static int formatingMode = 1; // mode = 1 represent numerical formating, 2 represents expanded formating.
     
     public static void main(String[] args) {
         // Let's start the main....
         currentUI = UIFactory.firstUI();
         int option = 0;
-        formatingMode = 1;
         boolean wantToQuit = false;
         while(!wantToQuit){
             currentUI.printMenu();
             switch(option){
                 case 1:
                      firstModeInteraction();
-                     
                      break;
                 case 2:
                      secondModeInteraction();
@@ -61,7 +59,27 @@ public class UserInterface{
     private static void firstModeInteraction(){
            Print.print("Caso 1:\n");
            currentUI = UIFactory.localDataTimeUI();
-           currentUI.printMenu();
+           switch( currentUI.printMenu() ){
+               case 1:
+                   break;
+               case 2:
+                   break;
+               case 3:
+                   break;
+               case 4:
+                   break;
+               case 5:
+                   break;
+               case 6:
+                   break;
+               case 7:
+                   break;
+               case 8:
+                   //quit
+                   break;
+               default:
+                   break;
+           }
         
         
     }

@@ -16,10 +16,6 @@ import java.time.ZoneId;
 
 public class CalculoODT implements ICalculoODT{
 
-    public  obterOffset(LocalDateTime ldt, OffsetTime offset) {
-        
-       return OffsetTime offset = OffsetTime.
-        
-    }
+
     
 }

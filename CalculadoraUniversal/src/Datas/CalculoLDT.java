@@ -38,9 +38,21 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
     
     // Calcula os LocalDateTime
     @Override
-    public Duration diferencaDateTime(TemporalAccessor inicio, TemporalAccessor fim) {
-        Duration duracao = Duration.between(LocalDateTime.from(inicio), LocalDateTime.from(fim));
-        return duracao;
+    public Optional<Duration> diferencaDateTime(TemporalAccessor inicio, TemporalAccessor fim) {
+        LocalDateTime inicio1 = null;
+        LocalDateTime fim1 = null;
+        try{
+            inicio1 = LocalDateTime.from(inicio);
+            fim1 = LocalDateTime.from(fim);
+        }catch(Exception e ){
+            return Optional.empty();
+        }
+        
+        if( inicio1 != null && fim1 != null){
+            return Optional.ofNullable(Duration.between( inicio1, fim1 ) );
+        }    
+        else 
+            return Optional.empty();
     }
 
     @Override
