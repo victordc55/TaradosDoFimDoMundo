@@ -3,6 +3,7 @@ package TUI;
 
 import java.io.Console;
 import java.io.PrintStream;
+import static java.lang.System.err;
 import java.util.OptionalInt;
 import java.util.Scanner;
 
@@ -31,6 +32,10 @@ public class Print {
      */
     public static void print(String s){
         out.print(s);
+    }
+    
+    public static void printErro(String s){
+        err.print(s);
     }
     
    /**

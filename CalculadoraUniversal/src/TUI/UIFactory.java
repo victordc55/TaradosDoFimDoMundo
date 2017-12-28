@@ -28,7 +28,6 @@ public class UIFactory {
                                                   "Determinar em que estação está.",
                                                   "Quit.");
             String head = "Bem vindo.Escolha uma das operações disponiveis:";
-            
             return TextualUI.of(options, head);       
     }
     
@@ -54,7 +53,7 @@ public class UIFactory {
            return TextualUI.of(options, head);            
     }
     
-    
+
     public static TextualUI isoAddSubsTimeUI(){
             
             List<String> options = Arrays.asList( "Substrair duas datas.",

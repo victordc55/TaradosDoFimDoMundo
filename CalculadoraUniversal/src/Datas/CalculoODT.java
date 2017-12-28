@@ -16,10 +16,10 @@ import java.time.ZoneId;
 
 public class CalculoODT implements ICalculoODT{
 
-    public  obterOffset(LocalDateTime ldt, OffsetTime offset) {
-        
-       return OffsetTime offset = OffsetTime.
-        
-    }
     
+    public OffsetTime obterOffset(LocalDateTime ldt, ZoneId zona) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+ 
 }

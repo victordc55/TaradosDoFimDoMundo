@@ -21,14 +21,12 @@ public class CalculoTempo implements ICalculoTempo {
         return Optional.empty();
     }
 
-    @Override
-    public LocalTime adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade) {
+    public Optional<LocalTime> adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade) {
     
         LocalTime novoTempo = LocalTime.from(tempo).plus(valor, unidade);
-        return novoTempo;
+        return Optional.of(novoTempo);
     }
 
-    @Override
     public Optional<Duration> temporizador(TemporalAccessor tempo) {
         return diferençaTempos(LocalTime.now(), tempo);     
     }

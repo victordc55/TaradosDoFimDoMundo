@@ -1,10 +1,12 @@
 package TUI;
 
 
+import Datas.CalculoLDT;
 import TUI.Print;
 import TUI.UIFactory;
 import TUI.TextualUI;
 import calculadorauniversal.ICalculadoraUniversal;
+import java.time.temporal.ChronoUnit;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,20 +22,21 @@ public class UserInterface{
     
     private static ICalculadoraUniversal calculadoraUniversal;
     private static TextualUI currentUI;
+    private static CalculoLDTUI ldt;
     private static int formatingMode;
+    private static int option;
+ 
     
     public static void main(String[] args) {
         // Let's start the main....
         currentUI = UIFactory.firstUI();
-        int option = 0;
         formatingMode = 1;
         boolean wantToQuit = false;
         while(!wantToQuit){
-            currentUI.printMenu();
+            option = currentUI.printMenu();
             switch(option){
                 case 1:
                      firstModeInteraction();
-                     
                      break;
                 case 2:
                      secondModeInteraction();
@@ -45,34 +48,56 @@ public class UserInterface{
                      outputFormatingInteraction();
                      break;
                 case 5:
-                     Print.print("Caso 5:\n");
                      wantToQuit = true;
                  default:
                      break;
-            }
-            currentUI = UIFactory.firstUI();
-        
+            }    
+            currentUI = UIFactory.firstUI();   
         }
     }
-
-
-
     
     private static void firstModeInteraction(){
+           ldt = new CalculoLDTUI();
            Print.print("Caso 1:\n");
            currentUI = UIFactory.localDataTimeUI();
-           currentUI.printMenu();
-        
-        
+            
+            boolean wantToQuit = false;
+            while(!wantToQuit){
+                option = currentUI.printMenu();
+                switch(option){
+                    case 1:
+                        ldt.addSubDatas();
+                        break;
+                    case 2:
+                        ldt.addSubHoras();
+                        break;       
+                    case 3:
+                        ldt.addSubTempos();
+                        break;
+                    case 4:
+                        ldt.diferençaEntreTempos();
+                        break;
+                    case 5:
+                        ldt.infoDatas();
+                        break;
+                    case 6:
+                        ldt.tempoAteData();
+                        break;
+                    case 7:
+                        ldt.curiosidades();
+                        break;
+                    case 8:
+                        wantToQuit = true;
+                        break;
+                }
+            }  
+            
     }
-    
-    
     
     private static void secondModeInteraction(){
            Print.print("Caso 2:\n");
            currentUI = UIFactory.zonedDateTimeUI();
-           currentUI.printMenu();
-        
+           currentUI.printMenu();  
     }
     
     
