@@ -29,7 +29,7 @@ public interface ICalculoTempo {
      * @param unidade
      * @return 
      */
-    public LocalTime adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade);
+    public Optional<LocalTime> adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade);
     
     
     /** 

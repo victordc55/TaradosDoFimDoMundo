@@ -55,7 +55,6 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
             return Optional.empty();
     }
 
-    @Override
     public LocalDateTime addicionarADateTime(TemporalAccessor data, int param, ChronoUnit unit) {
         LocalDateTime novoDateTime = LocalDateTime.from(data).plus(param, unit);
         return novoDateTime;
@@ -140,7 +139,7 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
        return tempos.diferençaTempos(inicio, fim);
     }
 
-    public LocalTime adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade) {
+    public Optional<LocalTime> adicionarTempos(TemporalAccessor tempo, long valor, ChronoUnit unidade) {
        return tempos.adicionarTempos(tempo, valor, unidade);
     }
 

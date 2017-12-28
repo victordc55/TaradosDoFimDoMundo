@@ -1,3 +1,4 @@
+
 package TUI;
 
 
@@ -21,7 +22,9 @@ public class UserInterface{
     private static ICalculadoraUniversal calculadoraUniversal;
     private static TextualUI currentUI;
     private static int formatingMode = 1; // mode = 1 represent numerical formating, 2 represents expanded formating.
-    
+    private static CalculoLDTUI ldt;
+    private static int option;
+ 
     public static void main(String[] args) {
         // Let's start the main....
         currentUI = UIFactory.firstUI();
@@ -56,32 +59,42 @@ public class UserInterface{
 
 
     
-    private static void firstModeInteraction(){
+ private static void firstModeInteraction(){
+           ldt = new CalculoLDTUI();
            Print.print("Caso 1:\n");
            currentUI = UIFactory.localDataTimeUI();
-           switch( currentUI.printMenu() ){
-               case 1:
-                   break;
-               case 2:
-                   break;
-               case 3:
-                   break;
-               case 4:
-                   break;
-               case 5:
-                   break;
-               case 6:
-                   break;
-               case 7:
-                   break;
-               case 8:
-                   //quit
-                   break;
-               default:
-                   break;
-           }
-        
-        
+            
+            boolean wantToQuit = false;
+            while(!wantToQuit){
+                option = currentUI.printMenu();
+                switch(option){
+                    case 1:
+                        ldt.addSubDatas();
+                        break;
+                    case 2:
+                        ldt.addSubHoras();
+                        break;       
+                    case 3:
+                        ldt.addSubTempos();
+                        break;
+                    case 4:
+                        ldt.diferençaEntreTempos();
+                        break;
+                    case 5:
+                        ldt.infoDatas();
+                        break;
+                    case 6:
+                        ldt.tempoAteData();
+                        break;
+                    case 7:
+                        ldt.curiosidades();
+                        break;
+                    case 8:
+                        wantToQuit = true;
+                        break;
+                }
+            }  
+            
     }
     
     
@@ -107,4 +120,5 @@ public class UserInterface{
             currentUI = UIFactory.formatingOutputUI();
             currentUI.printMenu();
     }
+
 }
