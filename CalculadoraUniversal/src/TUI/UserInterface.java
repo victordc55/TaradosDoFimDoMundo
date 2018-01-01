@@ -2,10 +2,15 @@
 package TUI;
 
 
-import TUI.Print;
+import TUI.Printer;
 import TUI.UIFactory;
 import TUI.TextualUI;
+import calculadorauniversal.Cronometro;
 import calculadorauniversal.ICalculadoraUniversal;
+import calculadorauniversal.ICronometro;
+import java.time.Clock;
+import java.time.Duration;
+import java.util.Optional;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,18 +26,17 @@ public class UserInterface{
     
     private static ICalculadoraUniversal calculadoraUniversal;
     private static TextualUI currentUI;
-    private static int formatingMode = 1; // mode = 1 represent numerical formating, 2 represents expanded formating.
+    private static Printer print;
     private static CalculoLDTUI ldt;
-    private static int option;
+    private static Relogio relogio;
  
     public static void main(String[] args) {
         // Let's start the main....
-        currentUI = UIFactory.firstUI();
-        int option = 0;
+        init();
         boolean wantToQuit = false;
         while(!wantToQuit){
-            currentUI.printMenu();
-            switch(option){
+            currentUI = UIFactory.firstUI();
+            switch(currentUI.printMenu()){
                 case 1:
                      firstModeInteraction();
                      break;
@@ -46,28 +50,30 @@ public class UserInterface{
                      outputFormatingInteraction();
                      break;
                 case 5:
-                     Print.print("Caso 5:\n");
                      wantToQuit = true;
+                     relogio.stop();
                  default:
                      break;
             }
-            currentUI = UIFactory.firstUI();
-        
         }
     }
 
 
-
+    private static void init(){
+        currentUI = UIFactory.firstUI();
+        print = new Printer();
+        relogio = new Relogio(print);
+    }
+   
     
- private static void firstModeInteraction(){
+    private static void firstModeInteraction(){
            ldt = new CalculoLDTUI();
-           Print.print("Caso 1:\n");
+           Printer.print("Caso 1:\n");
            currentUI = UIFactory.localDataTimeUI();
             
             boolean wantToQuit = false;
             while(!wantToQuit){
-                option = currentUI.printMenu();
-                switch(option){
+                switch(currentUI.printMenu()){
                     case 1:
                         ldt.addSubDatas();
                         break;
@@ -100,7 +106,7 @@ public class UserInterface{
     
     
     private static void secondModeInteraction(){
-           Print.print("Caso 2:\n");
+           Printer.print("Caso 2:");
            currentUI = UIFactory.zonedDateTimeUI();
            currentUI.printMenu();
         
@@ -109,16 +115,50 @@ public class UserInterface{
     
     
     private static void cronometro(){
-            Print.print("Caso 3:\n");
+            ICronometro crono = new Cronometro();
             currentUI = UIFactory.cronometroUI();
-            currentUI.printMenu();       
-        
+            boolean quit = false;
+            while(! quit){
+              switch(currentUI.printMenu()){
+                  
+                  case 1:
+                         if(crono.start()) Printer.print("Cronometro lançado.");
+                         else Printer.print("O cronometro ja esta a correr.");
+                         break;
+                  case 2:
+                         Optional<Duration> duration = crono.stop();
+                         if(duration.isPresent()) print.print(duration.get());
+                         else Printer.print("O crono ja esta parado.");
+                         break;
+                  case 3:
+                         crono.reset();
+                         break;
+                  case 4:
+                          quit = true;
+                          break;
+                  default:
+                          Printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
+              }
+                
+            }
+            
+ 
     }
 
+    
+    
     private static void outputFormatingInteraction(){
-            Print.print("Caso 4:\n");
             currentUI = UIFactory.formatingOutputUI();
-            currentUI.printMenu();
+            switch(currentUI.printMenu()){
+                case 1:
+                      print.setPrintMode(1);
+                      break;
+                case 2:
+                      print.setPrintMode(2);
+                      break;
+                default:
+                      break;
+            }
     }
 
 }

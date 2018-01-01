@@ -43,7 +43,7 @@ public class TextualUI {
      * @return 
      */
     public boolean printHeader(){
-        Print.print(header+"\n");
+        Printer.print(header);
         return true;
     }
     /**
@@ -57,7 +57,7 @@ public class TextualUI {
              sb.append( i + "." + s + "\n");
              i++;
         }
-        Print.print(sb.toString());
+        Printer.print(sb.toString());
         return true;
     }
     
@@ -69,7 +69,7 @@ public class TextualUI {
         lastChosenOption = -1;
         printHeader();
         printOptions();
-        String line = Print.ask("");
+        String line = Printer.ask("");
         try{
             lastChosenOption = Integer.parseInt(line);
         }catch(Exception e){
