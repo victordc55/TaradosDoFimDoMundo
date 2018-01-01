@@ -13,6 +13,8 @@ import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalAmount;
 import java.util.OptionalInt;
 import java.util.Scanner;
+import java.lang.StringBuilder;
+import static java.time.temporal.ChronoField.DAY_OF_WEEK;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,32 +26,46 @@ public class Printer {
     // Every method for printing simple strings
     public static final PrintStream out = System.out;
     public static final Scanner in = new Scanner(System.in);
-    private DateTimeFormatter printFormat;
-    private static final String numericalPattern = "d-M-yyyy H:mm:ss VV O G ";
-    private static final String extendedPattern = "EEEE d MMM yyyy H:mm:ss VV OOOO 'Era' G 'Trimestre' Q";
+    private static DateTimeFormatter printFormat;
+    private static final String completeNumericalPattern = "[d-M-yyyy ][H:mm:ss ][VV ][O ][G]";
+    private static final String extendedPattern = "[EEEE d MMM yyyy ][H:mm:ss ][VV ][OOOO ]['Era' G ]['Trimestre' Q]";
+
+     
     
     public Printer(){
-        printFormat = DateTimeFormatter.ofPattern(numericalPattern);
+        printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
     }
     
     public Printer(int printModeWanted){
-        if( printModeWanted == 2 )
+        if( printModeWanted == 2 ){
             printFormat = DateTimeFormatter.ofPattern(extendedPattern);
-        else printFormat = DateTimeFormatter.ofPattern(numericalPattern);
+        }
+        else{
+            printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
+        }
     }
     
     public void setPrintMode(int mode){
-        if( mode == 2 )
+        if( mode== 2 ){
             printFormat = DateTimeFormatter.ofPattern(extendedPattern);
-        else printFormat = DateTimeFormatter.ofPattern(numericalPattern);
+        }
+        else{
+            printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
+        }
     }
-    
+    /**
+     * Imprima no ecrã um temporalAccessor passado como parametro segundo um padrão
+     * Este metodo so imprime o que recebe segundo o padrão logo pode vir a não imprimir nada caso o temporalAccessor passado
+     * não possui as informações esperadas pelo padrão.
+     * Exemplos de temporal Accessor que não dao nada: Instant, MonthDay, DayOfWeek,Year,Month, YearMonth.
+     * @param t 
+     */
     public void print(TemporalAccessor t){
         if( t != null){
               Printer.print( printFormat.format(t) );
         }
     }
-
+    
     public void print(Duration d){
           if( d != null){
               out.println( d.get(ChronoUnit.SECONDS) + ":" + d.get(ChronoUnit.NANOS));
