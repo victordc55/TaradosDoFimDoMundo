@@ -5,6 +5,7 @@
  */
 package Datas;
 
+import TUI.Printer;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -39,23 +40,23 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
     // Calcula os LocalDateTime
     @Override
     public Optional<Duration> diferencaDateTime(TemporalAccessor inicio, TemporalAccessor fim) {
-        LocalDateTime inicio1 = null;
-        LocalDateTime fim1 = null;
+        LocalDateTime inicioI = null;
+        LocalDateTime fimI = null;
         try{
-            inicio1 = LocalDateTime.from(inicio);
-            fim1 = LocalDateTime.from(fim);
+            inicioI = LocalDateTime.from(inicio);
+            fimI = LocalDateTime.from(fim);
         }catch(Exception e ){
             return Optional.empty();
         }
         
-        if( inicio1 != null && fim1 != null){
-            return Optional.ofNullable(Duration.between( inicio1, fim1 ) );
+        if( inicioI != null && fimI != null){
+            return Optional.ofNullable(Duration.between( inicioI, fimI ) );
         }    
         else 
             return Optional.empty();
     }
 
-    public LocalDateTime addicionarADateTime(TemporalAccessor data, int param, ChronoUnit unit) {
+    public LocalDateTime addicionarADateTime(TemporalAccessor data, long param, ChronoUnit unit) {
         LocalDateTime novoDateTime = LocalDateTime.from(data).plus(param, unit);
         return novoDateTime;
     }

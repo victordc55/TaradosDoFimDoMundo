@@ -35,6 +35,6 @@ public interface ICalculoLDT extends ICalculoDatas, ICalculoTempo {
      * @return 
      */
     
-    public LocalDateTime addicionarADateTime(TemporalAccessor data, int param, ChronoUnit unit);
+    public LocalDateTime addicionarADateTime(TemporalAccessor data, long param, ChronoUnit unit);
    
 }

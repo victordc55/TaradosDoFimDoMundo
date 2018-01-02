@@ -1,22 +1,12 @@
-
 package TUI;
 
 
-import TUI.Printer;
-import TUI.UIFactory;
-import TUI.TextualUI;
 import calculadorauniversal.Cronometro;
 import calculadorauniversal.ICalculadoraUniversal;
 import calculadorauniversal.ICronometro;
-import java.time.Clock;
 import java.time.Duration;
 import java.util.Optional;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -63,23 +53,20 @@ public class UserInterface{
         currentUI = UIFactory.firstUI();
         print = new Printer();
         relogio = new Relogio(print);
+        ldt = new CalculoLDTUI();
     }
-   
     
     private static void firstModeInteraction(){
-           ldt = new CalculoLDTUI();
-           Printer.print("Caso 1:\n");
-           currentUI = UIFactory.localDataTimeUI();
-            
-            boolean wantToQuit = false;
-            while(!wantToQuit){
+            currentUI = UIFactory.localDataTimeUI();
+            boolean quit = false;
+            while(!quit){
                 switch(currentUI.printMenu()){
                     case 1:
                         ldt.addSubDatas();
                         break;
                     case 2:
                         ldt.addSubHoras();
-                        break;       
+                        break;
                     case 3:
                         ldt.addSubTempos();
                         break;
@@ -96,7 +83,7 @@ public class UserInterface{
                         ldt.curiosidades();
                         break;
                     case 8:
-                        wantToQuit = true;
+                        quit = true;
                         break;
                 }
             }  

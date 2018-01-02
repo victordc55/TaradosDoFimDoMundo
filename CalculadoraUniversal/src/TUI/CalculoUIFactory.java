@@ -13,39 +13,7 @@ import java.util.List;
  * @author Pedro
  */
 public class CalculoUIFactory {
-    
-    public static TextualUI addSubDatas(){
-            List<String> options = Arrays.asList( "Dias.",
-                                                  "Semanas.",
-                                                  "Meses.",
-                                                  "Anos.",
-                                                  "Voltar para trás.");
-            String head = "Escolha uma das operações disponiveis:";
-            return TextualUI.of(options, head);       
-    }
-    
-    public static TextualUI addSubHoras(){
-            List<String> options = Arrays.asList( "Segundos.",
-                                                  "Minutos.",
-                                                  "Horas.",
-                                                  "Voltar para trás.");
-            String head = "Escolha uma das operações disponiveis:";
-            return TextualUI.of(options, head);       
-    }
-    
-    public static TextualUI addSubTempos(){
-            List<String> options = Arrays.asList( "Segundos.",
-                                                  "Minutos.",
-                                                  "Horas.",
-                                                  "Dias.",
-                                                  "Semanas.",
-                                                  "Meses.",
-                                                  "Anos.",
-                                                  "Voltar para trás.");
-            String head = "Escolha uma das operações disponiveis:";
-            return TextualUI.of(options, head);       
-    }
-    
+      
     public static TextualUI diferencaEntreTempos(){
         List<String> options = Arrays.asList( "Difença entre datas.",
                                                 "Diferença entre horas.",
@@ -73,7 +41,14 @@ public class CalculoUIFactory {
         String head = "Escolha uma das operações disponiveis:";
         return TextualUI.of(options, head);    
     }
-        
+    
+    public static TextualUI addSubtrair(){
+        List<String> options = Arrays.asList( "Adicionar.",
+                                                "Subtrair.",
+                                                "Voltar para trás");
+        String head = "Escolha uma das operações disponiveis:";
+        return TextualUI.of(options, head);
+    }
     
     
 }
