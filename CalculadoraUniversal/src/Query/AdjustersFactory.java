@@ -12,7 +12,7 @@ import java.time.temporal.TemporalAdjusters;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public class AdjustersFactory {
  

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public class Estacoes {
     public static final List<EstacaoTemperada> estacoesNorte = Arrays.asList( EstacaoTemperada.InvernoBoreal,EstacaoTemperada.OutonoBoreal,EstacaoTemperada.PrimaveraBoreal,EstacaoTemperada.VeraoBoreal);

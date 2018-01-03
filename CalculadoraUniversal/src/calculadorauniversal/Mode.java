@@ -10,7 +10,7 @@ package calculadorauniversal;
  * A ver....
  * ISO_LDATETIME = LocalDateTime seguindo o calendario ISO
  * ISO_ZODATETIME = Zoned e Offset DateTime's segundo o calendario e normas ISO.
- * @author VICTOR CUNHA
+ * 
  */
 public enum Mode {
     ISO_LDATETIME, ISO_ZODATETIME;

@@ -22,10 +22,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-/**
- *
- * @author VICTOR CUNHA
- */
 public class Relogio implements Runnable{
       private  Thread t;
       private  Printer p;

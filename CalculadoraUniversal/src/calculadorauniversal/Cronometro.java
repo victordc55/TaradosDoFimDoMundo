@@ -12,7 +12,7 @@ import java.util.Optional;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public class Cronometro implements ICronometro {
     

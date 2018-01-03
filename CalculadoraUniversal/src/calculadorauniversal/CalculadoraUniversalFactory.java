@@ -7,7 +7,7 @@ package calculadorauniversal;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public class CalculadoraUniversalFactory {
     

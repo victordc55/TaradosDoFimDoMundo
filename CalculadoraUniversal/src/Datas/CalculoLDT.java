@@ -22,7 +22,7 @@ import java.util.OptionalInt;
 
 /**
  *
- * @author Pedro
+ * 
  */
 public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
     

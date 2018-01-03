@@ -20,7 +20,7 @@ import java.util.OptionalInt;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public class CalculoDatas implements ICalculoDatas{
     

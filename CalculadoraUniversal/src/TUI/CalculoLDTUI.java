@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 /**
  *
- * @author Pedro
+ * 
  */
 
 public class CalculoLDTUI{

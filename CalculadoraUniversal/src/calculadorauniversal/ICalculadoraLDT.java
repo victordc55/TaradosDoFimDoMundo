@@ -19,7 +19,7 @@ import java.util.OptionalInt;
 
 /**
  *
- * @author Pedro
+ * 
  */
 public interface ICalculadoraLDT {
     

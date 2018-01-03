@@ -12,7 +12,7 @@ import java.time.temporal.TemporalQuery;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public class QueryFactory {
     

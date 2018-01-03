@@ -12,10 +12,7 @@ import java.time.Month;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
-/**
- *
- * @author Pedro
- */
+
 public class PedidoDatasHorasUI {
     
     public LocalDate pedirData(){

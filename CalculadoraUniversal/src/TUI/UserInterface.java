@@ -93,9 +93,35 @@ public class UserInterface{
     
     
     private static void secondModeInteraction(){
+    	   
            Printer.print("Caso 2:");
            currentUI = UIFactory.zonedDateTimeUI();
-           currentUI.printMenu();
+           boolean quit = false;
+           while(! quit){
+             switch(currentUI.printMenu()){
+	             case 1:
+	                 break;
+		          case 2:
+		                 
+		                 break;
+		          case 3:
+		                 
+		                 break;
+		          case 4:
+		                  break;
+		          case 5:
+		        	  
+	                  break;
+		          case 6:
+		        	  
+	                  break;
+		          case 7:
+	                  quit = true;
+	                  break;
+		          default:
+		                  Printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
+             }
+           }
         
     }
     

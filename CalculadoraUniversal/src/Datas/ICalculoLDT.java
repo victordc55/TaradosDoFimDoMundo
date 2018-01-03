@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * Interface que representa os metodos que fazem operações entre local date times.
- * @author EVERYONE
+ * 
  */
 public interface ICalculoLDT extends ICalculoDatas, ICalculoTempo {
 

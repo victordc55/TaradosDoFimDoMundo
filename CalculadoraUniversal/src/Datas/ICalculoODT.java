@@ -11,7 +11,7 @@ import java.time.ZoneId;
 
 /**
  * Interface que representa os metodos que interagem com localDate's.
- * @author EVERYONE
+ * 
  */
 public interface ICalculoODT {
     

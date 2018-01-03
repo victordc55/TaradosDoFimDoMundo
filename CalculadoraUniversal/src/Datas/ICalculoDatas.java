@@ -18,7 +18,7 @@ import java.util.OptionalInt;
 
 /**
  * Interface que representa os metodos que interagem com localDate's.
- * @author EVERYONE
+ * 
  */
 public interface ICalculoDatas {
     

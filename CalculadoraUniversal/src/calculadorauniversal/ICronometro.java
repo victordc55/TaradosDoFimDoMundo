@@ -10,7 +10,7 @@ import java.util.Optional;
 
 /**
  *
- * @author VICTOR CUNHA
+ *
  */
 public interface ICronometro {
  

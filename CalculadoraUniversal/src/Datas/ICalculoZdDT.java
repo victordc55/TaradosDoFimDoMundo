@@ -7,7 +7,7 @@ package Datas;
 
 /**
  *
- * @author EVERYONE
+ * 
  */
 public interface ICalculoZdDT {
     

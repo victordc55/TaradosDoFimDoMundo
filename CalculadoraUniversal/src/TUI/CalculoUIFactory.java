@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author Pedro
+ * 
  */
 public class CalculoUIFactory {
       

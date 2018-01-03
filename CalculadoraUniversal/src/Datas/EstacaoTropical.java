@@ -7,7 +7,7 @@ package Datas;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public class EstacaoTropical {
     

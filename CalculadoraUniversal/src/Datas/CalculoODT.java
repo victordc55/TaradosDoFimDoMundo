@@ -11,7 +11,7 @@ import java.time.ZoneId;
 
 /**
  *
- * @author Pedro
+ * 
  */
 
 public class CalculoODT implements ICalculoODT{

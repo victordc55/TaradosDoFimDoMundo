@@ -8,7 +8,7 @@ import java.util.Optional;
 
 /**
  *
- * @author Pedro
+ * 
  */
 public class CalculoTempo implements ICalculoTempo {
 

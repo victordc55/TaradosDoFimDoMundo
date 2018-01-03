@@ -29,7 +29,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Pedro
+ * 
  */
 public class CalculadoraLDT implements ICalculadoraLDT{
  

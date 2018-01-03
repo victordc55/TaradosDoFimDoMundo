@@ -9,10 +9,7 @@ import java.util.List;
  * and open the template in the editor.
  */
 
-/**
- *
- * @author VICTOR CUNHA
- */
+
 public class TextualUI {
     // Representa uma interface textual fixa.
     private final List<String> options;

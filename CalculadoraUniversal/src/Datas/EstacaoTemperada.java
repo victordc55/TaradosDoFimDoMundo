@@ -18,7 +18,7 @@ import java.util.Optional;
 
 /**
  *
- * @author ALL
+ * 
  */
 public enum EstacaoTemperada {
     // Boreal = Hemisferio Norte

@@ -12,7 +12,7 @@ import java.util.OptionalInt;
 
 /**
  * Classe que possua metodos para a criação de parsers e parsing simples.
- * @author VICTOR CUNHA
+ * 
  */
 public class Parsers {
     

@@ -7,7 +7,7 @@ package Fusos;
 
 /**
  *
- * @author VICTOR CUNHA
+ * 
  */
 public interface IBrincaFusos {
     
