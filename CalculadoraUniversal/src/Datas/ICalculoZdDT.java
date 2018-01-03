@@ -10,5 +10,7 @@ package Datas;
  * 
  */
 public interface ICalculoZdDT {
+	
+	
     
 }
