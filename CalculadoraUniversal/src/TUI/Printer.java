@@ -5,6 +5,8 @@ import java.io.Console;
 import java.io.PrintStream;
 import static java.lang.System.err;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -125,6 +127,39 @@ public class Printer {
            }catch(Exception e){
            }
            return OptionalInt.empty();
+    }
+    
+    
+ public static LocalDate pedirData(){
+        
+        print("Ano: ");
+        int ano = Printer.getInt().getAsInt();
+        print("Mês: ");
+        int mes = Printer.getInt().getAsInt();
+        print("Dia: ");
+        int dia = Printer.getInt().getAsInt();
+        LocalDate ld = LocalDate.of(ano, mes, dia);
+        return ld;
+        
+    }
+    
+    public static LocalTime pedirHoras(){
+        print("Hora: ");
+        int hora = Printer.getInt().getAsInt();
+        print("Minutos: ");
+        int min = Printer.getInt().getAsInt();
+        print("Segundos: ");
+        int seg = Printer.getInt().getAsInt();
+        LocalTime lt = LocalTime.of(hora, min, seg);
+        return lt;
+    }
+    
+    public static LocalDate pedirComSemana(){
+        LocalDate local = LocalDate.from(pedirData());
+        print("Semanas: ");
+        int semanas = Printer.getInt().getAsInt();
+        local = local.plusWeeks(semanas);
+        return local;
     }
     
 }
