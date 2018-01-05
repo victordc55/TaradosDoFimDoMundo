@@ -8,10 +8,12 @@ import calculadorauniversal.ICronometro;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Year;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -386,16 +388,15 @@ public class UserInterface{
 	}
 
 	private static void secondModeInteraction(){
-    	   
            Printer.print("Caso 2:");
            TextualUI currentUI = UIFactory.zonedDateTimeUI();
            boolean quit = false;
            while(! quit){
              switch(currentUI.printMenu()){
-	             case 1:
-	            	 addSubTempoZonedDateTime();
-	                 break;
-		          case 2:
+	            case 1:
+                        addSubTempoZonedDateTime();
+	                break;
+		    case 2:
 		                 
 		              break;
 		          case 3:
@@ -423,18 +424,29 @@ public class UserInterface{
     
     private static void addSubTempoZonedDateTime() {
     	boolean wantToQuit = false;
+        ZoneId zone = null;
     	while(!wantToQuit){
-        	TextualUI currentUI = UIFactory.addSubtrair();
-           int  option = currentUI.printMenu();
-                try {
-                    if (option <3) {
-                        Printer.print("Insira a hora inicial.\n");
-                        LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(), Printer.pedirHoras());
-                        Printer.print("Valor que pretende somar ou subtrair.");
-                        LocalDateTime valor = LocalDateTime.of(Printer.pedirComSemana(), Printer.pedirHoras());
-                        if (option == 1) 
-                            Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, true).toString());
-                        if (option == 2)
+            TextualUI currentUI = UIFactory.addSubtrair();
+            int  option = currentUI.printMenu();
+            try {
+                if (option <3) {
+                    Printer.print("Insira a hora inicial.\n");
+                    LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(), Printer.pedirHoras());
+                    currentUI = UIFactory.listZonedId();
+                    int index =currentUI.printMenu();
+                    if (index >= 1 && index<= 26) {
+                       zone = ZoneId.of(getZoneId(index-1)); 
+                    }
+                    else{
+                        Printer.print("Não existe essa opção");
+                        break;
+                    }
+                    Printer.print("Valor que pretende somar ou subtrair.");
+                    LocalDateTime valor = LocalDateTime.of(Printer.pedirComSemana(), Printer.pedirHoras());
+                    if (option == 1) 
+                        
+                        Printer.print();
+                    if (option == 2)
                             Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false).toString());
                     }
                     else if(option > 3)
@@ -445,7 +457,7 @@ public class UserInterface{
                     Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
                 }
         }
-	}
+    }
 
 
 	private static void cronometro(){
@@ -475,8 +487,40 @@ public class UserInterface{
               }
                 
             }
-            
- 
+    }
+        
+    private static String getZoneId(int index){
+        if(index >0 && index <=26){
+        String[] zoneId = {"Pacific/Apia",
+                        "Pacific/Chatham",
+                        "Pacific/Fiji",
+                        "Asia/Anadyr",
+                        "Asia/Magadan",
+                        "Asia/Vladivostok",
+                        "Asia/Tokyo",
+                        "Asia/Hong_Kong",
+                        "Asia/Vientiane",
+                        "Asia/Dhaka",
+                        "Asia/Ashgabat",
+                        "Europe/Samara",
+                        "Europe/Istanbul",
+                        "Europe/Athens",
+                        "Europe/Paris",
+                        "UTC",
+                        "Atlantic/Azores",
+                        "America/Noronha",
+                        "America/Recife",
+                        "America/Puerto_Rico",
+                        "America/Port-au-Prince",
+                        "America/Chicago",
+                        "America/Chihuahua",
+                        "America/Los_Angeles",
+                        "America/Juneau",
+                        "America/Adak",
+                        "Pacific/Samoa"};
+        return zoneId[index];
+        }
+        else 
     }
 
     
@@ -494,5 +538,6 @@ public class UserInterface{
                       break;
             }
     }
+    
 
 }

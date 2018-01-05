@@ -124,7 +124,6 @@ public class UIFactory {
                                                  "Tempo até uma data e hora usando diferentes fusos horarios.",
                                                  "Voltar atras.");
            
-        
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
            return TextualUI.of(options, head);    
@@ -226,7 +225,38 @@ public class UIFactory {
 	        return TextualUI.of(options, head);
 	    }
 	    
-
+    public static TextualUI listZonedId(){
+        List<String> options = Arrays.asList("Pacific/Apia",
+                                             "Pacific/Chatham",
+                                             "Pacific/Fiji",
+                                             "Asia/Anadyr",
+                                             "Asia/Magadan",
+                                             "Asia/Vladivostok",
+                                             "Asia/Tokyo",
+                                             "Asia/Hong_Kong",
+                                             "Asia/Vientiane",
+                                             "Asia/Dhaka",
+                                             "Asia/Ashgabat",
+                                             "Europe/Samara",
+                                             "Europe/Istanbul",
+                                             "Europe/Athens",
+                                             "Europe/Paris",
+                                             "UTC",
+                                             "Atlantic/Azores",
+                                             "America/Noronha",
+                                             "America/Recife",
+                                             "America/Puerto_Rico",
+                                             "America/Port-au-Prince",
+                                             "America/Chicago",
+                                             "America/Chihuahua",
+                                             "America/Los_Angeles",
+                                             "America/Juneau",
+                                             "America/Adak",
+                                             "Pacific/Samoa");        
+        
+        String head = "Bem vindo.Escolha uma das operações disponiveis:";
+        return TextualUI.of(options, head);    
+    }         
 
 
 
