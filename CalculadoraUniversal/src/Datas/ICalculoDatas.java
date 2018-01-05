@@ -14,6 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 
 /**
@@ -111,7 +112,7 @@ public interface ICalculoDatas {
 
 	public OptionalInt diasDoMes(OptionalInt mes);
 
-	public OptionalInt semanasDesdeInicio();
+	public OptionalLong semanasDesdeInicio();
 
 	public OptionalInt semanasFimAno();
 

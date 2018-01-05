@@ -27,5 +27,9 @@ public class CalculadoraUniversalFactory {
         return new Cronometro();
     }
     
+    public static ICalculadoraUniversalCuriosidade getCuriosidade(){
+         return new CalculadoraUniversalISOLDT();
+    }
+    
     
 }

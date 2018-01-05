@@ -11,11 +11,13 @@ import java.time.ZonedDateTime;
 
 public class Relogio implements Runnable{
       private  Thread t;
+      private int time;
       private boolean stop;
       
     public Relogio(){
         t = new Thread(this);
         stop = false;
+        time = 59950;
         t.start();
     }
     
@@ -27,7 +29,7 @@ public class Relogio implements Runnable{
             
             synchronized(this){
                 try{
-                    Thread.currentThread().sleep(29950);
+                    Thread.currentThread().sleep(time);
                 }catch(Exception e){
                     
                 }
@@ -36,6 +38,10 @@ public class Relogio implements Runnable{
          
     }
     
+    public void changeActuTime(int time){
+        if( time > 0)
+            this.time = time;
+    }
     public void stop(){
         stop = true;
         t.interrupt();

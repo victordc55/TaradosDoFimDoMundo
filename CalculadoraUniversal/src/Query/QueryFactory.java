@@ -7,6 +7,7 @@ package Query;
 
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.IsoFields;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalQuery;
 
@@ -29,6 +30,10 @@ public class QueryFactory {
      */
     public static TemporalQuery<Integer> dayOfYear(){
         return (d) -> d.get(ChronoField.DAY_OF_YEAR);
+    }
+    
+    public static TemporalQuery<Long> weeksFromBeginingOfYearTillNow(){
+        return (d) -> IsoFields.WEEK_OF_WEEK_BASED_YEAR.getFrom(d);
     }
 
 }

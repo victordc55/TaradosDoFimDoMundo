@@ -1,11 +1,14 @@
 package TUI;
 
 
+import Datas.EstacaoTemperada;
 import calculadorauniversal.CalculadoraUniversalISOLDT;
 import calculadorauniversal.CalculadoraUniversalFactory;
 import calculadorauniversal.Cronometro;
 import calculadorauniversal.ICalculadoraUniversal;
+import calculadorauniversal.ICalculadoraUniversalCuriosidade;
 import calculadorauniversal.ICronometro;
+import calculadorauniversal.Mode;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -19,6 +22,7 @@ import java.time.Year;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -64,12 +68,12 @@ public class UserInterface{
 
     private static void init(){
         currentUI = UIFactory.firstUI();
-        calculadoraUniversal = new CalculadoraUniversalISOLDT();
         relogio = new Relogio();
     }
     
     private static void firstModeInteraction(){
             boolean wantToQuit = false;
+            calculadoraUniversal = CalculadoraUniversalFactory.mode(Mode.ISO_LDATETIME);
             while(!wantToQuit){
                 currentUI = UIFactory.localDataTimeUI();
                 switch(currentUI.printMenu()){
@@ -106,37 +110,37 @@ public class UserInterface{
     
     private static void curiosidades() {
     	boolean wantToQuit = false;
+        ICalculadoraUniversalCuriosidade curiosidades = CalculadoraUniversalFactory.getCuriosidade();
          while(!wantToQuit){
         	currentUI = UIFactory.curiosidadesUI();
         	 switch(currentUI.printMenu()){
-	        	 case 1:
+	        	 case 1: // Primeiro dia do ano
 	        		 Printer.print("Insira o ano. \n");
 	        		 OptionalInt ano = Printer.getInt();
-	        		 if(ano != null){
-	        			 Printer.print(calculadoraUniversal.primeiroDiaAno(ano.getAsInt()).toString());
+	        		 if( ano.isPresent() ){
+	        			 Printer.print(curiosidades.primeiroDiaAno(ano.getAsInt()).toString());
 	        			 Printer.print("\n");
 	        		 }else{
-	        			 Printer.printErro("O valore não foram introduzido corretamente.\n");
+	        			 Printer.printErro("O valor inserido é incorreto.\n");
 	        		 }
 	                 break;
-	        	 case 2:
+	        	 case 2: // Ultimo dia do ano
 	        		 Printer.print("Insira o ano. \n");
 	        		 OptionalInt anoUltimo = Printer.getInt();
-	        		 if(anoUltimo != null){
-	        			 Printer.print(calculadoraUniversal.ultimoDiaAno(anoUltimo.getAsInt()).toString());
+	        		 if(anoUltimo.isPresent()){
+	        			 Printer.print(curiosidades.ultimoDiaAno(anoUltimo.getAsInt()).toString());
 	        			 Printer.print("\n");
 	        		 }else{
-	        			 Printer.printErro("O valore não foram introduzido corretamente.\n");
+	        			 Printer.printErro("O valor inserido é incorreto.\n");
 	        		 }
 	                 break;
-	        	 case 3:
+	        	 case 3: // Diz se o ano é bissexto ou nao
 	        		 Printer.print("Insira o ano. \n");
 	        		 OptionalInt bissexto = Printer.getInt();
-	        		 if(bissexto != null){
-	        			 Printer.print(calculadoraUniversal.isLeap(bissexto.getAsInt()));
+	        		 if(bissexto.isPresent()){
+	        			 Printer.print(curiosidades.isLeap(bissexto.getAsInt()));
 	        			 Printer.print("\n");
 	        		 }
-	        		 
 	        		 break;
 	        	 case 4:
 	        		 Printer.print("Insira a primeira data: ");
@@ -144,7 +148,7 @@ public class UserInterface{
 	        		 Printer.print("Insira a segunda data: ");
 	        		 LocalDate ldt2 = Printer.pedirData();
 	        		 if(ldt1 != null && ldt2 != null){
-	        			 Printer.print(calculadoraUniversal.diaEntreDatas(ldt1, ldt2).toString());
+	        			 Printer.print(curiosidades.diaEntreDatas(ldt1, ldt2).toString());
 	        			 Printer.print("\n");
 	        		 }
 	        		 break;
@@ -152,7 +156,7 @@ public class UserInterface{
 	        		 Printer.print("Insera o ano: ");
 	        		 OptionalInt anoNatal = Printer.getInt();
 	        		 if(anoNatal != null){
-	        			 Printer.print(calculadoraUniversal.diaNatal(anoNatal).toString());
+	        			 Printer.print(curiosidades.diaNatal(anoNatal).toString());
 	        			 Printer.print("\n");
 	        		 }
 	        		 break;
@@ -160,20 +164,20 @@ public class UserInterface{
 	        		 Printer.print("Insera o mes: ");
 	        		 OptionalInt mes = Printer.getInt();
 	        		 if(mes != null){
-	        			 Printer.print(calculadoraUniversal.diasDoMes(mes).toString());
+	        			 Printer.print(curiosidades.diasDoMes(mes).toString());
 	        			 Printer.print("\n");
 	        		 }
 	        		 break;
 	        	 case 7:
-	        		 Printer.print("Semanas desde o inicio do ano: " + calculadoraUniversal.semanasDesdeInicio().toString());
-	        		 Printer.print("Semanas para o fim do ano: " + calculadoraUniversal.semanasFimAno().toString());
+	        		 Printer.print("Semanas desde o inicio do ano: " + curiosidades.semanasDesdeInicio().toString());
+	        		 Printer.print("Semanas para o fim do ano: " + curiosidades.semanasFimAno().toString());
 	        		 Printer.print("\n");
 	        		 break;
 	        	 case 8:
 	        		 Printer.print("Insira uma data: ");
 	        		 LocalDate ldt = Printer.pedirData();
 	        		 if(ldt != null){
-	        			 Printer.print("trimestre corresponde é: " + calculadoraUniversal.trimestre(ldt).toString());
+	        			 Printer.print("trimestre corresponde é: " + curiosidades.trimestre(ldt).toString());
 	        			 Printer.print("\n");
 	        		 }
 	        		 break;
@@ -181,7 +185,7 @@ public class UserInterface{
 	        		 Printer.print("Insira uma data: ");
 	        		 LocalDate ldtestacao = Printer.pedirData();
 	        		 if(ldtestacao != null){
-	        			 Printer.print("Estação do ano corresponde é: " + calculadoraUniversal.estacaoDoAno(ldtestacao).toString());
+	        			 Printer.print("Estação do ano corresponde é: " + curiosidades.estacaoDoAno(ldtestacao).toString());
 	        			 Printer.print("\n");
 	        		 }
 	        		 break;
@@ -231,37 +235,36 @@ public class UserInterface{
 	}
 
 	private static void infoDatas() {
-		boolean wantToQuit = false;
-	        while(!wantToQuit){
-                   currentUI = UIFactory.infoDatas();
-	           int option = currentUI.printMenu();
-	                try {
-	                    if (option <5) {
-	                        Printer.print("Insira a data.\n");
-	                        LocalDate data = Printer.pedirData();
-	                        if (option == 1){ 
-	                            Printer.print(calculadoraUniversal.diaDaSemana(data).toString());
-	                        }
-	                        if (option == 2){
-	                            Printer.print(calculadoraUniversal.trimestre(data).toString());
-	                        }
-	                        if (option == 3){
-	                            Printer.print(calculadoraUniversal.numeroDoDiaNoAno(data).toString());
-	                        }
-	                        if (option == 4){
-	                            Printer.print(calculadoraUniversal.semanaNoAno(data).toString());
-	                        }
-	                    }
-	                    else if(option > 5)
-	                        Printer.printErro("Não existe essa opção.");
-	                    else    
-	                        wantToQuit = true;  
-	                } catch (Exception e) {
-	                    Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
-	                }
+            String answer = Printer.ask("Quere informações sobre hoje ou outra data? [h/hoje] [qualquer outro input = outro]\n");
+            if( answer.contentEquals("hoje") || answer.contentEquals("h")){
+                    infoDatas2(LocalDate.now());
+            }else{
+                    Printer.print("Insira a data.");
+	            LocalDate data = Printer.pedirData();
+                    infoDatas2(data);
 	        }
 	}
-
+        
+        private static void infoDatas2(LocalDate data){
+            if(data != null){
+	            Optional<DayOfWeek> dayOfWeek = calculadoraUniversal.diaDaSemana(data);
+	            OptionalInt trimestre = calculadoraUniversal.trimestre(data);
+                    OptionalInt diaNoAno = calculadoraUniversal.numeroDoDiaNoAno(data);
+	            OptionalInt semanaNoAno =calculadoraUniversal.semanaNoAno(data);
+                    Optional<EstacaoTemperada> estacao = calculadoraUniversal.estaçãoDoAnoNorte(data, true);
+                    StringBuilder sb = new StringBuilder();
+                    if( dayOfWeek.isPresent()) sb.append( dayOfWeek.get().name() +" ");
+                    if( trimestre.isPresent()) sb.append( "Trimestre: " +trimestre.getAsInt()  + " ");
+                    if( diaNoAno.isPresent()) sb.append( "Dia nº"+ diaNoAno.getAsInt() +" ");
+                    if( semanaNoAno.isPresent()) sb.append("Semana nº"+ semanaNoAno.getAsInt() + " ");
+                    if(estacao.isPresent()){
+                        if( data.equals(LocalDate.now()) ) sb.append("A estação é " + estacao.get().name());
+                        else if(data.isBefore(LocalDate.now())) sb.append("A estação era "+ estacao.get().toString());
+                        else sb.append("A estação será "+ estacao.get().toString());
+                        }
+                    Printer.print(sb.toString());
+                    }else Printer.print("A data introduzida é invalida.");
+        }
 
 	private static void diferençaEntreTempos() {
 		boolean wantToQuit = false;
@@ -271,7 +274,7 @@ public class UserInterface{
 	                try {
 	                    if (option <4) {
 	                        if (option == 1){ 
-	                            Printer.print("Insira a hora inicial.\n");
+	                            Printer.print("Insira a hora inicial.");
 	                            LocalDate inicio = Printer.pedirData();
 	                            Printer.print("Insira a hora final");
 	                            LocalDate fim = Printer.pedirData();  
@@ -281,14 +284,14 @@ public class UserInterface{
 	                            Printer.print(calculadoraUniversal.diferencaEntreDatas(inicio, fim).toString());
 	                        }
 	                        if (option == 2){
-	                            Printer.print("Insira a hora inicial.\n");
+	                            Printer.print("Insira a hora inicial.");
 	                            LocalTime inicio = Printer.pedirHoras();
 	                            Printer.print("Insira a hora final");
 	                            LocalTime fim = Printer.pedirHoras();
 	                            Printer.print(calculadoraUniversal.diferencaEntreTempos(inicio, fim, true).toString());
 	                        }
 	                        if (option ==3){
-	                            Printer.print("Insira a hora inicial.\n");
+	                            Printer.print("Insira a hora inicial.");
 	                            LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(),Printer.pedirHoras());
 	                            Printer.print("Insira a hora final");
 	                            LocalDateTime fim = LocalDateTime.of(Printer.pedirData(),Printer.pedirHoras());
@@ -313,7 +316,7 @@ public class UserInterface{
            int  option = currentUI.printMenu();
                 try {
                     if (option <3) {
-                        Printer.print("Insira a hora inicial.\n");
+                        Printer.print("Insira a hora inicial.");
                         LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(), Printer.pedirHoras());
                         Printer.print("Valor que pretende somar ou subtrair.");
                         LocalDateTime valor = LocalDateTime.of(Printer.pedirComSemana(), Printer.pedirHoras());
@@ -340,7 +343,7 @@ public class UserInterface{
             int option = currentUI.printMenu();
                 try {
                     if (option <3) {
-                        Printer.print("Insira a hora inicial.\n");
+                        Printer.print("Insira a hora inicial.");
                         LocalTime inicio = Printer.pedirHoras();
                         Printer.print("Valor que pretende somar ou subtrair.");
                         LocalTime valor = Printer.pedirHoras();
@@ -369,7 +372,7 @@ public class UserInterface{
            
                 try {
                     if (option < 3) {
-                        Printer.print("Insira a data inicial.\n");
+                        Printer.print("Insira a data inicial.");
                         LocalDate inicio = Printer.pedirData();
                         Printer.print("Valor que pretende somar ou subtrair.");
                         LocalDate valor = Printer.pedirComSemana();
@@ -428,7 +431,7 @@ public class UserInterface{
             int  option = currentUI.printMenu();
             try {
                 if (option <3) {
-                    Printer.print("Insira a hora inicial.\n");
+                    Printer.print("Insira a hora inicial.");
                     LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(), Printer.pedirHoras());
                     currentUI = UIFactory.listZonedId();
                     int index =currentUI.printMenu();
@@ -444,7 +447,7 @@ public class UserInterface{
                     if (option == 1) 
                      //   Printer.print();
                     if (option == 2)
-                            Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false).toString());
+                            Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false));
                     }
                     else if(option > 3)
                         Printer.printErro("Não existe essa opção.");
@@ -457,7 +460,7 @@ public class UserInterface{
     }
     
     private static void diferencaEntreFusos(){
-        Printer.print("Insira a fuso e data-hora inicial.\n");
+        Printer.print("Insira o fuso e data-hora inicial.");
         currentUI = UIFactory.listZonedId();
         ZoneId zoneI,zoneF ;
         zoneI = zoneF = null;
@@ -468,7 +471,7 @@ public class UserInterface{
             Printer.print("Não existe essa opção");
         }
         ZonedDateTime zonaI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
-        Printer.print("Insira a fuso e data-hora final.\n");
+        Printer.print("Insira o fuso e data-hora final.\n");
         currentUI = UIFactory.listZonedId();
         index =currentUI.printMenu();
         if (index >= 1 && index<= 26) 
@@ -477,11 +480,13 @@ public class UserInterface{
             Printer.print("Não existe essa opção");
             }
         ZonedDateTime zonaF = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneF);
-        Printer.print(calculadoraUniversal.diferencaEntreFusos(zonaI, zonaF).toString());
+        Optional<Duration> d = calculadoraUniversal.diferencaEntreFusos(zonaI, zonaF);
+        if(d.isPresent()) Printer.print(d.get());
+        else Printer.print("Não foi possivel, usando os dados introduzidos, calcular a diferença entre elas.");
     }
     
     private static void converterZonedDateTime(){
-        Printer.print("Insira a fuso e data-hora inicial.\n");
+        Printer.print("Insira o fuso e data-hora inicial.");
         currentUI = UIFactory.listZonedId();
         ZoneId zoneI,zoneF ;
         zoneI = zoneF = null;
@@ -492,7 +497,7 @@ public class UserInterface{
             Printer.print("Não existe essa opção");
             }
         ZonedDateTime zdtI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
-        Printer.print("Insira o novo fuso.\n");
+        Printer.print("Insira o novo fuso.");
         currentUI = UIFactory.listZonedId();
         index =currentUI.printMenu();
         if (index >= 1 && index <= 26) 
@@ -505,7 +510,7 @@ public class UserInterface{
     
 
     private static void diferencaTempoEntreCidades(){
-        Printer.print("Insira a fuso e data-hora da cidade inicial.\n");
+        Printer.print("Insira o fuso e data-hora da cidade inicial.");
         currentUI = UIFactory.listZonedId();
         ZoneId zoneI,zoneF ;
         zoneI = zoneF = null;
@@ -516,7 +521,7 @@ public class UserInterface{
             Printer.print("Não existe essa opção");
             }
         ZonedDateTime zdtI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
-        Printer.print("Insira o fuso e data-hora da cidade final.\n");
+        Printer.print("Insira o fuso e data-hora da cidade final.");
         index =currentUI.printMenu();
         if (index >= 1 && index <= 26) 
             zoneF = ZoneId.of(getZoneId(index-1)); 
@@ -531,7 +536,7 @@ public class UserInterface{
         LocalDateTime agora = LocalDateTime.now();
         ZoneOffset zoneOff = OffsetDateTime.now().getOffset();
         ZonedDateTime zdtAtual = ZonedDateTime.of(agora, zoneOff);
-        Printer.print("Insira a fuso e data-hora da cidade inicial.\n");
+        Printer.print("Insira o fuso e data-hora da cidade inicial.");
         currentUI = UIFactory.listZonedId();
         ZoneId zoneFinal = null;
         int index =currentUI.printMenu();

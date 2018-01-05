@@ -132,6 +132,8 @@ public class Printer {
         int mes = Printer.getInt().getAsInt();
         print("Dia: ");
         int dia = Printer.getInt().getAsInt();
+  //      OptionalInt a = Printer.getInt();
+        
         LocalDate ld = LocalDate.of(ano, mes, dia);
         return ld;
         
@@ -156,4 +158,6 @@ public class Printer {
         return local;
     }
     
+    
+
 }

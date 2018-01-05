@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 /**
  *
@@ -137,7 +138,6 @@ public class CalculoDatas implements ICalculoDatas{
      */
    
     public Optional<EstacaoTemperada> estaçãoDoAnoNorte(TemporalAccessor data){
-        EstacaoTemperada res = null;
         // Versão mesmo meh
         return Estacoes.estacoesNorte.stream().filter( p -> p.isInSeason(data)).findFirst();
 
@@ -194,26 +194,19 @@ public class CalculoDatas implements ICalculoDatas{
 	}
 
 	@Override
-	public OptionalInt semanasDesdeInicio() {
-		return OptionalInt.of((int) LocalDate.now().until(Year.now().atDay(1), ChronoUnit.WEEKS));
+	public OptionalLong semanasDesdeInicio() {
+                return OptionalLong.of(LocalDate.now().query(QueryFactory.weeksFromBeginingOfYearTillNow()));
 	}
 
 	@Override
 	public OptionalInt semanasFimAno() {
-		return OptionalInt.of((int) LocalDate.now().until(Year.now().atMonth(12).atDay(31), ChronoUnit.WEEKS));
+                Year ano = Year.now();
+		return OptionalInt.of((int) LocalDate.now().until(ano.atDay(ano.length()), ChronoUnit.WEEKS));
 	}
 
 	@Override
 	public String estacaoDoAno(LocalDate ldtestacao) {
-		String seasons []  = {
-			    "Inverno", "Inverno",
-			    "Primavera", "Primavera", "Primavera",
-			    "Verão", "Verão", "Verão",
-			    "Outono", "Outono", "Outono",
-			    "Inverno"
-			};
-		
-		return seasons[LocalDate.now().getMonth().getValue()];
+               return  EstacaoTemperada.fromNorth(ldtestacao).toString();
 	}
             
 }

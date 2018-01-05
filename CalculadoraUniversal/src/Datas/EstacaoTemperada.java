@@ -59,8 +59,13 @@ public enum EstacaoTemperada {
         try{
             date = MonthDay.from(data);
          }catch(Exception e){}
-        if( date != null)
-            return date.isBefore(fEstacao) && date.isAfter(iEstacao);
+        if( date != null){
+           if(date.equals(fEstacao) || date.equals(iEstacao) ) return true;
+           else if( this.equals(InvernoBoreal) || this.equals(VeraoAustral)){
+               return date.isBefore(fEstacao) || date.isAfter(iEstacao);
+           }
+           else return date.isBefore(fEstacao) && date.isAfter(iEstacao);
+        }
         else return false;
     }
     
@@ -70,10 +75,10 @@ public enum EstacaoTemperada {
      * @return 
      */
     public static Optional<EstacaoTemperada> fromNorth(TemporalAccessor data){
-        ZonedDateTime date = null;
+        LocalDate date = null;
         EstacaoTemperada res = null;
         try{
-           date = ZonedDateTime.from(data);
+           date = LocalDate.from(data);
         }catch(Exception e){
             return Optional.empty();
         }

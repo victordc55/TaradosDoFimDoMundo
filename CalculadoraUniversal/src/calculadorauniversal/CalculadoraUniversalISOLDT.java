@@ -26,12 +26,13 @@ import TUI.Printer;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.OptionalLong;
 
 /**
  *
  * 
  */
-public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
+public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal, ICalculadoraUniversalCuriosidade {
 	
 	private static CalculoLDT ldt;
         private static CalculoZdDT zdt;
@@ -165,7 +166,7 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 	}
 
 	@Override
-	public OptionalInt semanasDesdeInicio() {
+	public OptionalLong semanasDesdeInicio() {
 		return ldt.semanasDesdeInicio();
 	}
 
