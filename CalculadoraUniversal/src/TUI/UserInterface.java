@@ -12,8 +12,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.time.Year;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -406,7 +408,7 @@ public class UserInterface{
                         diferencaTempoEntreCidades();
 		        break;
 		    case 5:
-		        	  
+		        tempoAteOutroFuso();
 	                break;
 		    case 6:
 		         quit = true;
@@ -525,6 +527,25 @@ public class UserInterface{
         Printer.print(calculadoraUniversal.diferencaEntreFusos(zdtI, zdtF).toString());
     }
     
+    private static void tempoAteOutroFuso(){
+        LocalDateTime agora = LocalDateTime.now();
+        ZoneOffset zoneOff = OffsetDateTime.now().getOffset();
+        ZonedDateTime zdtAtual = ZonedDateTime.of(agora, zoneOff);
+        Printer.print("Insira a fuso e data-hora da cidade inicial.\n");
+        TextualUI currentUI = UIFactory.listZonedId();
+        ZoneId zoneFinal = null;
+        int index =currentUI.printMenu();
+        if (index >= 1 && index <= 26) 
+            zoneFinal = ZoneId.of(getZoneId(index-1)); 
+        else{
+            Printer.print("Não existe essa opção");
+            tempoAteOutroFuso();
+            }
+        ZonedDateTime zdtFinal = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneFinal);
+        
+       Printer.print(calculadoraUniversal.diferencaEntreFusos(zdtAtual, zdtFinal).toString());
+    }
+    
 
 	private static void cronometro(){
             ICronometro crono = new Cronometro();
@@ -556,6 +577,7 @@ public class UserInterface{
     }
         
     private static String getZoneId(int index){
+        
         String[] zoneId = {"Pacific/Apia",
                         "Pacific/Chatham",
                         "Pacific/Fiji",
