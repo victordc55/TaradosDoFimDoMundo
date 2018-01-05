@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import Datas.EstacaoTemperada;
+import java.time.Instant;
+import java.time.ZoneId;
 
 /**
  *
@@ -47,6 +49,10 @@ public interface ICalculadoraUniversal {
 		public OptionalInt semanasFimAno();
 		public OptionalInt trimestre(TemporalAccessor data);
 		public String estacaoDoAno(LocalDate ldtestacao);
+                
+            //ZonedDateTime    
     
-    
+        public Optional<Instant> addSubZonedDateTime(TemporalAccessor ldt, ZoneId zone, TemporalAccessor tempo);        
+        public Optional<Duration> diferencaEntreFusos(TemporalAccessor ldtInicial, TemporalAccessor ldtFinal);
+        public Optional<Instant> convertZonedDateTime(TemporalAccessor ldtInicial, ZoneId zone);
 }

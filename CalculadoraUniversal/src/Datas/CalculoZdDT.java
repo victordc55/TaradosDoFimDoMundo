@@ -5,9 +5,14 @@
  */
 package Datas;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
+import java.util.Optional;
 
 /**
  *
@@ -16,7 +21,54 @@ import java.time.ZoneId;
 
 public class CalculoZdDT implements ICalculoZdDT{
 
+    @Override
+    public Optional<ZonedDateTime> adicionarZonedDateTime(TemporalAccessor data, ZoneId zone, long tempo, ChronoUnit unit) {
+        try {
+            if (data != null) {
+                LocalDateTime ldt = LocalDateTime.from(data).plus(tempo, unit);
+                ZonedDateTime zdt = ZonedDateTime.of(ldt, zone);
+                return Optional.of(zdt);
+            }
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+        return Optional.empty();   
+    }
+
+    @Override
+    public Optional<Duration> diferencaZonedDateTime(TemporalAccessor dataInicial, TemporalAccessor dataFinal) {
+        ZonedDateTime inicioI = null;
+        ZonedDateTime fimI = null;
+        try{
+            inicioI = ZonedDateTime.from(dataInicial);
+            fimI = ZonedDateTime.from(dataFinal);
+        }catch(Exception e ){
+            return Optional.empty();
+        }
+        
+        if( inicioI != null && fimI != null){
+            return Optional.ofNullable(Duration.between( inicioI, fimI ) );
+        }    
+        else 
+            return Optional.empty();
+    }
+
+    @Override
+    public Optional<ZonedDateTime> conversaoDeFusos(TemporalAccessor data, ZoneId zone) {
+        LocalDateTime ldt = null;
+        try {
+            if (data != null) {
+                ldt = LocalDateTime.from(data);
+            }
+        } catch (Exception e) {
+            return Optional.empty();
+        }   
+        if( ldt != null ){
+            ZonedDateTime zdt = ldt.atZone(zone);
+            return Optional.of(zdt);
+        }    
+        else 
+            return Optional.empty();
+    }
     
-  
- 
 }

@@ -20,8 +20,12 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import Datas.CalculoLDT;
+import Datas.CalculoZdDT;
 import Datas.EstacaoTemperada;
 import TUI.Printer;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  *
@@ -30,9 +34,11 @@ import TUI.Printer;
 public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 	
 	private static CalculoLDT ldt;
+        private static CalculoZdDT zdt;
 
     public CalculadoraUniversalISOLDT(){
         ldt = new CalculoLDT();
+        zdt = new CalculoZdDT();
     }
 
 	@Override
@@ -64,14 +70,14 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 
 	@Override
 	public LocalDateTime addSubTempos(TemporalAccessor tempos, TemporalAccessor valor, boolean bool) {
-		LocalDateTime res = LocalDateTime.from(tempos);
-        LocalDateTime val = LocalDateTime.from(valor);
-        LocalDateTime zero = LocalDateTime.of(0, 1, 1, 0, 0);
-        long nTempo = zero.until(val, SECONDS) + 31*24*3600  ;
-        if(bool)
-            return ldt.addicionarADateTime(res, nTempo, SECONDS);
-        else
-            return ldt.addicionarADateTime(res, -nTempo, SECONDS);
+            LocalDateTime res = LocalDateTime.from(tempos);
+            LocalDateTime val = LocalDateTime.from(valor);
+            LocalDateTime zero = LocalDateTime.of(0, 1, 1, 0, 0);
+            long nTempo = zero.until(val, SECONDS) + 31*24*3600  ;
+            if(bool)
+                return ldt.addicionarADateTime(res, nTempo, SECONDS);
+            else
+                return ldt.addicionarADateTime(res, -nTempo, SECONDS);
 	}
 
 	@Override
@@ -172,6 +178,28 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 	public String estacaoDoAno(LocalDate ldtestacao) {
 		return ldt.estacaoDoAno(ldtestacao);
 	}
+
+    @Override
+    public Optional<Instant> addSubZonedDateTime(TemporalAccessor ldt, ZoneId zone, TemporalAccessor tempo) {
+        
+        ZonedDateTime zdt = ZonedDateTime.of(, zone);
+                
+    }
+
+    @Override
+    public Optional<Duration> diferencaEntreFusos(TemporalAccessor ldtInicial, TemporalAccessor ldtFinal) {
+        
+        return zdt.diferencaZonedDateTime(ldtInicial, ldtFinal);
+    }
+
+    @Override
+    public Optional<Instant> convertZonedDateTime(TemporalAccessor ldtInicial, ZoneId zone) {
+           Optional<ZonedDateTime> zddt = zdt.conversaoDeFusos(ldtInicial, zone);
+           Instant inst = Instant.from(zddt.get());
+           return Optional.ofNullable(inst);
+    }
+    
+    
 
 
     
