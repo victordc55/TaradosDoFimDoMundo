@@ -167,12 +167,10 @@ public class CalculoDatas implements ICalculoDatas{
 	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2) {
 		int diasNaoUteis = 0;
 		 
-		LocalDate dataInicialTemporaria = LocalDate.now();
-		LocalDate dataFinalTemporaria = LocalDate.of(2018, Month.JANUARY, 10);
 
-		int dias = (int) ChronoUnit.DAYS.between(dataInicialTemporaria, dataFinalTemporaria);
+		int dias = (int) ChronoUnit.DAYS.between(data1, data2);
 		for (int i = 1; i <= dias; i++) {
-			LocalDate data = dataInicialTemporaria.plus(i, ChronoUnit.DAYS);
+			LocalDate data = data2.plus(i, ChronoUnit.DAYS);
 			if((!data.getDayOfWeek().equals(DayOfWeek.SATURDAY)) && (!data.getDayOfWeek().equals(DayOfWeek.SUNDAY))){
 				diasNaoUteis++;
 			}
