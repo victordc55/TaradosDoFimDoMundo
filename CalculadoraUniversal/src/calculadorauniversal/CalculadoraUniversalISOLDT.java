@@ -97,8 +97,8 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal, ICalcu
 	}
 
 	@Override
-	public void tempoAteData(TemporalAccessor tempo) {
-		 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Optional<Duration> tempoAteData(TemporalAccessor tempo) {
+		 return Optional.empty();
 		
 	}
 
@@ -151,13 +151,13 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal, ICalcu
 	}
 
 	@Override
-	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2) {
+	public OptionalInt diaUteisEntreDatas(LocalDate data1, LocalDate data2) {
 		return ldt.diaEntreDatas(data1, data2);
 	}
 
 	@Override
-	public TemporalAccessor diaNatal(OptionalInt ano) {
-		return ldt.diaNatal(ano);
+	public Optional<DayOfWeek> diaNatal(OptionalInt ano) {
+		return Optional.ofNullable(ldt.diaNatal(ano));
 	}
 
 	@Override
@@ -182,7 +182,6 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal, ICalcu
 
     @Override
     public Optional<Instant> addSubZonedDateTime(TemporalAccessor ldt, ZoneId zone, TemporalAccessor tempo) {
-
           return  Optional.empty();
     }
 

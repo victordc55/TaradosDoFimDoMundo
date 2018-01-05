@@ -159,7 +159,7 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
 	}
 
 
-	public TemporalAccessor diaNatal(OptionalInt ano) {
+	public DayOfWeek diaNatal(OptionalInt ano) {
 		return datas.diaNatal(ano);
 	}
 

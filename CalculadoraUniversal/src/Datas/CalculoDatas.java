@@ -165,27 +165,30 @@ public class CalculoDatas implements ICalculoDatas{
 
 	@Override
 	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2) {
-		int diasNaoUteis = 0;
+		int diasUteis = 0;
 		 
 
 		int dias = (int) ChronoUnit.DAYS.between(data1, data2);
 		for (int i = 1; i <= dias; i++) {
 			LocalDate data = data1.plus(i, ChronoUnit.DAYS);
 			if((!data.getDayOfWeek().equals(DayOfWeek.SATURDAY)) && (!data.getDayOfWeek().equals(DayOfWeek.SUNDAY))){
-				diasNaoUteis++;
+				diasUteis++;
 			}
 		}
 		
-		return OptionalInt.of(diasNaoUteis);
+		return OptionalInt.of(diasUteis);
 	}
 
 	@Override
-	public TemporalAccessor diaNatal(OptionalInt ano) {
-		MonthDay natal = MonthDay.of(Month.DECEMBER, 25);
+	public DayOfWeek diaNatal(OptionalInt ano) {
+		if( ano.isPresent()){
+                MonthDay natal = MonthDay.of(Month.DECEMBER, 25);
+                
 		LocalDate natalDesseAno = natal.atYear(ano.getAsInt());
 		long diasAteONatal = LocalDate.now().until(natalDesseAno, ChronoUnit.DAYS);
 		LocalDate data = LocalDate.now().plus(diasAteONatal, ChronoUnit.DAYS);
 		return data.getDayOfWeek();
+                }else return null;
 	}
 
 	@Override

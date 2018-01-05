@@ -34,7 +34,7 @@ public class CalculadoraUniversalISOZDT implements ICalculadoraUniversal{
      }
      
     public Optional<LocalDate> addSubDatas(TemporalAccessor data, TemporalAccessor valor, boolean bool){
-        return
+        
         
     }
 	    
@@ -54,25 +54,27 @@ public class CalculadoraUniversalISOZDT implements ICalculadoraUniversal{
          return Optional.empty();
     }
 	    
-    public void tempoAteData(TemporalAccessor tempo){
-        
+    public Optional<Duration> tempoAteData(TemporalAccessor tempo){
+        if( czdt.diferencaZonedDateTime(ZonedDateTime.now(), tempo).isPresent())
+                return czdt.diferencaZonedDateTime(ZonedDateTime.now(), tempo);
+        else return czdt.diferencaZonedDateTime(tempo,ZonedDateTime.now());
     }
 	    
     public Optional<DayOfWeek> diaDaSemana(TemporalAccessor data){
-        
+        return Optional.empty();
     }
 	    
 	    
     public OptionalInt numeroDoDiaNoAno(TemporalAccessor data){
-        
+        return OptionalInt.empty();
     }
 	    
     public OptionalInt semanaNoAno(TemporalAccessor data){
-        
+        return OptionalInt.empty();
     }
 	    
     public Optional<EstacaoTemperada> estaçãoDoAnoNorte(TemporalAccessor data, boolean isNorth){
-        
+        return Optional.empty();
     }
 	  
 

@@ -32,7 +32,7 @@ public interface ICalculadoraUniversal {
 	    public LocalDateTime addSubTempos(TemporalAccessor tempos, TemporalAccessor valor, boolean bool);
 	    public Optional<Duration> diferencaEntreTempos(TemporalAccessor tempoInicial, TemporalAccessor tempoFinal, boolean bool);
 	    public Optional<Period> diferencaEntreDatas(TemporalAccessor tempoInicial, TemporalAccessor tempoFinal);
-	    public void tempoAteData(TemporalAccessor tempo);
+	    public Optional<Duration> tempoAteData(TemporalAccessor tempo);
 	    public Optional<DayOfWeek> diaDaSemana(TemporalAccessor data);
 	    public OptionalInt numeroDoDiaNoAno(TemporalAccessor data);
 	    public OptionalInt semanaNoAno(TemporalAccessor data);

@@ -8,7 +8,6 @@ package TUI;
 import java.time.ZonedDateTime;
 
 
-
 public class Relogio implements Runnable{
       private  Thread t;
       private int time;

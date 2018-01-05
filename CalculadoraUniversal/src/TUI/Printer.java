@@ -54,14 +54,58 @@ public class Printer {
 
     public static void print(Duration d){
           if( d != null){
-              long min = d.toMinutes();
-              if(min > 0){
-                  out.print(d.toMinutes() + " min ");
+              long horas = d.toHours();
+              if(horas > 0){
+                  out.print(horas + " horas ");
               }
-              out.print( ( ( d.get(ChronoUnit.SECONDS) / 60.0) - min) * 60.0  + " segundos e ");
+              long min = d.toMinutes() - horas *60;
+              if(min > 0){
+                  out.print( horas + " min ");
+              }
+              out.print( ( ( d.get(ChronoUnit.SECONDS) / 60.0) - min) * 60  + " segundos e ");
               out.println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " millisegundos" );
-             // out.println( d.get(ChronoUnit.SECONDS) +" s e "+ d.get(ChronoUnit.NANOS) +" nanosegundos");
+             
           }
+    }
+    /**
+    * Variação de print(Duration). Imprima anos,meses, dias, horas,minutos,segundos,millisegundos.Aproximado.
+    */
+    public static void printBigDuration(Duration d){
+        if(d != null){
+            long anos =(long)(d.toDays() / 365.25); // Assume 1 year = 365.25 always. Wich means some days might be losts, maybe.
+            if(anos > 0){
+                if( anos == 1)
+                    out.print( anos + " ano ");
+                else out.print( anos + " anos ");
+            }
+            long meses = (long) (d.toDays() / 30.42) - (anos * 12); // Assuma-se 1 mes = 30 dias sempre logo ganha-se/perda-se meses, provavelmente.
+            if( meses > 0){
+                if( meses == 1)
+                    out.print(meses +" mes ");
+                else out.print(meses +" meses ");
+            }
+            long dias =(long)( d.toDays() - anos*365.25 - meses * 30.42 );
+            if( dias > 0){
+                 if( dias == 1)
+                     out.print( dias + " dia ");
+                 else out.print(dias + " dias ");
+            }
+            long horas = (long) d.toHours() - (d.toDays()/24);
+            if(horas > 0){
+                 if( horas == 1)
+                  out.print(horas + " hora ");
+                 else out.print(horas + " horas ");
+              }
+            long min = d.toMinutes() - d.toHours()*60;
+            if(min > 0){
+                  out.print( min + " min ");
+            }
+            long segundos = d.get(ChronoUnit.SECONDS) - d.toMinutes() *60;
+            if( segundos > 0)
+                out.print( segundos  + " segundos ");
+              out.println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " e millisegundos" );
+        }
+        
     }
     
     public static void print(Period p){
@@ -127,27 +171,37 @@ public class Printer {
  public static LocalDate pedirData(){
         
         print("Ano: ");
-        int ano = Printer.getInt().getAsInt();
+        OptionalInt ano = Printer.getPostiveInt();
         print("Mês: ");
-        int mes = Printer.getInt().getAsInt();
+        OptionalInt mes = Printer.getPostiveInt();
         print("Dia: ");
-        int dia = Printer.getInt().getAsInt();
-  //      OptionalInt a = Printer.getInt();
-        
-        LocalDate ld = LocalDate.of(ano, mes, dia);
-        return ld;
+        OptionalInt dia = Printer.getPostiveInt();
+        if((ano != null) && (mes != null) && (dia != null) && (ano.isPresent()) && (mes.isPresent()) && (dia.isPresent())){
+        	LocalDate lt = LocalDate.of(ano.getAsInt(), mes.getAsInt(), dia.getAsInt());
+            return lt;
+        }else{
+        	return null;
+        }
         
     }
     
     public static LocalTime pedirHoras(){
         print("Hora: ");
-        int hora = Printer.getInt().getAsInt();
+        OptionalInt hora = Printer.getInt();
         print("Minutos: ");
-        int min = Printer.getInt().getAsInt();
+        OptionalInt min = Printer.getInt();
         print("Segundos: ");
-        int seg = Printer.getInt().getAsInt();
-        LocalTime lt = LocalTime.of(hora, min, seg);
-        return lt;
+        OptionalInt seg = Printer.getInt();
+        if((hora != null) && (min != null) && (seg != null)){
+            LocalTime lt  = null;
+            try{
+                 lt = LocalTime.of(hora.getAsInt(), min.getAsInt(), seg.getAsInt());
+            }catch(Exception e){};
+            return lt;
+        }else{
+        	return null;
+        }
+        
     }
     
     public static LocalDate pedirComSemana(){

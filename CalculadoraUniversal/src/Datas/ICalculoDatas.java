@@ -108,7 +108,7 @@ public interface ICalculoDatas {
 
 	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2);
 
-	public TemporalAccessor diaNatal(OptionalInt ano);
+	public DayOfWeek diaNatal(OptionalInt ano);
 
 	public OptionalInt diasDoMes(OptionalInt mes);
 

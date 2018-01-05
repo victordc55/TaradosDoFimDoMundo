@@ -22,8 +22,8 @@ public interface ICalculadoraUniversalCuriosidade {
 	    public DayOfWeek ultimoDiaAno (int ano);
             public DayOfWeek primeiroDiaAno(int ano);
             public boolean isLeap(int ano);
-            public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2);
-            public TemporalAccessor diaNatal(OptionalInt ano);
+            public OptionalInt diaUteisEntreDatas(LocalDate data1, LocalDate data2);
+            public Optional<DayOfWeek> diaNatal(OptionalInt ano);
             public OptionalInt diasDoMes(OptionalInt mes);
             public OptionalLong semanasDesdeInicio();
             public OptionalInt semanasFimAno();

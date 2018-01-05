@@ -117,8 +117,7 @@ public class UIFactory {
     
     public static ITextualUI zonedDateTimeUI(){
         
-           List<String> options = Arrays.asList( "Adicionar ou substrair a um tempo usando diferentes fusos horarios.",
-                                                 "Calcular a duração entre duas datas.",
+           List<String> options = Arrays.asList( "Calcular a duração entre duas datas.",
                                                  "Converter uma data e hora para um outro fuso horario.",
                                                  "Calcular duração de um voo de avião entre duas cidades.",
                                                  "Tempo até uma data e hora usando diferentes fusos horarios.",
