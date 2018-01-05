@@ -2,6 +2,7 @@ package TUI;
 
 
 import calculadorauniversal.CalculadoraUniversalISOLDT;
+import calculadorauniversal.CalculadoraUniversalFactory;
 import calculadorauniversal.Cronometro;
 import calculadorauniversal.ICalculadoraUniversal;
 import calculadorauniversal.ICronometro;
@@ -9,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.util.Optional;
 
 
@@ -19,8 +21,7 @@ import java.util.Optional;
 public class UserInterface{
     
     private static ICalculadoraUniversal calculadoraUniversal;
-    private static TextualUI currentUI;
-    private static Printer print;
+    private static ITextualUI currentUI;
     private static Relogio relogio;
     private static boolean wantToQuit ;
  
@@ -55,9 +56,8 @@ public class UserInterface{
 
     private static void init(){
         currentUI = UIFactory.firstUI();
-        print = new Printer();
-        relogio = new Relogio(print);
         calculadoraUniversal = new CalculadoraUniversalISOLDT();
+        relogio = new Relogio();
     }
     
     private static void firstModeInteraction(){
@@ -98,7 +98,7 @@ public class UserInterface{
     
     private static void curiosidades() {
          while(!wantToQuit){
-        	 TextualUI currentUI = UIFactory.curiosidades();
+        	 ITextualUI currentUI = UIFactory.curiosidades();
             int option = currentUI.printMenu();
                  try {
                      if (option <4) {
@@ -127,7 +127,7 @@ public class UserInterface{
 
 	private static void tempoAteData() {
         while(!wantToQuit){
-        	TextualUI currentUI = UIFactory.diferencaEntreTempos();
+        	ITextualUI currentUI = UIFactory.diferencaEntreTempos();
             int option = currentUI.printMenu();
                 try {
                     if (option <4) {
@@ -163,7 +163,7 @@ public class UserInterface{
 
 	private static void infoDatas() {
 	        while(!wantToQuit){
-	        	TextualUI currentUI = UIFactory.infoDatas();
+	        	ITextualUI currentUI = UIFactory.infoDatas();
 	           int option = currentUI.printMenu();
 	                try {
 	                    if (option <5) {
@@ -195,7 +195,7 @@ public class UserInterface{
 
 	private static void diferençaEntreTempos() {
 	        while(!wantToQuit){
-	        	TextualUI currentUI = UIFactory.diferencaEntreTempos();
+	        	ITextualUI currentUI = UIFactory.diferencaEntreTempos();
 	            int option = currentUI.printMenu();
 	                try {
 	                    if (option <4) {
@@ -203,7 +203,10 @@ public class UserInterface{
 	                            Printer.print("Insira a hora inicial.\n");
 	                            LocalDate inicio = Printer.pedirData();
 	                            Printer.print("Insira a hora final");
-	                            LocalDate fim = Printer.pedirData();
+	                            LocalDate fim = Printer.pedirData();  
+                                    Optional<Period> o = calculadoraUniversal.diferencaEntreDatas(inicio, fim);
+                                    if( o.isPresent()) Printer.print(o.get());
+                                    else Printer.printErro("Informações invalidas.");
 	                            Printer.print(calculadoraUniversal.diferencaEntreDatas(inicio, fim).toString());
 	                        }
 	                        if (option == 2){
@@ -234,7 +237,7 @@ public class UserInterface{
 
 	private static void addSubTempos() {
         while(!wantToQuit){
-        	TextualUI currentUI = UIFactory.addSubtrair();
+        	ITextualUI currentUI = UIFactory.addSubtrair();
            int  option = currentUI.printMenu();
                 try {
                     if (option <3) {
@@ -260,7 +263,7 @@ public class UserInterface{
 
 	private static void addSubHoras() {
         while(!wantToQuit){
-        	TextualUI currentUI = UIFactory.addSubtrair();
+        	ITextualUI currentUI = UIFactory.addSubtrair();
             int option = currentUI.printMenu();
                 try {
                     if (option <3) {
@@ -288,7 +291,7 @@ public class UserInterface{
 	private static void addSubDatas() {
 		 boolean wantToQuit = false;
         while(!wantToQuit){
-        	TextualUI currentUI = UIFactory.addSubtrair();
+        	ITextualUI currentUI = UIFactory.addSubtrair();
             int option = currentUI.printMenu();
            
                 try {
@@ -350,7 +353,7 @@ public class UserInterface{
     
     
     private static void cronometro(){
-            ICronometro crono = new Cronometro();
+            ICronometro crono = CalculadoraUniversalFactory.getCrono();
             currentUI = UIFactory.cronometroUI();
             boolean quit = false;
             while(! quit){
@@ -362,11 +365,12 @@ public class UserInterface{
                          break;
                   case 2:
                          Optional<Duration> duration = crono.stop();
-                         if(duration.isPresent()) print.print(duration.get());
+                         if(duration.isPresent()) Printer.print(duration.get());
                          else Printer.print("O crono ja esta parado.");
                          break;
                   case 3:
-                         crono.reset();
+                         if(crono.reset()) Printer.print("Cronómetro reset.");
+                         else Printer.print("O cronómetro não pode ser reset enquanto estiver a correr.");
                          break;
                   case 4:
                           quit = true;
@@ -386,10 +390,10 @@ public class UserInterface{
             currentUI = UIFactory.formatingOutputUI();
             switch(currentUI.printMenu()){
                 case 1:
-                      print.setPrintMode(1);
+                      Printer.setPrintMode(1);
                       break;
                 case 2:
-                      print.setPrintMode(2);
+                      Printer.setPrintMode(2);
                       break;
                 default:
                       break;

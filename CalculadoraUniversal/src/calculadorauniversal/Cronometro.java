@@ -30,7 +30,12 @@ public class Cronometro implements ICronometro {
     }
     
     public boolean start(){
-        if( !started){
+        if(ended && !started){
+            ended = false;
+            started = true;
+            startOfCrono = ZonedDateTime.now().minus( Duration.between(startOfCrono, endOfCrono));
+            return true;
+        }if( !started){
             startOfCrono = ZonedDateTime.now();
             ended = false;
             started = true;
@@ -41,21 +46,22 @@ public class Cronometro implements ICronometro {
     public Optional<Duration> stop(){
         if(!ended && started){
             endOfCrono = ZonedDateTime.now();
-            started = false;
             ended = true;
+            started = false;
             endOfCrono = endOfCrono.withZoneSameInstant(startOfCrono.getZone());
             return Optional.ofNullable(Duration.between(startOfCrono, endOfCrono));
         }
         else return Optional.empty();
     }
     
-    public void reset(){
+    public boolean reset(){
         if( ended && !started){
                 startOfCrono = null;
                 endOfCrono = null;
                 started = false;
                 ended = false;
-        }
+                return true;
+        }else return false;
     }
             
 }

@@ -16,5 +16,5 @@ public interface ICronometro {
  
     public boolean start();
     public Optional<Duration> stop();
-    public void reset();
+    public boolean reset();
 }

@@ -5,32 +5,17 @@
  */
 package TUI;
 
-
-import java.time.DayOfWeek;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.Year;
-import java.time.YearMonth;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+
+
 
 public class Relogio implements Runnable{
       private  Thread t;
-      private  Printer p;
       private boolean stop;
       
-    public Relogio(Printer printer){
+    public Relogio(){
         t = new Thread(this);
         stop = false;
-        p = printer;
         t.start();
     }
     
@@ -38,7 +23,7 @@ public class Relogio implements Runnable{
         ZonedDateTime zdtnow ;
         while(!stop){
             zdtnow = ZonedDateTime.now();
-            p.print(zdtnow);
+            Printer.print(zdtnow);
             
             synchronized(this){
                 try{

@@ -1,7 +1,6 @@
 package TUI;
 
 
-import java.io.Console;
 import java.io.PrintStream;
 import static java.lang.System.err;
 import java.time.Duration;
@@ -9,14 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAmount;
 import java.util.OptionalInt;
 import java.util.Scanner;
-import java.lang.StringBuilder;
-import static java.time.temporal.ChronoField.DAY_OF_WEEK;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,26 +23,13 @@ public class Printer {
     // Every method for printing simple strings
     public static final PrintStream out = System.out;
     public static final Scanner in = new Scanner(System.in);
-    private static DateTimeFormatter printFormat;
     private static final String completeNumericalPattern = "[d-M-yyyy ][H:mm:ss ][VV ][O ][G]";
-    private static final String extendedPattern = "[EEEE d MMM yyyy ][H:mm:ss ][VV ][OOOO ]['Era' G ]['Trimestre' Q]";
-
+    private static final String extendedPattern = "[EEEE d MMMM yyyy ][H:mm:ss ][VV ][OOOO ]['Era' G ]['Trimestre' Q]";
+    private static DateTimeFormatter printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
      
     
-    public Printer(){
-        printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
-    }
     
-    public Printer(int printModeWanted){
-        if( printModeWanted == 2 ){
-            printFormat = DateTimeFormatter.ofPattern(extendedPattern);
-        }
-        else{
-            printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
-        }
-    }
-    
-    public void setPrintMode(int mode){
+    public static void setPrintMode(int mode){
         if( mode== 2 ){
             printFormat = DateTimeFormatter.ofPattern(extendedPattern);
         }
@@ -55,6 +37,7 @@ public class Printer {
             printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
         }
     }
+    
     /**
      * Imprima no ecrã um temporalAccessor passado como parametro segundo um padrão
      * Este metodo so imprime o que recebe segundo o padrão logo pode vir a não imprimir nada caso o temporalAccessor passado
@@ -62,22 +45,28 @@ public class Printer {
      * Exemplos de temporal Accessor que não dao nada: Instant, MonthDay, DayOfWeek,Year,Month, YearMonth.
      * @param t 
      */
-    public void print(TemporalAccessor t){
+    public static void print(TemporalAccessor t){
         if( t != null){
               Printer.print( printFormat.format(t) );
         }
     }
     
-    public void print(Duration d){
+    public static void print(Duration d){
           if( d != null){
-              out.println( d.get(ChronoUnit.SECONDS) + ":" + d.get(ChronoUnit.NANOS));
+              long min = d.toMinutes();
+              if(min > 0){
+                  out.print(d.toMinutes() + " min ");
+              }
+              out.print( ( ( d.get(ChronoUnit.SECONDS) / 60.0) - min) * 60.0  + " segundos e ");
+              out.println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " millisegundos" );
+             // out.println( d.get(ChronoUnit.SECONDS) +" s e "+ d.get(ChronoUnit.NANOS) +" nanosegundos");
           }
     }
     
-    public void print(Period p){
+    public static void print(Period p){
            if( p != null){
                Period period = p.normalized();
-               out.println(  "Anos: " +p.get(ChronoUnit.YEARS) + " \tMeses: " + p.get(ChronoUnit.MONTHS) + " \tDias: "+ p.get(ChronoUnit.DAYS) );       
+               out.println(  "Anos: " +period.get(ChronoUnit.YEARS) + " \tMeses: " + period.get(ChronoUnit.MONTHS) + " \tDias: "+ period.get(ChronoUnit.DAYS) );       
            }
     }
     
@@ -103,6 +92,10 @@ public class Printer {
     
     public static void printErro(String s){
         err.print(s);
+    }
+    
+    public static void print(boolean b){
+        out.println(b);
     }
     
    /**

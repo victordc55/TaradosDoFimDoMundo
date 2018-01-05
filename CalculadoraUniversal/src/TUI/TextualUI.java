@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 
-public class TextualUI {
+public class TextualUI implements ITextualUI{
     // Representa uma interface textual fixa.
     private final List<String> options;
     private final String header;
@@ -32,7 +32,7 @@ public class TextualUI {
      * @param head
      * @return 
      */
-    public static TextualUI of(List<String> opt, String head){
+    public static ITextualUI of(List<String> opt, String head){
         return new TextualUI(opt,head);
     }
     /**

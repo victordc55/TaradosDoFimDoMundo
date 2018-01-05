@@ -23,4 +23,9 @@ public class CalculadoraUniversalFactory {
         return null;
     }
     
+    public static ICronometro getCrono(){
+        return new Cronometro();
+    }
+    
+    
 }

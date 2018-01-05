@@ -21,7 +21,7 @@ public class UIFactory {
      * Cria um TextualUI com diversas opções predefinidas.
      * @return 
      */
-    public static TextualUI isoLocalDateTimeMainUI(){
+    public static ITextualUI isoLocalDateTimeMainUI(){
             List<String> options = Arrays.asList( "Adicionar ou substrair datas.",
                                                   "Numero de dias até atingir o prazo.",
                                                   "Determinar um dia do ano",
@@ -35,7 +35,7 @@ public class UIFactory {
      * Cria um TextualUI para a adicção ou substração de datas e tempos com um header e opções predefinidas.
      * @return 
      */
-    public static TextualUI isoAdSubsDateUI(){
+    public static ITextualUI isoAdSubsDateUI(){
             List<String> options = Arrays.asList( "Substrair duas datas.",
                                                   "Substrair a uma data.",
                                                   "Adicionar a uma data.",
@@ -54,7 +54,7 @@ public class UIFactory {
     }
     
 
-    public static TextualUI isoAddSubsTimeUI(){
+    public static ITextualUI isoAddSubsTimeUI(){
             
             List<String> options = Arrays.asList( "Substrair duas datas.",
                                                   "Substrair a uma data.",
@@ -73,7 +73,7 @@ public class UIFactory {
      * @param head - header usado.
      * @return uma interface com o utilizador no formato textual.
      */
-    public static TextualUI isoAdsSubsUI(String head){
+    public static ITextualUI isoAdsSubsUI(String head){
         List<String> options = Arrays.asList( "Substrair duas datas ou tempo.",
                                               "Substrair a uma data.",
                                               "Adicionar a uma data.",
@@ -82,7 +82,7 @@ public class UIFactory {
     }
     
     
-    public static TextualUI firstUI(){
+    public static ITextualUI firstUI(){
             List<String> options = Arrays.asList("Calcular data e tempos locais.",
                                                  "Calcular data e tempos segundo diferentes fusos horarios.",
                                                  "Cronometro.",
@@ -96,7 +96,7 @@ public class UIFactory {
         
     }
     
-    public static TextualUI localDataTimeUI(){
+    public static ITextualUI localDataTimeUI(){
         
            List<String> options = Arrays.asList("Adicionar ou substrair a uma data.",
                                                 "Adicionar ou substrair a uma hora.",
@@ -115,7 +115,7 @@ public class UIFactory {
     
     
     
-    public static TextualUI zonedDateTimeUI(){
+    public static ITextualUI zonedDateTimeUI(){
         
            List<String> options = Arrays.asList( "Adicionar ou substrair a um tempo usando diferentes fusos horarios.",
                                                  "Calcular a duração entre duas datas.",
@@ -131,10 +131,10 @@ public class UIFactory {
     }
     
     
-    public static TextualUI formatingOutputUI(){
+    public static ITextualUI formatingOutputUI(){
          
-           List<String> options = Arrays.asList( "Numérico (ex:9-10-2017 15:52:18  +00:00GMT L/P 4) .",
-                                                 "Expandido (ex: Sabado 9 Outubro 2017 15:55:18 +00:00GMT Lisbon/Portugal Trimestre 4).",
+           List<String> options = Arrays.asList( "Numérico (ex:9-10-2017 15:52:18  GMT+00:00 L/P 4) .",
+                                                 "Expandido (ex: Sabado 9 Outubro 2017 15:55:18 GMT+00:00 Lisbon/Portugal Trimestre 4).",
                                                  "Voltar atras.");
            
         
@@ -145,7 +145,7 @@ public class UIFactory {
     }
 
 
-    public static TextualUI curiosidadesUI(){
+    public static ITextualUI curiosidadesUI(){
          
            List<String> options = Arrays.asList( "Determinar o primeiro dia do ano.",
                                                  "Determinar o ultimo dia do ano.",
@@ -166,7 +166,7 @@ public class UIFactory {
     
     
     
-    public static TextualUI hojeOuOutraDataUI(){
+    public static ITextualUI hojeOuOutraDataUI(){
           
            List<String> options = Arrays.asList( "Hoje.",
                                                  "Introduzir data.",
@@ -181,7 +181,7 @@ public class UIFactory {
 
 
 
-    public static TextualUI cronometroUI(){
+    public static ITextualUI cronometroUI(){
            // Sera que posso fazer start ao chronometro, sair e depois voltar nele e ele ter continuado a correr?       
            List<String> options = Arrays.asList( "Start.",
                                                  "Stop.",
@@ -197,7 +197,7 @@ public class UIFactory {
 
 	
 	
-	 public static TextualUI diferencaEntreTempos(){
+	 public static ITextualUI diferencaEntreTempos(){
 	        List<String> options = Arrays.asList( "Difença entre datas.",
 	                                                "Diferença entre horas.",
 	                                                "Diferença entre Tempos.",
@@ -206,7 +206,7 @@ public class UIFactory {
 	        return TextualUI.of(options, head);    
 	    }
 	    
-	    public static TextualUI infoDatas(){
+	    public static ITextualUI infoDatas(){
 	        List<String> options = Arrays.asList( "Dia da Semana.",
 	                                                "Trimestre.",
 	                                                "Dia do Ano.",
@@ -216,7 +216,7 @@ public class UIFactory {
 	        return TextualUI.of(options, head);    
 	    }
 	    
-	    public static TextualUI curiosidades(){
+	    public static ITextualUI curiosidades(){
 	        List<String> options = Arrays.asList( "Qual a estação boreal.",
 	                                                "Qual é a estação austral.",
 	                                                "Verifica se é ano bissexto.",
@@ -225,7 +225,7 @@ public class UIFactory {
 	        return TextualUI.of(options, head);    
 	    }
 	    
-	    public static TextualUI addSubtrair(){
+	    public static ITextualUI addSubtrair(){
 	        List<String> options = Arrays.asList( "Adicionar.",
 	                                                "Subtrair.",
 	                                                "Voltar para trás");
