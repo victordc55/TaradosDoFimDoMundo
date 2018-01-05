@@ -6,6 +6,7 @@
 package Datas;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneId;
@@ -55,16 +56,16 @@ public class CalculoZdDT implements ICalculoZdDT{
 
     @Override
     public Optional<ZonedDateTime> conversaoDeFusos(TemporalAccessor data, ZoneId zone) {
-        LocalDateTime ldt = null;
+        Instant inst = null;
         try {
             if (data != null) {
-                ldt = LocalDateTime.from(data);
+                inst = Instant.from(data);
             }
         } catch (Exception e) {
             return Optional.empty();
         }   
-        if( ldt != null ){
-            ZonedDateTime zdt = ldt.atZone(zone);
+        if( inst != null ){
+            ZonedDateTime zdt = inst.atZone(zone);
             return Optional.of(zdt);
         }    
         else 

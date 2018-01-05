@@ -193,10 +193,10 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
     }
 
     @Override
-    public Optional<Instant> convertZonedDateTime(TemporalAccessor ldtInicial, ZoneId zone) {
-           Optional<ZonedDateTime> zddt = zdt.conversaoDeFusos(ldtInicial, zone);
-           Instant inst = Instant.from(zddt.get());
-           return Optional.ofNullable(inst);
+    public Optional<ZonedDateTime> convertZonedDateTime(TemporalAccessor zdtInicial, ZoneId zone) {
+        Instant agora = Instant.from(zdtInicial);
+        Optional<ZonedDateTime> zddt = zdt.conversaoDeFusos(agora, zone);
+        return zddt;
     }
     
     

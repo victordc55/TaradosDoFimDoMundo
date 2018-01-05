@@ -18,6 +18,7 @@ import java.util.OptionalInt;
 import Datas.EstacaoTemperada;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  *
@@ -54,5 +55,5 @@ public interface ICalculadoraUniversal {
     
         public Optional<Instant> addSubZonedDateTime(TemporalAccessor ldt, ZoneId zone, TemporalAccessor tempo);        
         public Optional<Duration> diferencaEntreFusos(TemporalAccessor ldtInicial, TemporalAccessor ldtFinal);
-        public Optional<Instant> convertZonedDateTime(TemporalAccessor ldtInicial, ZoneId zone);
+        public Optional<ZonedDateTime> convertZonedDateTime(TemporalAccessor zdtInicial, ZoneId zone);
 }

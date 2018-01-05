@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Year;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -190,13 +191,13 @@ public class UserInterface{
         	 }
 
          }
-	}
+    }
 
 
-	private static void tempoAteData() {
-		boolean wantToQuit = false;
+    private static void tempoAteData() {
+	boolean wantToQuit = false;
         while(!wantToQuit){
-        	TextualUI currentUI = UIFactory.diferencaEntreTempos();
+            TextualUI currentUI = UIFactory.diferencaEntreTempos();
             int option = currentUI.printMenu();
                 try {
                     if (option <4) {
@@ -226,9 +227,8 @@ public class UserInterface{
                 } catch (Exception e) {
                     Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
                 }
-        }
+            }
 	}
-
 
 	private static void infoDatas() {
 		boolean wantToQuit = false;
@@ -397,31 +397,27 @@ public class UserInterface{
                         addSubTempoZonedDateTime();
 	                break;
 		    case 2:
-		                 
-		              break;
-		          case 3:
-		                 
-		                 break;
-		          case 4:
-		                  break;
-		          case 5:
+		        diferencaEntreFusos();        
+		        break;
+		    case 3:
+		        converterZonedDateTime();         
+		        break;
+		    case 4:
+                        diferencaTempoEntreCidades();
+		        break;
+		    case 5:
 		        	  
-	                  break;
-		          case 6:
-		        	  
-	                  break;
-		          case 7:
-	                  quit = true;
-	                  break;
-		          default:
-		                  Printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
+	                break;
+		    case 6:
+		         quit = true;
+	                break;	  	               
+		    default:
+		        Printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
              }
            }
         
     }
-    
-    
-    
+
     private static void addSubTempoZonedDateTime() {
     	boolean wantToQuit = false;
         ZoneId zone = null;
@@ -444,8 +440,7 @@ public class UserInterface{
                     Printer.print("Valor que pretende somar ou subtrair.");
                     LocalDateTime valor = LocalDateTime.of(Printer.pedirComSemana(), Printer.pedirHoras());
                     if (option == 1) 
-                        
-                        Printer.print();
+                     //   Printer.print();
                     if (option == 2)
                             Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false).toString());
                     }
@@ -458,7 +453,78 @@ public class UserInterface{
                 }
         }
     }
-
+    
+    private static void diferencaEntreFusos(){
+        Printer.print("Insira a fuso e data-hora inicial.\n");
+        TextualUI currentUI = UIFactory.listZonedId();
+        ZoneId zoneI,zoneF ;
+        zoneI = zoneF = null;
+        int index =currentUI.printMenu();
+        if (index >= 1 && index <= 26) 
+            zoneI = ZoneId.of(getZoneId(index-1)); 
+        else{
+            Printer.print("Não existe essa opção");
+            }
+        ZonedDateTime zonaI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
+        Printer.print("Insira a fuso e data-hora final.\n");
+        currentUI = UIFactory.listZonedId();
+        index =currentUI.printMenu();
+        if (index >= 1 && index<= 26) 
+            zoneF = ZoneId.of(getZoneId(index-1)); 
+        else{
+            Printer.print("Não existe essa opção");
+            }
+        ZonedDateTime zonaF = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneF);
+        Printer.print(calculadoraUniversal.diferencaEntreFusos(zonaI, zonaF).toString());
+    }
+    
+    private static void converterZonedDateTime(){
+        Printer.print("Insira a fuso e data-hora inicial.\n");
+        TextualUI currentUI = UIFactory.listZonedId();
+        ZoneId zoneI,zoneF ;
+        zoneI = zoneF = null;
+        int index =currentUI.printMenu();
+        if (index >= 1 && index <= 26) 
+            zoneI = ZoneId.of(getZoneId(index-1)); 
+        else{
+            Printer.print("Não existe essa opção");
+            }
+        ZonedDateTime zdtI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
+        Printer.print("Insira o novo fuso.\n");
+        currentUI = UIFactory.listZonedId();
+        index =currentUI.printMenu();
+        if (index >= 1 && index <= 26) 
+            zoneF = ZoneId.of(getZoneId(index-1)); 
+        else{
+            Printer.print("Não existe essa opção");
+            }
+        Printer.print(calculadoraUniversal.convertZonedDateTime(zdtI, zoneF).toString());
+    }
+    
+    private static void diferencaTempoEntreCidades(){
+        Printer.print("Insira a fuso e data-hora da cidade inicial.\n");
+        TextualUI currentUI = UIFactory.listZonedId();
+        ZoneId zoneI,zoneF ;
+        zoneI = zoneF = null;
+        int index =currentUI.printMenu();
+        if (index >= 1 && index <= 26) 
+            zoneI = ZoneId.of(getZoneId(index-1)); 
+        else{
+            Printer.print("Não existe essa opção");
+            }
+        ZonedDateTime zdtI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
+        Printer.print("Insira o fuso e data-hora da cidade final.\n");
+        currentUI = UIFactory.listZonedId();
+        index =currentUI.printMenu();
+        if (index >= 1 && index <= 26) 
+            zoneF = ZoneId.of(getZoneId(index-1)); 
+        else{
+            Printer.print("Não existe essa opção");
+            }
+        ZonedDateTime zdtF = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneF);
+        Printer.print(calculadoraUniversal.diferencaEntreFusos(zdtI, zdtF).toString());
+    }
+    
 
 	private static void cronometro(){
             ICronometro crono = new Cronometro();
@@ -490,7 +556,6 @@ public class UserInterface{
     }
         
     private static String getZoneId(int index){
-        if(index >0 && index <=26){
         String[] zoneId = {"Pacific/Apia",
                         "Pacific/Chatham",
                         "Pacific/Fiji",
@@ -519,11 +584,7 @@ public class UserInterface{
                         "America/Adak",
                         "Pacific/Samoa"};
         return zoneId[index];
-        }
-        else 
-    }
-
-    
+        }  
     
     private static void outputFormatingInteraction(){
             TextualUI currentUI = UIFactory.formatingOutputUI();
