@@ -124,7 +124,6 @@ public class UIFactory {
                                                  "Tempo até uma data e hora usando diferentes fusos horarios.",
                                                  "Voltar atras.");
            
-        
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
            return TextualUI.of(options, head);    
@@ -149,10 +148,10 @@ public class UIFactory {
          
            List<String> options = Arrays.asList( "Determinar o primeiro dia do ano.",
                                                  "Determinar o ultimo dia do ano.",
-                                                 "Determinar o i-ésimo dia do ano.",
+                                                 "Determinar o se o ano é bissexto.",
                                                  "Contar o numero de dias uteis entre duas datas.",
                                                  "Determinar o dia de natal.",
-                                                 "Determinar o mês e o numero de dia do mês.",
+                                                 "Determinar o numero de dia do mês.",
                                                  "Determinar quantas semanas passaram desde o inicio do ano e quantas semanas faltam.",
                                                  "A que trimestre corresponde uma data.",
                                                  "Determinar em que estação do ano corresponde uma certa data.",
@@ -216,14 +215,6 @@ public class UIFactory {
 	        return TextualUI.of(options, head);    
 	    }
 	    
-	    public static ITextualUI curiosidades(){
-	        List<String> options = Arrays.asList( "Qual a estação boreal.",
-	                                                "Qual é a estação austral.",
-	                                                "Verifica se é ano bissexto.",
-	                                                "Voltar para trás");
-	        String head = "Escolha uma das operações disponiveis:";
-	        return TextualUI.of(options, head);    
-	    }
 	    
 	    public static ITextualUI addSubtrair(){
 	        List<String> options = Arrays.asList( "Adicionar.",
@@ -233,7 +224,38 @@ public class UIFactory {
 	        return TextualUI.of(options, head);
 	    }
 	    
-
+    public static ITextualUI listZonedId(){
+        List<String> options = Arrays.asList("Pacific/Apia",
+                                             "Pacific/Chatham",
+                                             "Pacific/Fiji",
+                                             "Asia/Anadyr",
+                                             "Asia/Magadan",
+                                             "Asia/Vladivostok",
+                                             "Asia/Tokyo",
+                                             "Asia/Hong_Kong",
+                                             "Asia/Vientiane",
+                                             "Asia/Dhaka",
+                                             "Asia/Ashgabat",
+                                             "Europe/Samara",
+                                             "Europe/Istanbul",
+                                             "Europe/Athens",
+                                             "Europe/Paris",
+                                             "UTC",
+                                             "Atlantic/Azores",
+                                             "America/Noronha",
+                                             "America/Recife",
+                                             "America/Puerto_Rico",
+                                             "America/Port-au-Prince",
+                                             "America/Chicago",
+                                             "America/Chihuahua",
+                                             "America/Los_Angeles",
+                                             "America/Juneau",
+                                             "America/Adak",
+                                             "Pacific/Samoa");        
+        
+        String head = "Bem vindo.Escolha uma das operações disponiveis:";
+        return TextualUI.of(options, head);    
+    }         
 
 
 

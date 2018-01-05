@@ -51,6 +51,7 @@ public class Printer {
         }
     }
     
+
     public static void print(Duration d){
           if( d != null){
               long min = d.toMinutes();

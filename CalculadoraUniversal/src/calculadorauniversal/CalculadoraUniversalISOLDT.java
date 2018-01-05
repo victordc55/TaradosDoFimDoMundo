@@ -14,12 +14,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.Year;
 import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 import java.util.OptionalInt;
 
 import Datas.CalculoLDT;
+import Datas.CalculoZdDT;
 import Datas.EstacaoTemperada;
+import TUI.Printer;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  *
@@ -28,9 +34,11 @@ import Datas.EstacaoTemperada;
 public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 	
 	private static CalculoLDT ldt;
+        private static CalculoZdDT zdt;
 
     public CalculadoraUniversalISOLDT(){
         ldt = new CalculoLDT();
+        zdt = new CalculoZdDT();
     }
 
 	@Override
@@ -62,14 +70,14 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 
 	@Override
 	public LocalDateTime addSubTempos(TemporalAccessor tempos, TemporalAccessor valor, boolean bool) {
-		LocalDateTime res = LocalDateTime.from(tempos);
-        LocalDateTime val = LocalDateTime.from(valor);
-        LocalDateTime zero = LocalDateTime.of(0, 1, 1, 0, 0);
-        long nTempo = zero.until(val, SECONDS) + 31*24*3600  ;
-        if(bool)
-            return ldt.addicionarADateTime(res, nTempo, SECONDS);
-        else
-            return ldt.addicionarADateTime(res, -nTempo, SECONDS);
+            LocalDateTime res = LocalDateTime.from(tempos);
+            LocalDateTime val = LocalDateTime.from(valor);
+            LocalDateTime zero = LocalDateTime.of(0, 1, 1, 0, 0);
+            long nTempo = zero.until(val, SECONDS) + 31*24*3600  ;
+            if(bool)
+                return ldt.addicionarADateTime(res, nTempo, SECONDS);
+            else
+                return ldt.addicionarADateTime(res, -nTempo, SECONDS);
 	}
 
 	@Override
@@ -124,9 +132,73 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 	}
 
 	@Override
-	public boolean isLeap(TemporalAccessor data) {
-		 return ldt.isLeap(data);
+	public boolean isLeap(int a) {
+		Year ano = Year.of(a);
+		 return ldt.isLeap(ano);
 	}
+
+	@Override
+	public DayOfWeek ultimoDiaAno(int a) {
+		Year ano = Year.of(a);
+		return ldt.ultimoDiaDoAno(ano);
+	}
+
+	@Override
+	public DayOfWeek primeiroDiaAno(int a) {
+		Year ano = Year.of(a);	
+		return ldt.primeiroDiaDoAno(ano);
+	}
+
+	@Override
+	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2) {
+		return ldt.diaEntreDatas(data1, data2);
+	}
+
+	@Override
+	public TemporalAccessor diaNatal(OptionalInt ano) {
+		return ldt.diaNatal(ano);
+	}
+
+	@Override
+	public OptionalInt diasDoMes(OptionalInt mes) {
+		return ldt.diasDoMes(mes);
+	}
+
+	@Override
+	public OptionalInt semanasDesdeInicio() {
+		return ldt.semanasDesdeInicio();
+	}
+
+	@Override
+	public OptionalInt semanasFimAno() {
+		return ldt.semanasFimAno();
+	}
+
+	@Override
+	public String estacaoDoAno(LocalDate ldtestacao) {
+		return ldt.estacaoDoAno(ldtestacao);
+	}
+
+    @Override
+    public Optional<Instant> addSubZonedDateTime(TemporalAccessor ldt, ZoneId zone, TemporalAccessor tempo) {
+
+          return  Optional.empty();
+    }
+
+    @Override
+    public Optional<Duration> diferencaEntreFusos(TemporalAccessor ldtInicial, TemporalAccessor ldtFinal) {
+        
+        return zdt.diferencaZonedDateTime(ldtInicial, ldtFinal);
+    }
+
+    @Override
+    public Optional<ZonedDateTime> convertZonedDateTime(TemporalAccessor zdtInicial, ZoneId zone) {
+        Instant agora = Instant.from(zdtInicial);
+        Optional<ZonedDateTime> zddt = zdt.conversaoDeFusos(agora, zone);
+        return zddt;
+    }
+    
+    
 
 
     

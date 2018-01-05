@@ -116,8 +116,8 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
         return datas.trimestre(data);
     }
     
-    public boolean isLeap(TemporalAccessor data){
-         return datas.isLeap(data);
+    public boolean isLeap(Year ano){
+         return datas.isLeap(ano);
     }
     
     public Optional<EstacaoTemperada> estaçãoDoAnoNorte(TemporalAccessor data){
@@ -131,6 +131,10 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
 
     public DayOfWeek primeiroDiaDoAno(Year ano) {
         return datas.primeiroDiaDoAno(ano);
+    }
+    
+    public DayOfWeek ultimoDiaDoAno(Year ano) {
+        return datas.ultimoDiaDoAno(ano);
     }
     
     //-------------------------------------------------------------------------------------------------------------
@@ -147,5 +151,35 @@ public class CalculoLDT implements ICalculoLDT, ICalculoTempo {
     public Optional<Duration> temporizador(TemporalAccessor tempo) {
        return tempos.temporizador(tempo); 
     }
+
+
+	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2) {
+		return datas.diaEntreDatas(data1, data2);
+	}
+
+
+	public TemporalAccessor diaNatal(OptionalInt ano) {
+		return datas.diaNatal(ano);
+	}
+
+
+	public OptionalInt diasDoMes(OptionalInt mes) {
+		return datas.diasDoMes(mes);
+	}
+
+
+	public OptionalInt semanasDesdeInicio() {
+		return datas.semanasDesdeInicio();
+	}
+
+
+	public OptionalInt semanasFimAno() {
+		return datas.semanasFimAno();
+	}
+
+
+	public String estacaoDoAno(LocalDate ldtestacao) {
+		return datas.estacaoDoAno(ldtestacao);
+	}
     
 }
