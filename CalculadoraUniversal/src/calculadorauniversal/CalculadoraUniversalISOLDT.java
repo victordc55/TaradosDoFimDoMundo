@@ -182,7 +182,9 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
     @Override
     public Optional<Instant> addSubZonedDateTime(TemporalAccessor ldt, ZoneId zone, TemporalAccessor tempo) {
         
-        ZonedDateTime zdt = ZonedDateTime.of(, zone);
+//        ZonedDateTime zdt = ZonedDateTime.of(, zone);
+    	
+    	return null;
                 
     }
 

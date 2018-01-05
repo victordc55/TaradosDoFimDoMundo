@@ -1,7 +1,6 @@
 package TUI;
 
 
-import java.io.Console;
 import java.io.PrintStream;
 import static java.lang.System.err;
 import java.time.Duration;
@@ -9,14 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAmount;
 import java.util.OptionalInt;
 import java.util.Scanner;
-import java.lang.StringBuilder;
-import static java.time.temporal.ChronoField.DAY_OF_WEEK;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -139,25 +134,34 @@ public class Printer {
  public static LocalDate pedirData(){
         
         print("Ano: ");
-        int ano = Printer.getInt().getAsInt();
+        OptionalInt ano = Printer.getPostiveInt();
         print("Mês: ");
-        int mes = Printer.getInt().getAsInt();
+        OptionalInt mes = Printer.getPostiveInt();
         print("Dia: ");
-        int dia = Printer.getInt().getAsInt();
-        LocalDate ld = LocalDate.of(ano, mes, dia);
-        return ld;
+        OptionalInt dia = Printer.getPostiveInt();
+        if((ano != null) && (mes != null) && (dia != null) && (ano.isPresent()) && (mes.isPresent()) && (dia.isPresent())){
+        	LocalDate lt = LocalDate.of(ano.getAsInt(), mes.getAsInt(), dia.getAsInt());
+            return lt;
+        }else{
+        	return null;
+        }
         
     }
     
     public static LocalTime pedirHoras(){
         print("Hora: ");
-        int hora = Printer.getInt().getAsInt();
+        OptionalInt hora = Printer.getInt();
         print("Minutos: ");
-        int min = Printer.getInt().getAsInt();
+        OptionalInt min = Printer.getInt();
         print("Segundos: ");
-        int seg = Printer.getInt().getAsInt();
-        LocalTime lt = LocalTime.of(hora, min, seg);
-        return lt;
+        OptionalInt seg = Printer.getInt();
+        if((hora != null) && (min != null) && (seg != null)){
+        	LocalTime lt = LocalTime.of(hora.getAsInt(), min.getAsInt(), seg.getAsInt());
+            return lt;
+        }else{
+        	return null;
+        }
+        
     }
     
     public static LocalDate pedirComSemana(){
