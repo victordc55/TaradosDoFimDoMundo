@@ -170,7 +170,7 @@ public class CalculoDatas implements ICalculoDatas{
 
 		int dias = (int) ChronoUnit.DAYS.between(data1, data2);
 		for (int i = 1; i <= dias; i++) {
-			LocalDate data = data2.plus(i, ChronoUnit.DAYS);
+			LocalDate data = data1.plus(i, ChronoUnit.DAYS);
 			if((!data.getDayOfWeek().equals(DayOfWeek.SATURDAY)) && (!data.getDayOfWeek().equals(DayOfWeek.SUNDAY))){
 				diasNaoUteis++;
 			}
