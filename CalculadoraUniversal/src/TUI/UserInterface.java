@@ -5,11 +5,15 @@ import calculadorauniversal.CalculadoraUniversalISOLDT;
 import calculadorauniversal.Cronometro;
 import calculadorauniversal.ICalculadoraUniversal;
 import calculadorauniversal.ICronometro;
+
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Year;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 
 /**
@@ -29,7 +33,7 @@ public class UserInterface{
         init();
         wantToQuit = false;
         while(!wantToQuit){
-            currentUI = UIFactory.firstUI();
+            TextualUI currentUI = UIFactory.firstUI();
             switch(currentUI.printMenu()){
                 case 1:
                      firstModeInteraction();
@@ -61,7 +65,7 @@ public class UserInterface{
     }
     
     private static void firstModeInteraction(){
-            currentUI = UIFactory.localDataTimeUI();
+    	TextualUI currentUI = UIFactory.localDataTimeUI();
             boolean wantToQuit = false;
             while(!wantToQuit){
                 switch(currentUI.printMenu()){
@@ -97,35 +101,98 @@ public class UserInterface{
     
     
     private static void curiosidades() {
+    	boolean wantToQuit = false;
          while(!wantToQuit){
-        	 TextualUI currentUI = UIFactory.curiosidades();
-            int option = currentUI.printMenu();
-                 try {
-                     if (option <4) {
-                         Printer.print("Insira a data.\n");
-                         LocalDate data = Printer.pedirData();
-                         if (option == 1){ 
-                             Printer.print(calculadoraUniversal.estaçãoDoAnoNorte(data, true).toString());
-                         }
-                         if (option == 2){
-                             Printer.print(calculadoraUniversal.estaçãoDoAnoNorte(data, false).toString());
-                         }
-                         if (option == 3){
-//                             Printer.print(calculadora.isLeap(data));
-                         }
-                     }
-                     else if(option > 4)
-                         Printer.printErro("Não existe essa opção.");
-                     else    
-                    	 wantToQuit = true;  
-                 } catch (Exception e) {
-                     Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
-                 }
+        	 TextualUI currentUI = UIFactory.curiosidadesUI();
+        	 
+        	 switch(currentUI.printMenu()){
+	        	 case 1:
+	        		 Printer.print("Insira o ano. \n");
+	        		 OptionalInt ano = Printer.getInt();
+	        		 if(ano != null){
+	        			 Printer.print(calculadoraUniversal.primeiroDiaAno(ano.getAsInt()).toString());
+	        			 Printer.print("\n");
+	        		 }else{
+	        			 Printer.printErro("O valore não foram introduzido corretamente.\n");
+	        		 }
+	                 break;
+	        	 case 2:
+	        		 Printer.print("Insira o ano. \n");
+	        		 OptionalInt anoUltimo = Printer.getInt();
+	        		 if(anoUltimo != null){
+	        			 Printer.print(calculadoraUniversal.ultimoDiaAno(anoUltimo.getAsInt()).toString());
+	        			 Printer.print("\n");
+	        		 }else{
+	        			 Printer.printErro("O valore não foram introduzido corretamente.\n");
+	        		 }
+	                 break;
+	        	 case 3:
+	        		 Printer.print("Insira o ano. \n");
+	        		 OptionalInt bissexto = Printer.getInt();
+	        		 if(bissexto != null){
+	        			 Printer.print(calculadoraUniversal.isLeap(bissexto.getAsInt()));
+	        			 Printer.print("\n");
+	        		 }
+	        		 
+	        		 break;
+	        	 case 4:
+	        		 Printer.print("Insira a primeira data: ");
+	        		 LocalDate ldt1 = Printer.pedirData();
+	        		 Printer.print("Insira a segunda data: ");
+	        		 LocalDate ldt2 = Printer.pedirData();
+	        		 if(ldt1 != null && ldt2 != null){
+	        			 Printer.print(calculadoraUniversal.diaEntreDatas(ldt1, ldt2).toString());
+	        			 Printer.print("\n");
+	        		 }
+	        		 break;
+	        	 case 5:
+	        		 Printer.print("Insera o ano: ");
+	        		 OptionalInt anoNatal = Printer.getInt();
+	        		 if(anoNatal != null){
+	        			 Printer.print(calculadoraUniversal.diaNatal(anoNatal).toString());
+	        			 Printer.print("\n");
+	        		 }
+	        		 break;
+	        	 case 6:
+	        		 Printer.print("Insera o mes: ");
+	        		 OptionalInt mes = Printer.getInt();
+	        		 if(mes != null){
+	        			 Printer.print(calculadoraUniversal.diasDoMes(mes).toString());
+	        			 Printer.print("\n");
+	        		 }
+	        		 break;
+	        	 case 7:
+	        		 Printer.print("Semanas desde o inicio do ano: " + calculadoraUniversal.semanasDesdeInicio().toString());
+	        		 Printer.print("Semanas para o fim do ano: " + calculadoraUniversal.semanasFimAno().toString());
+	        		 Printer.print("\n");
+	        		 break;
+	        	 case 8:
+	        		 Printer.print("Insira uma data: ");
+	        		 LocalDate ldt = Printer.pedirData();
+	        		 if(ldt != null){
+	        			 Printer.print("trimestre corresponde é: " + calculadoraUniversal.trimestre(ldt).toString());
+	        			 Printer.print("\n");
+	        		 }
+	        		 break;
+	        	 case 9:
+	        		 Printer.print("Insira uma data: ");
+	        		 LocalDate ldtestacao = Printer.pedirData();
+	        		 if(ldtestacao != null){
+	        			 Printer.print("Estação do ano corresponde é: " + calculadoraUniversal.estacaoDoAno(ldtestacao).toString());
+	        			 Printer.print("\n");
+	        		 }
+	        		 break;
+	             case 10:
+		             	wantToQuit = true;
+		                 break;
+        	 }
+
          }
 	}
 
 
 	private static void tempoAteData() {
+		boolean wantToQuit = false;
         while(!wantToQuit){
         	TextualUI currentUI = UIFactory.diferencaEntreTempos();
             int option = currentUI.printMenu();
@@ -162,6 +229,7 @@ public class UserInterface{
 
 
 	private static void infoDatas() {
+		boolean wantToQuit = false;
 	        while(!wantToQuit){
 	        	TextualUI currentUI = UIFactory.infoDatas();
 	           int option = currentUI.printMenu();
@@ -194,6 +262,7 @@ public class UserInterface{
 
 
 	private static void diferençaEntreTempos() {
+		boolean wantToQuit = false;
 	        while(!wantToQuit){
 	        	TextualUI currentUI = UIFactory.diferencaEntreTempos();
 	            int option = currentUI.printMenu();
@@ -233,6 +302,7 @@ public class UserInterface{
 
 
 	private static void addSubTempos() {
+		boolean wantToQuit = false;
         while(!wantToQuit){
         	TextualUI currentUI = UIFactory.addSubtrair();
            int  option = currentUI.printMenu();
@@ -259,6 +329,7 @@ public class UserInterface{
 
 
 	private static void addSubHoras() {
+		boolean wantToQuit = false;
         while(!wantToQuit){
         	TextualUI currentUI = UIFactory.addSubtrair();
             int option = currentUI.printMenu();
@@ -317,11 +388,12 @@ public class UserInterface{
 	private static void secondModeInteraction(){
     	   
            Printer.print("Caso 2:");
-           currentUI = UIFactory.zonedDateTimeUI();
+           TextualUI currentUI = UIFactory.zonedDateTimeUI();
            boolean quit = false;
            while(! quit){
              switch(currentUI.printMenu()){
 	             case 1:
+	            	 addSubTempoZonedDateTime();
 	                 break;
 		          case 2:
 		                 
@@ -349,9 +421,36 @@ public class UserInterface{
     
     
     
-    private static void cronometro(){
+    private static void addSubTempoZonedDateTime() {
+    	boolean wantToQuit = false;
+    	while(!wantToQuit){
+        	TextualUI currentUI = UIFactory.addSubtrair();
+           int  option = currentUI.printMenu();
+                try {
+                    if (option <3) {
+                        Printer.print("Insira a hora inicial.\n");
+                        LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(), Printer.pedirHoras());
+                        Printer.print("Valor que pretende somar ou subtrair.");
+                        LocalDateTime valor = LocalDateTime.of(Printer.pedirComSemana(), Printer.pedirHoras());
+                        if (option == 1) 
+                            Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, true).toString());
+                        if (option == 2)
+                            Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false).toString());
+                    }
+                    else if(option > 3)
+                        Printer.printErro("Não existe essa opção.");
+                    else    
+                        wantToQuit = true;  
+                } catch (Exception e) {
+                    Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
+                }
+        }
+	}
+
+
+	private static void cronometro(){
             ICronometro crono = new Cronometro();
-            currentUI = UIFactory.cronometroUI();
+            TextualUI currentUI = UIFactory.cronometroUI();
             boolean quit = false;
             while(! quit){
               switch(currentUI.printMenu()){
@@ -383,7 +482,7 @@ public class UserInterface{
     
     
     private static void outputFormatingInteraction(){
-            currentUI = UIFactory.formatingOutputUI();
+            TextualUI currentUI = UIFactory.formatingOutputUI();
             switch(currentUI.printMenu()){
                 case 1:
                       print.setPrintMode(1);

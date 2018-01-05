@@ -149,10 +149,10 @@ public class UIFactory {
          
            List<String> options = Arrays.asList( "Determinar o primeiro dia do ano.",
                                                  "Determinar o ultimo dia do ano.",
-                                                 "Determinar o i-ésimo dia do ano.",
+                                                 "Determinar o se o ano é bissexto.",
                                                  "Contar o numero de dias uteis entre duas datas.",
                                                  "Determinar o dia de natal.",
-                                                 "Determinar o mês e o numero de dia do mês.",
+                                                 "Determinar o numero de dia do mês.",
                                                  "Determinar quantas semanas passaram desde o inicio do ano e quantas semanas faltam.",
                                                  "A que trimestre corresponde uma data.",
                                                  "Determinar em que estação do ano corresponde uma certa data.",
@@ -216,14 +216,7 @@ public class UIFactory {
 	        return TextualUI.of(options, head);    
 	    }
 	    
-	    public static TextualUI curiosidades(){
-	        List<String> options = Arrays.asList( "Qual a estação boreal.",
-	                                                "Qual é a estação austral.",
-	                                                "Verifica se é ano bissexto.",
-	                                                "Voltar para trás");
-	        String head = "Escolha uma das operações disponiveis:";
-	        return TextualUI.of(options, head);    
-	    }
+
 	    
 	    public static TextualUI addSubtrair(){
 	        List<String> options = Arrays.asList( "Adicionar.",

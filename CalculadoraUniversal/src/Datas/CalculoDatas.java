@@ -126,8 +126,8 @@ public class CalculoDatas implements ICalculoDatas{
         return OptionalInt.of( (int) IsoFields.QUARTER_OF_YEAR.getFrom(data) );
     }
     
-    public boolean isLeap(TemporalAccessor data){
-        return Year.from(data).isLeap();
+    public boolean isLeap(Year ano){
+        return ano.isLeap();
      }
     
     /**
@@ -157,5 +157,65 @@ public class CalculoDatas implements ICalculoDatas{
     public DayOfWeek primeiroDiaDoAno(Year ano){
         return ano.atDay(1).getDayOfWeek();
     }
+
+	@Override
+	public DayOfWeek ultimoDiaDoAno(Year ano) {
+		return ano.atMonth(12).atDay(31).getDayOfWeek();
+	}
+
+	@Override
+	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2) {
+		int diasNaoUteis = 0;
+		 
+		LocalDate dataInicialTemporaria = LocalDate.now();
+		LocalDate dataFinalTemporaria = LocalDate.of(2018, Month.JANUARY, 10);
+
+		int dias = (int) ChronoUnit.DAYS.between(dataInicialTemporaria, dataFinalTemporaria);
+		for (int i = 1; i <= dias; i++) {
+			LocalDate data = dataInicialTemporaria.plus(i, ChronoUnit.DAYS);
+			if((!data.getDayOfWeek().equals(DayOfWeek.SATURDAY)) && (!data.getDayOfWeek().equals(DayOfWeek.SUNDAY))){
+				diasNaoUteis++;
+			}
+		}
+		
+		return OptionalInt.of(diasNaoUteis);
+	}
+
+	@Override
+	public TemporalAccessor diaNatal(OptionalInt ano) {
+		MonthDay natal = MonthDay.of(Month.DECEMBER, 25);
+		LocalDate natalDesseAno = natal.atYear(ano.getAsInt());
+		long diasAteONatal = LocalDate.now().until(natalDesseAno, ChronoUnit.DAYS);
+		LocalDate data = LocalDate.now().plus(diasAteONatal, ChronoUnit.DAYS);
+		return data.getDayOfWeek();
+	}
+
+	@Override
+	public OptionalInt diasDoMes(OptionalInt mes) {
+		return OptionalInt.of(Month.of(mes.getAsInt()).maxLength());
+	}
+
+	@Override
+	public OptionalInt semanasDesdeInicio() {
+		return OptionalInt.of((int) LocalDate.now().until(Year.now().atDay(1), ChronoUnit.WEEKS));
+	}
+
+	@Override
+	public OptionalInt semanasFimAno() {
+		return OptionalInt.of((int) LocalDate.now().until(Year.now().atMonth(12).atDay(31), ChronoUnit.WEEKS));
+	}
+
+	@Override
+	public String estacaoDoAno(LocalDate ldtestacao) {
+		String seasons []  = {
+			    "Inverno", "Inverno",
+			    "Primavera", "Primavera", "Primavera",
+			    "Verão", "Verão", "Verão",
+			    "Outono", "Outono", "Outono",
+			    "Inverno"
+			};
+		
+		return seasons[LocalDate.now().getMonth().getValue()];
+	}
             
 }

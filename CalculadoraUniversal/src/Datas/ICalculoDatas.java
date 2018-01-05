@@ -85,7 +85,7 @@ public interface ICalculoDatas {
     
     public OptionalInt trimestre(TemporalAccessor data);
     
-    public boolean isLeap(TemporalAccessor data);
+    public boolean isLeap(Year ano);
     
     /**
      * Dada a data representada pelo TemporalAcessor devolve a estação temperada correspondente no hemisferio norte.
@@ -102,5 +102,19 @@ public interface ICalculoDatas {
     public Optional<EstacaoTemperada> estaçãoDoAnoSul(TemporalAccessor data);
             
     public DayOfWeek primeiroDiaDoAno(Year ano);
+
+	public DayOfWeek ultimoDiaDoAno(Year ano);
+
+	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2);
+
+	public TemporalAccessor diaNatal(OptionalInt ano);
+
+	public OptionalInt diasDoMes(OptionalInt mes);
+
+	public OptionalInt semanasDesdeInicio();
+
+	public OptionalInt semanasFimAno();
+
+	public String estacaoDoAno(LocalDate ldtestacao);
     
 }

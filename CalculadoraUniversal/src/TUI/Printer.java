@@ -62,9 +62,15 @@ public class Printer {
      * Exemplos de temporal Accessor que não dao nada: Instant, MonthDay, DayOfWeek,Year,Month, YearMonth.
      * @param t 
      */
-    public void print(TemporalAccessor t){
+    public static void print(TemporalAccessor t){
         if( t != null){
               Printer.print( printFormat.format(t) );
+        }
+    }
+    
+    public static void print(Boolean t){
+        if( t != null){
+              Printer.print(t.toString());
         }
     }
     

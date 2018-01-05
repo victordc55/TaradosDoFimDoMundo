@@ -14,12 +14,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.Year;
 import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 import java.util.OptionalInt;
 
 import Datas.CalculoLDT;
 import Datas.EstacaoTemperada;
+import TUI.Printer;
 
 /**
  *
@@ -124,8 +126,51 @@ public class CalculadoraUniversalISOLDT implements ICalculadoraUniversal {
 	}
 
 	@Override
-	public boolean isLeap(TemporalAccessor data) {
-		 return ldt.isLeap(data);
+	public boolean isLeap(int a) {
+		Year ano = Year.of(a);
+		 return ldt.isLeap(ano);
+	}
+
+	@Override
+	public DayOfWeek ultimoDiaAno(int a) {
+		Year ano = Year.of(a);
+		return ldt.ultimoDiaDoAno(ano);
+	}
+
+	@Override
+	public DayOfWeek primeiroDiaAno(int a) {
+		Year ano = Year.of(a);	
+		return ldt.primeiroDiaDoAno(ano);
+	}
+
+	@Override
+	public OptionalInt diaEntreDatas(LocalDate data1, LocalDate data2) {
+		return ldt.diaEntreDatas(data1, data2);
+	}
+
+	@Override
+	public TemporalAccessor diaNatal(OptionalInt ano) {
+		return ldt.diaNatal(ano);
+	}
+
+	@Override
+	public OptionalInt diasDoMes(OptionalInt mes) {
+		return ldt.diasDoMes(mes);
+	}
+
+	@Override
+	public OptionalInt semanasDesdeInicio() {
+		return ldt.semanasDesdeInicio();
+	}
+
+	@Override
+	public OptionalInt semanasFimAno() {
+		return ldt.semanasFimAno();
+	}
+
+	@Override
+	public String estacaoDoAno(LocalDate ldtestacao) {
+		return ldt.estacaoDoAno(ldtestacao);
 	}
 
 
