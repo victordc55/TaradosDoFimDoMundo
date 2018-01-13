@@ -1,7 +1,6 @@
 package TUI;
 
 
-import java.io.PrintStream;
 import static java.lang.System.err;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -11,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.OptionalInt;
-import java.util.Scanner;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,21 +18,25 @@ import java.util.Scanner;
  */
 
 public class Printer {
-    // Every method for printing simple strings
-    public static final PrintStream out = System.out;
-    public static final Scanner in = new Scanner(System.in);
-    private static final String completeNumericalPattern = "[d-M-yyyy ][H:mm:ss ][VV ][O ][G]";
-    private static final String extendedPattern = "[EEEE d MMMM yyyy ][H:mm:ss ][VV ][OOOO ]['Era' G ]['Trimestre' Q]";
-    private static DateTimeFormatter printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
+//    // Every method for printing simple strings
+//    public static final PrintStream out = System.out;
+//    public static final Scanner in = new Scanner(System.in);
+//    private static final String completeNumericalPattern = "[d-M-yyyy ][H:mm:ss ][VV ][O ][G]";
+//    private static final String extendedPattern = "[EEEE d MMMM yyyy ][H:mm:ss ][VV ][OOOO ]['Era' G ]['Trimestre' Q]";
+//    private static DateTimeFormatter printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
      
+	
     
     
-    public static void setPrintMode(int mode){
+    @SuppressWarnings("unused")
+	public static void setPrintMode(int mode){
+    	DateTimeFormatter printFormat = new Utils().getPrintFormat();
         if( mode== 2 ){
-            printFormat = DateTimeFormatter.ofPattern(extendedPattern);
+        	
+        	printFormat = DateTimeFormatter.ofPattern(new Utils().getExtendedPattern());
         }
         else{
-            printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
+        	printFormat = DateTimeFormatter.ofPattern(new Utils().getCompleteNumericalPattern());
         }
     }
     
@@ -47,7 +49,7 @@ public class Printer {
      */
     public static void print(TemporalAccessor t){
         if( t != null){
-              Printer.print( printFormat.format(t) );
+              Printer.print( new Utils().getPrintFormat().format(t) );
         }
     }
     
@@ -56,14 +58,14 @@ public class Printer {
           if( d != null){
               long horas = d.toHours();
               if(horas > 0){
-                  out.print(horas + " horas ");
+                  new Utils().getOut().print(horas + " horas ");
               }
               long min = d.toMinutes() - horas *60;
               if(min > 0){
-                  out.print( horas + " min ");
+            	  new Utils().getOut().print( horas + " min ");
               }
-              out.print( ( ( d.get(ChronoUnit.SECONDS) / 60.0) - min) * 60  + " segundos e ");
-              out.println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " millisegundos" );
+              new Utils().getOut().print( ( ( d.get(ChronoUnit.SECONDS) / 60.0) - min) * 60  + " segundos e ");
+              new Utils().getOut().println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " millisegundos" );
              
           }
     }
@@ -72,38 +74,40 @@ public class Printer {
     */
     public static void printBigDuration(Duration d){
         if(d != null){
-            long anos =(long)(d.toDays() / 365.25); // Assume 1 year = 365.25 always. Wich means some days might be losts, maybe.
-            if(anos > 0){
+            long anos =(long)(d.toDays() / 365); // Assume 1 year = 365.25 always. Wich means some days might be losts, maybe.
+            if(anos != 0){
                 if( anos == 1)
-                    out.print( anos + " ano ");
-                else out.print( anos + " anos ");
+                	new Utils().getOut().print( anos + " ano ");
+                else new Utils().getOut().print( anos + " anos ");
             }
-            long meses = (long) (d.toDays() / 30.42) - (anos * 12); // Assuma-se 1 mes = 30 dias sempre logo ganha-se/perda-se meses, provavelmente.
-            if( meses > 0){
+            long meses =(long) (d.toDays() / 30.42) - (anos * 12); // Assuma-se 1 mes = 30 dias sempre logo ganha-se/perda-se meses, provavelmente.
+            if( meses != 0){
                 if( meses == 1)
-                    out.print(meses +" mes ");
-                else out.print(meses +" meses ");
+                	new Utils().getOut().print(meses +" mes ");
+                else new Utils().getOut().print(meses +" meses ");
             }
-            long dias =(long)( d.toDays() - anos*365.25 - meses * 30.42 );
-            if( dias > 0){
+            long dias;
+            if(meses > 0) dias = (long)( d.toDays() - anos*365.25 + meses * 30.42 );
+            else dias = (long)( d.toDays() - (anos*365.25) - (meses * 30.42) );
+            if( dias != 0){
                  if( dias == 1)
-                     out.print( dias + " dia ");
-                 else out.print(dias + " dias ");
+                	 new Utils().getOut().print( dias + " dia ");
+                 else new Utils().getOut().print(dias + " dias ");
             }
             long horas = (long) d.toHours() - (d.toDays()/24);
-            if(horas > 0){
+            if(horas != 0){
                  if( horas == 1)
-                  out.print(horas + " hora ");
-                 else out.print(horas + " horas ");
+                	 new Utils().getOut().print(horas + " hora ");
+                 else new Utils().getOut().print(horas + " horas ");
               }
             long min = d.toMinutes() - d.toHours()*60;
-            if(min > 0){
-                  out.print( min + " min ");
+            if(min != 0){
+            	new Utils().getOut().print( min + " min ");
             }
             long segundos = d.get(ChronoUnit.SECONDS) - d.toMinutes() *60;
-            if( segundos > 0)
-                out.print( segundos  + " segundos ");
-              out.println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " e millisegundos" );
+            if( segundos != 0)
+            	new Utils().getOut().print( segundos  + " segundos ");
+            new Utils().getOut().println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " millisegundos" );
         }
         
     }
@@ -111,7 +115,7 @@ public class Printer {
     public static void print(Period p){
            if( p != null){
                Period period = p.normalized();
-               out.println(  "Anos: " +period.get(ChronoUnit.YEARS) + " \tMeses: " + period.get(ChronoUnit.MONTHS) + " \tDias: "+ period.get(ChronoUnit.DAYS) );       
+               new Utils().getOut().println(  "Anos: " +period.get(ChronoUnit.YEARS) + " \tMeses: " + period.get(ChronoUnit.MONTHS) + " \tDias: "+ period.get(ChronoUnit.DAYS) );       
            }
     }
     
@@ -124,15 +128,15 @@ public class Printer {
      * @return Linha lida.
      */
     public static String ask(String s){
-        out.print(s);
-        return in.nextLine();
+    	new Utils().getOut().print(s);
+        return new Utils().getIn().nextLine();
     }
     /**
      * Imprima no output uma string.
      * @param s - string a imprimir.
      */
     public static void print(String s){
-        out.println(s);
+    	new Utils().getOut().println(s);
     }
     
     public static void printErro(String s){
@@ -140,7 +144,7 @@ public class Printer {
     }
     
     public static void print(boolean b){
-        out.println(b);
+    	new Utils().getOut().println(b);
     }
     
    /**
@@ -149,7 +153,7 @@ public class Printer {
      * @return 
      */
     public static OptionalInt getInt(){
-            String input = in.nextLine();
+            String input = new Utils().getIn().nextLine();
             try{
                 return OptionalInt.of( Integer.parseInt(input));
             }catch(Exception e){
@@ -157,8 +161,8 @@ public class Printer {
             }
     }
     
-    public static OptionalInt getPostiveInt(){
-           String input = in.nextLine();
+    public static OptionalInt getPositiveInt(){
+           String input = new Utils().getIn().nextLine();
            try{
                int intInput = Integer.parseInt(input);
                if( intInput >= 0) return OptionalInt.of(intInput);
@@ -171,11 +175,11 @@ public class Printer {
  public static LocalDate pedirData(){
         
         print("Ano: ");
-        OptionalInt ano = Printer.getPostiveInt();
+        OptionalInt ano = Printer.getPositiveInt();
         print("Mês: ");
-        OptionalInt mes = Printer.getPostiveInt();
+        OptionalInt mes = Printer.getPositiveInt();
         print("Dia: ");
-        OptionalInt dia = Printer.getPostiveInt();
+        OptionalInt dia = Printer.getPositiveInt();
         if((ano != null) && (mes != null) && (dia != null) && (ano.isPresent()) && (mes.isPresent()) && (dia.isPresent())){
         	LocalDate lt = LocalDate.of(ano.getAsInt(), mes.getAsInt(), dia.getAsInt());
             return lt;
@@ -205,10 +209,13 @@ public class Printer {
     }
     
     public static LocalDate pedirComSemana(){
-        LocalDate local = LocalDate.from(pedirData());
+        LocalDate local = pedirData();
+        if( local == null) return null;
         print("Semanas: ");
-        int semanas = Printer.getInt().getAsInt();
-        local = local.plusWeeks(semanas);
+        OptionalInt semanas =  Printer.getPositiveInt();
+        if( semanas.isPresent())
+            local = local.plusWeeks(semanas.getAsInt());
+        else return null;
         return local;
     }
     

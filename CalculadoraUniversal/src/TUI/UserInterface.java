@@ -33,70 +33,95 @@ import java.util.OptionalInt;
  */
 public class UserInterface{
     
-    private static ICalculadoraUniversal calculadoraUniversal;
-    private static ITextualUI currentUI;
-    private static Relogio relogio;
- 
-    public static void main(String[] args) {
-        // Let's start the main....
-        init();
+//    private static ICalculadoraUniversal calculadoraUniversal;
+//    private static ITextualUI currentUI;
+//    private static Relogio relogio;
+// 
+//    public static void main(String[] args) {
+//        // Let's start the main....
+//        init();
+//        boolean wantToQuit = false;
+//        while(!wantToQuit){
+//            currentUI = UIFactory.firstUI();
+//            switch(currentUI.printMenu()){
+//                case 1:
+//                     firstModeInteraction();
+//                     break;
+//                case 2:
+//                     secondModeInteraction();
+//                     break;
+//                case 3:
+//                     cronometro();
+//                     break;
+//                case 4:
+//                     outputFormatingInteraction();
+//                     break;
+//                case 5:
+//                     wantToQuit = true;
+//                     relogio.stop();
+//                 default:
+//                     break;
+//            }
+//        }
+//    }
+
+
+	public static void init(){
+    	ITextualUI currentUI = UIFactory.firstUI();
+        Relogio relogio = new Relogio();
         boolean wantToQuit = false;
         while(!wantToQuit){
-            currentUI = UIFactory.firstUI();
-            switch(currentUI.printMenu()){
-                case 1:
-                     firstModeInteraction();
-                     break;
-                case 2:
-                     secondModeInteraction();
-                     break;
-                case 3:
-                     cronometro();
-                     break;
-                case 4:
-                     outputFormatingInteraction();
-                     break;
-                case 5:
-                     wantToQuit = true;
-                     relogio.stop();
-                 default:
-                     break;
-            }
-        }
-    }
-
-
-    private static void init(){
-        currentUI = UIFactory.firstUI();
-        relogio = new Relogio();
+          currentUI = UIFactory.firstUI();
+          switch(currentUI.printMenu()){
+              case 1:
+                   firstModeInteraction();
+                   break;
+              case 2:
+                   secondModeInteraction();
+                   break;
+              case 3:
+                   cronometro();
+                   break;
+              case 4:
+                   outputFormatingInteraction();
+                   break;
+              case 5:
+                   wantToQuit = true;
+                   relogio.stop();
+               default:
+                   break;
+          }
+      }
     }
     
-    private static void firstModeInteraction(){
+	private static void firstModeInteraction(){
+    	ITextualUI currentUI = new Utils().getCurrentUI();
+    	ICalculadoraUniversal calculadoraUniversal = new Utils().getCalculadoraUniversal();
             boolean wantToQuit = false;
             calculadoraUniversal = CalculadoraUniversalFactory.mode(Mode.ISO_LDATETIME);
             while(!wantToQuit){
                 currentUI = UIFactory.localDataTimeUI();
                 switch(currentUI.printMenu()){
                     case 1:
-                        addSubDatas();
+                        addSubDatas(calculadoraUniversal);
                         break;
                     case 2:
-                        addSubHoras();
+                        addSubHoras(calculadoraUniversal);
                         break;
                     case 3:
-                        addSubTempos();
+                        addSubTempos(calculadoraUniversal);
                         break;
                     case 4:
-                        diferençaEntreTempos();
+                        diferençaEntreTempos(calculadoraUniversal);
                         break;
                     case 5:
-                        infoDatas();
+                        infoDatas(calculadoraUniversal);
                         break;
                     case 6:
-                        tempoAteData();
+                        tempoAteData(calculadoraUniversal);
                         break;
                     case 7:
-                        curiosidades();
+                        curiosidades(calculadoraUniversal);
                         break;
                     case 8:
                     	wantToQuit = true;
@@ -108,7 +133,8 @@ public class UserInterface{
     
     
     
-    private static void curiosidades() {
+    private static void curiosidades(ICalculadoraUniversal calculadoraUniversal) {
+    	ITextualUI currentUI = new Utils().getCurrentUI();
     	boolean wantToQuit = false;
         ICalculadoraUniversalCuriosidade curiosidades = CalculadoraUniversalFactory.getCuriosidade();
          while(!wantToQuit){
@@ -208,8 +234,9 @@ public class UserInterface{
     }
 
 
-    private static void tempoAteData() {
-	boolean wantToQuit = false;
+    private static void tempoAteData(ICalculadoraUniversal calculadoraUniversal) {
+    	ITextualUI currentUI = new Utils().getCurrentUI();
+    	boolean wantToQuit = false;
         LocalDate inicio,fim;
         LocalTime time1,time2;
         LocalDateTime ini,fi=null; // Divisão em metodos...
@@ -251,10 +278,10 @@ public class UserInterface{
                                 Optional<Duration> op = calculadoraUniversal.diferencaEntreTempos(ini, fi, false);
                                 if( op.isPresent()) Printer.printBigDuration(op.get());
                                 else  Printer.print("Não foi possivel calcular a diferença de tempos. Pedimos desculpa.");
-                              Printer.print(calculadoraUniversal.diferencaEntreTempos(ini, fi, false).toString());
                             }else {
                             	Printer.printErro("Os valores inseridos são incorretos.\n");
 							}
+                            break;
                 case 4: 
                         wantToQuit = true;  
                         break;
@@ -266,7 +293,7 @@ public class UserInterface{
         }
 	}
 
-	private static void infoDatas() {
+	private static void infoDatas(ICalculadoraUniversal calculadoraUniversal) {
             String answer = Printer.ask("Quere informações sobre hoje ou outra data? [h/hoje] [qualquer outro input = outro]\n");
             if( answer.contentEquals("hoje") || answer.contentEquals("h")){
                     infoDatas2(LocalDate.now());
@@ -279,11 +306,11 @@ public class UserInterface{
         
         private static void infoDatas2(LocalDate data){
             if(data != null){
-	            Optional<DayOfWeek> dayOfWeek = calculadoraUniversal.diaDaSemana(data);
-	            OptionalInt trimestre = calculadoraUniversal.trimestre(data);
-                    OptionalInt diaNoAno = calculadoraUniversal.numeroDoDiaNoAno(data);
-	            OptionalInt semanaNoAno =calculadoraUniversal.semanaNoAno(data);
-                    Optional<EstacaoTemperada> estacao = calculadoraUniversal.estaçãoDoAnoNorte(data, true);
+	            Optional<DayOfWeek> dayOfWeek = new Utils().getCalculadoraUniversal().diaDaSemana(data);
+	            OptionalInt trimestre = new Utils().getCalculadoraUniversal().trimestre(data);
+                    OptionalInt diaNoAno = new Utils().getCalculadoraUniversal().numeroDoDiaNoAno(data);
+	            OptionalInt semanaNoAno =new Utils().getCalculadoraUniversal().semanaNoAno(data);
+                    Optional<EstacaoTemperada> estacao = new Utils().getCalculadoraUniversal().estaçãoDoAnoNorte(data, true);
                     StringBuilder sb = new StringBuilder();
                     if( dayOfWeek.isPresent()) sb.append( dayOfWeek.get().name() +" ");
                     if( trimestre.isPresent()) sb.append( "Trimestre: " +trimestre.getAsInt()  + " ");
@@ -298,11 +325,12 @@ public class UserInterface{
                     }else Printer.print("A data introduzida é invalida.");
         }
 
-	private static void diferençaEntreTempos() {
+	private static void diferençaEntreTempos(ICalculadoraUniversal calculadoraUniversal) {
+		ITextualUI currentUI = new Utils().getCurrentUI();
 		boolean wantToQuit = false;
-                LocalDate inicio;LocalDateTime ini,fi; // Deveriam ser criados metodos para cada funcionalidade em vez de termos tantas variaveis
-                LocalDate fim;
-                LocalTime time1,time2;
+                LocalDate inicio=null;LocalDateTime ini= null,fi= null; // Deveriam ser criados metodos para cada funcionalidade em vez de termos tantas variaveis
+                LocalDate fim=null;
+                LocalTime time1= null,time2=null;
                 boolean weGotAProblem;
 	        while(!wantToQuit){
 	           currentUI = UIFactory.diferencaEntreTempos();
@@ -336,9 +364,15 @@ public class UserInterface{
                                     break;
                             case 3 :
 	                            Printer.print("Insira a hora inicial.");
-	                            ini = LocalDateTime.of(Printer.pedirData(),Printer.pedirHoras());
+                                    inicio = Printer.pedirData();
+                                    time1 = Printer.pedirHoras();
+                                    if( inicio != null && time1 != null)
+                                        ini = LocalDateTime.of(inicio,time1);
 	                            Printer.print("Insira a hora final");
-	                            fi = LocalDateTime.of(Printer.pedirData(),Printer.pedirHoras());
+                                    inicio = Printer.pedirData();
+                                    time1 = Printer.pedirHoras();
+                                    if( inicio != null && time1 != null)
+                                        fi = LocalDateTime.of(inicio,time1);
 	                            if(ini != null && fi  != null){
                                         Optional<Duration> op = calculadoraUniversal.diferencaEntreTempos(ini, fi, false);
                                         if(op.isPresent()) Printer.print(op.get());
@@ -358,7 +392,8 @@ public class UserInterface{
 	}
 
 
-    private static void addSubTempos() {
+    private static void addSubTempos(ICalculadoraUniversal calculadoraUniversal) {
+    	ITextualUI currentUI = new Utils().getCurrentUI();
 		boolean wantToQuit = false;
          while(!wantToQuit){
             currentUI = UIFactory.addSubtrair();
@@ -390,7 +425,7 @@ public class UserInterface{
     }
 
 
-	private static void addSubHoras() {
+	private static void addSubHoras(ICalculadoraUniversal calculadoraUniversal) {
 		boolean wantToQuit = false;
         while(!wantToQuit){
         	ITextualUI currentUI = UIFactory.addSubtrair();
@@ -422,7 +457,7 @@ public class UserInterface{
 	}
 
 
-	private static void addSubDatas() {
+	private static void addSubDatas(ICalculadoraUniversal calculadoraUniversal) {
 		 boolean wantToQuit = false;
         while(!wantToQuit){
         	ITextualUI currentUI = UIFactory.addSubtrair();
@@ -458,6 +493,7 @@ public class UserInterface{
 	}
 
 	private static void secondModeInteraction(){
+		ITextualUI currentUI = new Utils().getCurrentUI();
            boolean quit = false;
            while(! quit){
              currentUI = UIFactory.zonedDateTimeUI();
@@ -488,8 +524,10 @@ public class UserInterface{
     }
 
     private static void addSubTempoZonedDateTime() {
+    	ITextualUI currentUI = new Utils().getCurrentUI();
     	boolean wantToQuit = false;
-        ZoneId zone = null;
+        @SuppressWarnings("unused")
+		ZoneId zone = null;
     	while(!wantToQuit){
             currentUI = UIFactory.addSubtrair();
             int  option = currentUI.printMenu();
@@ -511,7 +549,7 @@ public class UserInterface{
                     if (option == 1) 
                      //   Printer.print();
                     if (option == 2)
-                            Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false));
+                            Printer.print(new Utils().getCalculadoraUniversal().addSubTempos(inicio, valor, false));
                     }
                     else if(option > 3)
                         Printer.printErro("Não existe essa opção.");
@@ -524,6 +562,7 @@ public class UserInterface{
     }
     
     private static void diferencaEntreFusos(){
+    	ITextualUI currentUI = new Utils().getCurrentUI();
         Printer.print("Insira o fuso e data-hora inicial.");
         currentUI = UIFactory.listZonedId();
         ZoneId zoneI,zoneF ;
@@ -544,12 +583,13 @@ public class UserInterface{
             Printer.print("Não existe essa opção");
             }
         ZonedDateTime zonaF = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneF);
-        Optional<Duration> d = calculadoraUniversal.diferencaEntreFusos(zonaI, zonaF);
+        Optional<Duration> d = new Utils().getCalculadoraUniversal().diferencaEntreFusos(zonaI, zonaF);
         if(d.isPresent()) Printer.print(d.get());
         else Printer.print("Não foi possivel, usando os dados introduzidos, calcular a diferença entre elas.");
     }
     
     private static void converterZonedDateTime(){
+    	ITextualUI currentUI = new Utils().getCurrentUI();
         Printer.print("Insira o fuso e data-hora inicial.");
         currentUI = UIFactory.listZonedId();
         ZoneId zoneI,zoneF ;
@@ -572,11 +612,12 @@ public class UserInterface{
         }else{
             Printer.print("Não existe essa opção");
          }
-        Printer.print(calculadoraUniversal.convertZonedDateTime(zdtI, zoneF).toString());
+        Printer.print(new Utils().getCalculadoraUniversal().convertZonedDateTime(zdtI, zoneF).toString());
     }
     
 
     private static void diferencaTempoEntreCidades(){
+    	ITextualUI currentUI = new Utils().getCurrentUI();
         Printer.print("Insira o fuso e data-hora da cidade inicial.");
         currentUI = UIFactory.listZonedId();
         ZoneId zoneI,zoneF ;
@@ -596,10 +637,11 @@ public class UserInterface{
             Printer.print("Não existe essa opção");
             }
         ZonedDateTime zdtF = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneF);
-        Printer.print(calculadoraUniversal.diferencaEntreFusos(zdtI, zdtF).toString());
+        Printer.print(new Utils().getCalculadoraUniversal().diferencaEntreFusos(zdtI, zdtF).toString());
     }
     
     private static void tempoAteOutroFuso(){
+    	ITextualUI currentUI = new Utils().getCurrentUI();
         LocalDateTime agora = LocalDateTime.now();
         ZoneOffset zoneOff = OffsetDateTime.now().getOffset();
         ZonedDateTime zdtAtual = ZonedDateTime.of(agora, zoneOff);
@@ -615,11 +657,12 @@ public class UserInterface{
             }
         ZonedDateTime zdtFinal = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneFinal);
         
-       Printer.print(calculadoraUniversal.diferencaEntreFusos(zdtAtual, zdtFinal).toString());
+       Printer.print(new Utils().getCalculadoraUniversal().diferencaEntreFusos(zdtAtual, zdtFinal).toString());
     }
     
 
-    private static void cronometro(){
+	private static void cronometro(){
+    		ITextualUI currentUI = new Utils().getCurrentUI();
             ICronometro crono = CalculadoraUniversalFactory.getCrono();
             currentUI = UIFactory.cronometroUI();
             boolean quit = false;
@@ -681,7 +724,8 @@ public class UserInterface{
         return zoneId[index];
         }  
     
-    private static void outputFormatingInteraction(){
+	private static void outputFormatingInteraction(){
+    		ITextualUI currentUI = new Utils().getCurrentUI();
             currentUI = UIFactory.formatingOutputUI();
             switch(currentUI.printMenu()){
                 case 1:
