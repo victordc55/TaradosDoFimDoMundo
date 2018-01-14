@@ -33,67 +33,104 @@ import java.util.OptionalInt;
  */
 public class UserInterface{
     
-    private static ICalculadoraUniversal calculadoraUniversal;
-    private static ITextualUI currentUI;
-    private static Relogio relogio;
- 
-    public static void main(String[] args) {
-        // Let's start the main....
-        init();
+   private Relogio relogio;
+   private IPrinter printer;
+// 
+//    public static void main(String[] args) {
+//        // Let's start the main....
+//        init();
+//        boolean wantToQuit = false;
+//        while(!wantToQuit){
+//            currentUI = UIFactory.firstUI();
+//            switch(currentUI.printMenu()){
+//                case 1:
+//                     firstModeInteraction();
+//                     break;
+//                case 2:
+//                     secondModeInteraction();
+//                     break;
+//                case 3:
+//                     cronometro();
+//                     break;
+//                case 4:
+//                     outputFormatingInteraction();
+//                     break;
+//                case 5:
+//                     wantToQuit = true;
+//                     relogio.stop();
+//                 default:
+//                     break;
+//            }
+//        }
+//    }
+   
+   private UserInterface(){
+        relogio = null;
+        printer = null;
+   }
+   
+   public static UserInterface getUserInterface(){
+       return new UserInterface();
+   }
+   
+   
+   public void setPrinter(IPrinter p){
+       printer = p;
+       if(relogio != null) relogio.setPrinter(p);
+       else relogio = new Relogio(p);
+   }
+
+    public  void init(){
+    	ITextualUI currentUI; 
         boolean wantToQuit = false;
         while(!wantToQuit){
-            currentUI = UIFactory.firstUI();
-            switch(currentUI.printMenu()){
-                case 1:
-                     firstModeInteraction();
-                     break;
-                case 2:
-                     secondModeInteraction();
-                     break;
-                case 3:
-                     cronometro();
-                     break;
-                case 4:
-                     outputFormatingInteraction();
-                     break;
-                case 5:
-                     wantToQuit = true;
-                     relogio.stop();
-                 default:
-                     break;
-            }
-        }
-    }
-
-
-    private static void init(){
-        currentUI = UIFactory.firstUI();
-        relogio = new Relogio();
+          currentUI = UIFactory.firstUI(printer.clone());
+          switch(currentUI.printMenu()){
+              case 1:
+                   firstModeInteraction();
+                   break;
+              case 2:
+                   secondModeInteraction();
+                   break;
+              case 3:
+                   cronometro();
+                   break;
+              case 4:
+                   outputFormatingInteraction();
+                   break;
+              case 5:
+                   wantToQuit = true;
+                   relogio.stop();
+               default:
+                   break;
+          }
+      }
     }
     
-    private static void firstModeInteraction(){
-            boolean wantToQuit = false;
-            calculadoraUniversal = CalculadoraUniversalFactory.mode(Mode.ISO_LDATETIME);
+    private void firstModeInteraction(){
+    	ITextualUI currentUI;
+    	ICalculadoraUniversal calculadoraUniversal = CalculadoraUniversalFactory.mode(Mode.ISO_LDATETIME);;
+        boolean wantToQuit = false;
             while(!wantToQuit){
-                currentUI = UIFactory.localDataTimeUI();
+                currentUI = UIFactory.localDataTimeUI(printer.clone());
                 switch(currentUI.printMenu()){
                     case 1:
-                        addSubDatas();
+                        addSubDatas(calculadoraUniversal);
                         break;
                     case 2:
-                        addSubHoras();
+                        addSubHoras(calculadoraUniversal);
                         break;
                     case 3:
-                        addSubTempos();
+                        addSubTempos(calculadoraUniversal);
                         break;
                     case 4:
-                        diferençaEntreTempos();
+                        diferençaEntreTempos(calculadoraUniversal);
                         break;
                     case 5:
-                        infoDatas();
+                        infoDatas(calculadoraUniversal);
                         break;
                     case 6:
-                        tempoAteData();
+                        tempoAteData(calculadoraUniversal);
                         break;
                     case 7:
                         curiosidades();
@@ -108,95 +145,96 @@ public class UserInterface{
     
     
     
-    private static void curiosidades() {
+    private void curiosidades() {
+    	ITextualUI currentUI;
     	boolean wantToQuit = false;
         ICalculadoraUniversalCuriosidade curiosidades = CalculadoraUniversalFactory.getCuriosidade();
          while(!wantToQuit){
-        	currentUI = UIFactory.curiosidadesUI();
+        	currentUI = UIFactory.curiosidadesUI(printer.clone());
         	 switch(currentUI.printMenu()){
 	        	 case 1: // Primeiro dia do ano
-	        		 Printer.print("Insira o ano. \n");
-	        		 OptionalInt ano = Printer.getInt();
+	        		 printer.print("Insira o ano. \n");
+	        		 OptionalInt ano = printer.getInt();
 	        		 if( ano.isPresent() ){
-	        			 Printer.print(curiosidades.primeiroDiaAno(ano.getAsInt()).toString());
-	        			 Printer.print("\n");
+	        			 printer.print(curiosidades.primeiroDiaAno(ano.getAsInt()).toString());
+	        			 printer.print("\n");
 	        		 }else{
-	        			 Printer.printErro("O valor inserido é incorreto.\n");
+	        			 printer.printErro("O valor inserido é incorreto.\n");
 	        		 }
 	                 break;
 	        	 case 2: // Ultimo dia do ano
-	        		 Printer.print("Insira o ano. \n");
-	        		 OptionalInt anoUltimo = Printer.getInt();
+	        		 printer.print("Insira o ano. \n");
+	        		 OptionalInt anoUltimo = printer.getInt();
 	        		 if(anoUltimo.isPresent()){
-	        			 Printer.print(curiosidades.ultimoDiaAno(anoUltimo.getAsInt()).toString());
-	        			 Printer.print("\n");
+	        			 printer.print(curiosidades.ultimoDiaAno(anoUltimo.getAsInt()).toString());
+	        			 printer.print("\n");
 	        		 }else{
-	        			 Printer.printErro("O valor inserido é incorreto.\n");
+	        			 printer.printErro("O valor inserido é incorreto.\n");
 	        		 }
 	                 break;
 	        	 case 3: // Diz se o ano é bissexto ou nao
-	        		 Printer.print("Insira o ano.");
-	        		 OptionalInt bissexto = Printer.getInt();
+	        		 printer.print("Insira o ano.");
+	        		 OptionalInt bissexto = printer.getInt();
 	        		 if(bissexto.isPresent()){
-	        			 Printer.print(curiosidades.isLeap(bissexto.getAsInt()));
-	        			 Printer.print("\n");
+	        			 printer.print(curiosidades.isLeap(bissexto.getAsInt()));
+	        			 printer.print("\n");
 	        		 }else {
-	        			 Printer.printErro("O valor inserido é incorreto.\n");
+	        			 printer.printErro("O valor inserido é incorreto.\n");
 					}
 	        		 break;
 	        	 case 4:
-	        		 Printer.print("Insira a primeira data: ");
-	        		 LocalDate ldt1 = Printer.pedirData();
-	        		 Printer.print("Insira a segunda data: ");
-	        		 LocalDate ldt2 = Printer.pedirData();
+	        		 printer.print("Insira a primeira data: ");
+	        		 LocalDate ldt1 = printer.pedirData();
+	        		 printer.print("Insira a segunda data: ");
+	        		 LocalDate ldt2 = printer.pedirData();
 	        		 if(ldt1 != null && ldt2 != null){
-	        			 Printer.print(curiosidades.diaUteisEntreDatas(ldt1, ldt2).toString());
+	        			 printer.print(curiosidades.diaUteisEntreDatas(ldt1, ldt2).toString());
 	        		 }else{
-	        			 Printer.printErro("Os valores inseridos são incorretos.\n");
+	        			 printer.printErro("Os valores inseridos são incorretos.\n");
 	        		 }
 	        		 break;
 	        	 case 5:
-	        		 Printer.print("Insera o ano: ");
-	        		 OptionalInt anoNatal = Printer.getInt();
+	        		 printer.print("Insera o ano: ");
+	        		 OptionalInt anoNatal = printer.getInt();
 	        		 if(anoNatal != null){
                                         if( anoNatal.isPresent() && anoNatal.getAsInt() >= 1){
                                                        Optional<DayOfWeek> odow = curiosidades.diaNatal(anoNatal);
-                                                       if( odow.isPresent()) Printer.print(odow.get().toString());
-                                                       else Printer.print("Não foi possivel determinar em que dia de semana ira ocorrer natal no ano inserido.\nPedimos desculpa.");
+                                                       if( odow.isPresent()) printer.print(odow.get().toString());
+                                                       else printer.print("Não foi possivel determinar em que dia de semana ira ocorrer natal no ano inserido.\nPedimos desculpa.");
                                         }
 	        		 }else {
-	        			 Printer.printErro("O valor inserido é incorreto.\n");
+	        			 printer.printErro("O valor inserido é incorreto.\n");
 					}
 	        		 break;
 	        	 case 6:
-	        		 Printer.print("Insera o mes: ");
-	        		 OptionalInt mes = Printer.getInt();
+	        		 printer.print("Insera o mes: ");
+	        		 OptionalInt mes = printer.getInt();
 	        		 if(mes != null){
-	        			 Printer.print(curiosidades.diasDoMes(mes).toString());
+	        			 printer.print(curiosidades.diasDoMes(mes).toString());
 	        		 }else {
-	        			 Printer.printErro("O valor inserido é incorreto.\n");
+	        			 printer.printErro("O valor inserido é incorreto.\n");
 					}
 	        		 break;
 	        	 case 7:
-	        		 Printer.print("Semanas desde o inicio do ano: " + curiosidades.semanasDesdeInicio());
-	        		 Printer.print("Semanas para o fim do ano: " + curiosidades.semanasFimAno());
+	        		 printer.print("Semanas desde o inicio do ano: " + curiosidades.semanasDesdeInicio());
+	        		 printer.print("Semanas para o fim do ano: " + curiosidades.semanasFimAno());
 	        		 break;
 	        	 case 8:
-	        		 Printer.print("Insira uma data: ");
-	        		 LocalDate ldt = Printer.pedirData();
+	        		 printer.print("Insira uma data: ");
+	        		 LocalDate ldt = printer.pedirData();
 	        		 if(ldt != null){
-	        			 Printer.print("trimestre corresponde é: " + curiosidades.trimestre(ldt));
+	        			 printer.print("trimestre corresponde é: " + curiosidades.trimestre(ldt));
 	        		 }else {
-	        			 Printer.printErro("Os valores inseridos são incorretos.\n");
+	        			 printer.printErro("Os valores inseridos são incorretos.\n");
 					}
 	        		 break;
 	        	 case 9:
-	        		 Printer.print("Insira uma data: ");
-	        		 LocalDate ldtestacao = Printer.pedirData();
+	        		 printer.print("Insira uma data: ");
+	        		 LocalDate ldtestacao = printer.pedirData();
 	        		 if(ldtestacao != null){
-	        			 Printer.print("Estação do ano corresponde é: " + curiosidades.estacaoDoAno(ldtestacao));
+	        			 printer.print("Estação do ano corresponde é: " + curiosidades.estacaoDoAno(ldtestacao));
 	        		 }else {
-	        			 Printer.printErro("Os valores inseridos são incorretos.\n");
+	        			 printer.printErro("Os valores inseridos são incorretos.\n");
 					}
 	        		 break;
 	             case 10:
@@ -208,82 +246,83 @@ public class UserInterface{
     }
 
 
-    private static void tempoAteData() {
-	boolean wantToQuit = false;
+    private void tempoAteData(ICalculadoraUniversal calculadoraUniversal) {
+    	ITextualUI currentUI ;
+    	boolean wantToQuit = false;
         LocalDate inicio,fim;
         LocalTime time1,time2;
         LocalDateTime ini,fi=null; // Divisão em metodos...
         while(!wantToQuit){
-            currentUI = UIFactory.diferencaEntreTempos();
+            currentUI = UIFactory.diferencaEntreTempos(printer.clone());
             switch(currentUI.printMenu()){
                 case 1:
                             inicio = LocalDate.now();
-                            Printer.print("Insira a Data final");
-                            fim = Printer.pedirData();
+                            printer.print("Insira a Data final");
+                            fim = printer.pedirData();
                             if(fim != null){
                                 Optional<Period> od = calculadoraUniversal.diferencaEntreDatas(inicio, fim);
-                            	if(od.isPresent()) Printer.print( od.get());
-                                else Printer.print("Não foi possivel calcular a diferença entre as datas. Pedimos desculpa.");
+                            	if(od.isPresent()) printer.print( od.get());
+                                else printer.print("Não foi possivel calcular a diferença entre as datas. Pedimos desculpa.");
                             }else{
-                            	Printer.printErro("Os valores inseridos são incorretos.\n");
+                            	printer.printErro("Os valores inseridos são incorretos.\n");
                             }
                             break;
                 case 2:
                             time1 = LocalTime.now();
-                            Printer.print("Insira a hora final");
-                            time2 = Printer.pedirHoras();
+                            printer.print("Insira a hora final");
+                            time2 = printer.pedirHoras();
                             if(time2 != null){
                                 Optional<Duration> d = calculadoraUniversal.diferencaEntreTempos(time1, time2, true);
-                                if(d.isPresent()) Printer.print(d.get());
-                                else Printer.print("Não foi possivel calcular a diferença de horas. Pedimos desculpa.");
+                                if(d.isPresent()) printer.print(d.get());
+                                else printer.print("Não foi possivel calcular a diferença de horas. Pedimos desculpa.");
                             }else{
-                            	Printer.printErro("Os valores inseridos são incorretos.\n");
+                            	printer.printErro("Os valores inseridos são incorretos.\n");
                             }
                             break;
                 case 3:
                             ini = LocalDateTime.now();
-                            Printer.print("Insira a data e hora final");
-                            inicio = Printer.pedirData();
-                            time1 = Printer.pedirHoras();
+                            printer.print("Insira a data e hora final");
+                            inicio = printer.pedirData();
+                            time1 = printer.pedirHoras();
                             if( time1 != null && inicio != null)
                                     fi = LocalDateTime.of(inicio,time1);
                             if(fi != null){
                                 Optional<Duration> op = calculadoraUniversal.diferencaEntreTempos(ini, fi, false);
-                                if( op.isPresent()) Printer.printBigDuration(op.get());
-                                else  Printer.print("Não foi possivel calcular a diferença de tempos. Pedimos desculpa.");
+                                if( op.isPresent()) printer.printBigDuration(op.get());
+                                else  printer.print("Não foi possivel calcular a diferença de tempos. Pedimos desculpa.");
                             }else {
-                            	Printer.printErro("Os valores inseridos são incorretos.\n");
+                            	printer.printErro("Os valores inseridos são incorretos.\n");
 							}
                             break;
                 case 4: 
                         wantToQuit = true;  
                         break;
                 default:
-                        Printer.printErro("Não existe essa opção.");
+                        printer.printErro("Não existe essa opção.");
                         break;
                }
             
         }
 	}
 
-	private static void infoDatas() {
-            String answer = Printer.ask("Quere informações sobre hoje ou outra data? [h/hoje] [qualquer outro input = outro]\n");
+    private void infoDatas(ICalculadoraUniversal calculadoraUniversal) {
+            String answer = printer.ask("Quere informações sobre hoje ou outra data? [h/hoje] [qualquer outro input = outro]\n");
             if( answer.contentEquals("hoje") || answer.contentEquals("h")){
                     infoDatas2(LocalDate.now());
             }else{
-                    Printer.print("Insira a data.");
-	            LocalDate data = Printer.pedirData();
+                    printer.print("Insira a data.");
+	            LocalDate data = printer.pedirData();
                     infoDatas2(data);
 	        }
 	}
         
-        private static void infoDatas2(LocalDate data){
+    private void infoDatas2(LocalDate data){
             if(data != null){
-	            Optional<DayOfWeek> dayOfWeek = calculadoraUniversal.diaDaSemana(data);
-	            OptionalInt trimestre = calculadoraUniversal.trimestre(data);
-                    OptionalInt diaNoAno = calculadoraUniversal.numeroDoDiaNoAno(data);
-	            OptionalInt semanaNoAno =calculadoraUniversal.semanaNoAno(data);
-                    Optional<EstacaoTemperada> estacao = calculadoraUniversal.estaçãoDoAnoNorte(data, true);
+	            Optional<DayOfWeek> dayOfWeek = new Utils().getCalculadoraUniversal().diaDaSemana(data);
+	            OptionalInt trimestre = new Utils().getCalculadoraUniversal().trimestre(data);
+                    OptionalInt diaNoAno = new Utils().getCalculadoraUniversal().numeroDoDiaNoAno(data);
+	            OptionalInt semanaNoAno =new Utils().getCalculadoraUniversal().semanaNoAno(data);
+                    Optional<EstacaoTemperada> estacao = new Utils().getCalculadoraUniversal().estaçãoDoAnoNorte(data, true);
                     StringBuilder sb = new StringBuilder();
                     if( dayOfWeek.isPresent()) sb.append( dayOfWeek.get().name() +" ");
                     if( trimestre.isPresent()) sb.append( "Trimestre: " +trimestre.getAsInt()  + " ");
@@ -294,60 +333,61 @@ public class UserInterface{
                         else if(data.isBefore(LocalDate.now())) sb.append("A estação era "+ estacao.get().toString());
                         else sb.append("A estação será "+ estacao.get().toString());
                         }
-                    Printer.print(sb.toString());
-                    }else Printer.print("A data introduzida é invalida.");
+                    printer.print(sb.toString());
+                    }else printer.print("A data introduzida é invalida.");
         }
 
-	private static void diferençaEntreTempos() {
+    private void diferençaEntreTempos(ICalculadoraUniversal calculadoraUniversal) {
+		ITextualUI currentUI;
 		boolean wantToQuit = false;
                 LocalDate inicio=null;LocalDateTime ini= null,fi= null; // Deveriam ser criados metodos para cada funcionalidade em vez de termos tantas variaveis
                 LocalDate fim=null;
                 LocalTime time1= null,time2=null;
                 boolean weGotAProblem;
 	        while(!wantToQuit){
-	           currentUI = UIFactory.diferencaEntreTempos();
+	           currentUI = UIFactory.diferencaEntreTempos(printer.clone());
                    weGotAProblem = false;
 	            switch(currentUI.printMenu()){
                             case 1: 
-	                            Printer.print("Insira a hora inicial.");
-	                            inicio = Printer.pedirData();
-	                            Printer.print("Insira a hora final");
-	                            fim = Printer.pedirData();
+	                            printer.print("Insira a hora inicial.");
+	                            inicio = printer.pedirData();
+	                            printer.print("Insira a hora final");
+	                            fim = printer.pedirData();
 	                            if(inicio != null && fim != null){
 	                            	Optional<Period> o = calculadoraUniversal.diferencaEntreDatas(inicio, fim);
-                                        if( o.isPresent()) Printer.print(o.get());
+                                        if( o.isPresent()) printer.print(o.get());
                                         else weGotAProblem = true;
 	                            }else {
 	                            	weGotAProblem = true;
                                     }
                                     break;
                             case 2:
-	                            Printer.print("Insira a hora inicial.");
-	                            time1 = Printer.pedirHoras();
-	                            Printer.print("Insira a hora final");
-	                            time2 = Printer.pedirHoras();
+	                            printer.print("Insira a hora inicial.");
+	                            time1 = printer.pedirHoras();
+	                            printer.print("Insira a hora final");
+	                            time2 = printer.pedirHoras();
 	                            if(time1 != null && time2 != null){
                                         Optional<Duration> p = calculadoraUniversal.diferencaEntreTempos(time1, time2, true);
-	                            	if(p.isPresent()) Printer.print(p.get());
+	                            	if(p.isPresent()) printer.print(p.get());
                                         else weGotAProblem = true;
 	                            }else {
 	                            	weGotAProblem = true;
                                     }
                                     break;
                             case 3 :
-	                            Printer.print("Insira a hora inicial.");
-                                    inicio = Printer.pedirData();
-                                    time1 = Printer.pedirHoras();
+	                            printer.print("Insira a hora inicial.");
+                                    inicio = printer.pedirData();
+                                    time1 = printer.pedirHoras();
                                     if( inicio != null && time1 != null)
                                         ini = LocalDateTime.of(inicio,time1);
-	                            Printer.print("Insira a hora final");
-                                    inicio = Printer.pedirData();
-                                    time1 = Printer.pedirHoras();
+	                            printer.print("Insira a hora final");
+                                    inicio = printer.pedirData();
+                                    time1 = printer.pedirHoras();
                                     if( inicio != null && time1 != null)
                                         fi = LocalDateTime.of(inicio,time1);
 	                            if(ini != null && fi  != null){
                                         Optional<Duration> op = calculadoraUniversal.diferencaEntreTempos(ini, fi, false);
-                                        if(op.isPresent()) Printer.print(op.get());
+                                        if(op.isPresent()) printer.print(op.get());
                                         else weGotAProblem = true;
 	                            }else {
 	                            	weGotAProblem = true;
@@ -359,303 +399,313 @@ public class UserInterface{
                             default:
                                     break;
                     }
-                    if(weGotAProblem) Printer.printErro("O valore não foram introduzido corretamente.\n");
+                    if(weGotAProblem) printer.printErro("O valore não foram introduzido corretamente.\n");
 	        }
 	}
 
 
-    private static void addSubTempos() {
-		boolean wantToQuit = false;
+    private void addSubTempos(ICalculadoraUniversal calculadoraUniversal) {
+    	ITextualUI currentUI;
+	boolean wantToQuit = false;
          while(!wantToQuit){
-            currentUI = UIFactory.addSubtrair();
+            currentUI = UIFactory.addSubtrair(printer.clone());
            int  option = currentUI.printMenu();
                 try {
                     if (option <3) {
-                        Printer.print("Insira a hora inicial.");
-                        LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(), Printer.pedirHoras());
-                        Printer.print("Valor que pretende somar ou subtrair.");
-                        LocalDateTime valor = LocalDateTime.of(Printer.pedirComSemana(), Printer.pedirHoras());
+                        printer.print("Insira a hora inicial.");
+                        LocalDateTime inicio = LocalDateTime.of(printer.pedirData(), printer.pedirHoras());
+                        printer.print("Valor que pretende somar ou subtrair.");
+                        LocalDateTime valor = LocalDateTime.of(printer.pedirComSemana(), printer.pedirHoras());
                         if(inicio != null && valor != null){
                         	 if (option == 1) 
-                        		 Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, true).toString());
+                        		 printer.print(calculadoraUniversal.addSubTempos(inicio, valor, true).toString());
                         	 if (option == 2)
-                        		 Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false).toString());
+                        		 printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false).toString());
                         }else {
-                        	Printer.printErro("O valore não foram introduzido corretamente.\n");
+                        	printer.printErro("O valore não foram introduzido corretamente.\n");
 						}
                        
                     }
                     else if(option > 3)
-                        Printer.printErro("Não existe essa opção.");
+                        printer.printErro("Não existe essa opção.");
                     else    
                         wantToQuit = true;  
                 } catch (Exception e) {
-                    Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
+                    printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
                 }
         }
     }
 
 
-	private static void addSubHoras() {
-		boolean wantToQuit = false;
+    private void addSubHoras(ICalculadoraUniversal calculadoraUniversal) {
+	boolean wantToQuit = false;
+        ITextualUI currentUI ;
+        int option;
         while(!wantToQuit){
-        	ITextualUI currentUI = UIFactory.addSubtrair();
-            int option = currentUI.printMenu();
+            currentUI = UIFactory.addSubtrair(printer.clone());
+            option = currentUI.printMenu();
                 try {
                     if (option <3) {
-                        Printer.print("Insira a hora inicial.");
-                        LocalTime inicio = Printer.pedirHoras();
-                        Printer.print("Valor que pretende somar ou subtrair.");
-                        LocalTime valor = Printer.pedirHoras();
+                        printer.print("Insira a hora inicial.");
+                        LocalTime inicio = printer.pedirHoras();
+                        printer.print("Valor que pretende somar ou subtrair.");
+                        LocalTime valor = printer.pedirHoras();
                         if(inicio != null && valor != null){
 	                        if (option == 1) 
-	                            Printer.print(calculadoraUniversal.addSubHoras(inicio, valor, true).toString());
+	                            printer.print(calculadoraUniversal.addSubHoras(inicio, valor, true).toString());
 	                        
 	                        if (option == 2)
-	                            Printer.print(calculadoraUniversal.addSubHoras(inicio, valor, false).toString());
+	                            printer.print(calculadoraUniversal.addSubHoras(inicio, valor, false).toString());
                         }else {
-                        	Printer.printErro("O valore não foram introduzido corretamente.\n");
+                        	printer.printErro("O valore não foram introduzido corretamente.\n");
 						}
                     }
                     else if(option > 3)
-                        Printer.printErro("Não existe essa opção.");
+                        printer.printErro("Não existe essa opção.");
                     else    
                         wantToQuit = true;  
                 } catch (Exception e) {
-                    Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
+                    printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
                 }
         }
 	}
 
 
-	private static void addSubDatas() {
-		 boolean wantToQuit = false;
+    private void addSubDatas(ICalculadoraUniversal calculadoraUniversal) {
+	boolean wantToQuit = false;
+        int option; ITextualUI currentUI;
         while(!wantToQuit){
-        	ITextualUI currentUI = UIFactory.addSubtrair();
-            int option = currentUI.printMenu();
+             currentUI = UIFactory.addSubtrair(printer.clone());
+            option = currentUI.printMenu();
            
                 try {
                     if (option < 3) {
-                        Printer.print("Insira a data inicial.");
-                        LocalDate inicio = Printer.pedirData();
+                        printer.print("Insira a data inicial.");
+                        LocalDate inicio = printer.pedirData();
                         
-                        Printer.print("Valor que pretende somar ou subtrair.");
-                        LocalDate valor = Printer.pedirComSemana();
+                        printer.print("Valor que pretende somar ou subtrair.");
+                        LocalDate valor = printer.pedirComSemana();
                         
                         if(inicio != null && valor != null){
 	                        if (option == 1) 
-	                            Printer.print(calculadoraUniversal.addSubDatas(inicio, valor, true).toString());
+	                            printer.print(calculadoraUniversal.addSubDatas(inicio, valor, true).toString());
 	                        if (option == 2)
-	                            Printer.print(calculadoraUniversal.addSubDatas(inicio, valor, false).toString());
+	                            printer.print(calculadoraUniversal.addSubDatas(inicio, valor, false).toString());
                         }else {
-                        	Printer.printErro("O valore não foram introduzido corretamente.\n");
+                        	printer.printErro("O valore não foram introduzido corretamente.\n");
 						}
                     }else if(option > 3){
                     	
-                        Printer.printErro("Não existe essa opção.");
+                        printer.printErro("Não existe essa opção.");
                     }else {   
                         wantToQuit = true;
                     }
                 } catch (Exception e) {
-                    Printer.printErro("Os valores da Data não foram introduzidos corretamente.\n");
+                    printer.printErro("Os valores da Data não foram introduzidos corretamente.\n");
                 }
         }
 		
 	}
 
-	private static void secondModeInteraction(){
+    private void secondModeInteraction(){
+	   ITextualUI currentUI ;
            boolean quit = false;
+           ICalculadoraUniversal calculadoraUniversal = CalculadoraUniversalFactory.mode(Mode.ISO_ZODATETIME);
            while(! quit){
-             currentUI = UIFactory.zonedDateTimeUI();
+             currentUI = UIFactory.zonedDateTimeUI(printer.clone());
              switch(currentUI.printMenu()){
 	            case 1:
-                    addSubTempoZonedDateTime();
-	                break;
-			    case 2:
-			        diferencaEntreFusos();        
-			        break;
-			    case 3:
-			        converterZonedDateTime();         
-			        break;
-			    case 4:
-	                diferencaTempoEntreCidades();
-			        break;
-			    case 5:
-			        tempoAteOutroFuso();
+                            addSubTempoZonedDateTime(calculadoraUniversal);
+                            break;
+                    case 2:
+			    diferencaEntreFusos(calculadoraUniversal);        
+			    break;
+                    case 3:
+			    converterZonedDateTime(calculadoraUniversal);         
+			    break;
+                    case 4:
+                            diferencaTempoEntreCidades(calculadoraUniversal);
+			    break;
+                    case 5:
+			    tempoAteOutroFuso(calculadoraUniversal);
 		            break;
-			    case 6:
-			         quit = true;
-		                break;	  	               
-			    default:
-			        Printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
+		    case 6:
+			    quit = true;
+		            break;	  	               
+		    default:
+			    printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
              }
            }
         
     }
 
-    private static void addSubTempoZonedDateTime() {
+    private void addSubTempoZonedDateTime(ICalculadoraUniversal calculadoraUniversal) {
+    	ITextualUI currentUI;
     	boolean wantToQuit = false;
-        ZoneId zone = null;
+        ZoneId zone;
     	while(!wantToQuit){
-            currentUI = UIFactory.addSubtrair();
+            currentUI = UIFactory.addSubtrair(printer.clone());
             int  option = currentUI.printMenu();
             try {
                 if (option <3) {
-                    Printer.print("Insira a hora inicial.");
-                    LocalDateTime inicio = LocalDateTime.of(Printer.pedirData(), Printer.pedirHoras());
-                    currentUI = UIFactory.listZonedId();
+                    printer.print("Insira a hora inicial.");
+                    LocalDateTime inicio = LocalDateTime.of(printer.pedirData(), printer.pedirHoras());
+                    currentUI = UIFactory.listZonedId(printer.clone());
                     int index =currentUI.printMenu();
                     if (index >= 1 && index<= 26) {
                        zone = ZoneId.of(getZoneId(index-1)); 
                     }
                     else{
-                        Printer.print("Não existe essa opção");
+                        printer.print("Não existe essa opção");
                         break;
                     }
-                    Printer.print("Valor que pretende somar ou subtrair.");
-                    LocalDateTime valor = LocalDateTime.of(Printer.pedirComSemana(), Printer.pedirHoras());
+                    printer.print("Valor que pretende somar ou subtrair.");
+                    LocalDateTime valor = LocalDateTime.of(printer.pedirComSemana(), printer.pedirHoras());
                     if (option == 1) 
                      //   Printer.print();
                     if (option == 2)
-                            Printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false));
+                            printer.print(calculadoraUniversal.addSubTempos(inicio, valor, false));
                     }
                     else if(option > 3)
-                        Printer.printErro("Não existe essa opção.");
+                        printer.printErro("Não existe essa opção.");
                     else    
                         wantToQuit = true;  
                 } catch (Exception e) {
-                    Printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
+                    printer.printErro("Os valores da Hora não foram introduzidos corretamente.\n");
                 }
         }
     }
     
-    private static void diferencaEntreFusos(){
-        Printer.print("Insira o fuso e data-hora inicial.");
-        currentUI = UIFactory.listZonedId();
+    private void diferencaEntreFusos(ICalculadoraUniversal calculadoraUniversal){
+    	ITextualUI currentUI;
+        printer.print("Insira o fuso e data-hora inicial.");
+        currentUI = UIFactory.listZonedId(printer.clone());
         ZoneId zoneI,zoneF ;
         zoneI = zoneF = null;
         int index = currentUI.printMenu();
         if (index >= 1 && index <= 26) 
             zoneI = ZoneId.of(getZoneId(index-1)); 
         else{
-            Printer.print("Não existe essa opção");
+            printer.print("Não existe essa opção");
         }
-        ZonedDateTime zonaI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
-        Printer.print("Insira o fuso e data-hora final.\n");
-        currentUI = UIFactory.listZonedId();
-        index =currentUI.printMenu();
+        ZonedDateTime zonaI = ZonedDateTime.of(printer.pedirData(), printer.pedirHoras(), zoneI);
+        printer.print("Insira o fuso e data-hora final.\n");
+        //currentUI = UIFactory.listZonedId(printer.clone());
+        index = currentUI.printMenu();
         if (index >= 1 && index<= 26) 
             zoneF = ZoneId.of(getZoneId(index-1)); 
         else{
-            Printer.print("Não existe essa opção");
+            printer.print("Não existe essa opção");
             }
-        ZonedDateTime zonaF = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneF);
+        ZonedDateTime zonaF = ZonedDateTime.of(printer.pedirData(), printer.pedirHoras(), zoneF);
         Optional<Duration> d = calculadoraUniversal.diferencaEntreFusos(zonaI, zonaF);
-        if(d.isPresent()) Printer.print(d.get());
-        else Printer.print("Não foi possivel, usando os dados introduzidos, calcular a diferença entre elas.");
+        if(d.isPresent()) printer.print(d.get());
+        else printer.print("Não foi possivel, usando os dados introduzidos, calcular a diferença entre elas.");
     }
     
-    private static void converterZonedDateTime(){
-        Printer.print("Insira o fuso e data-hora inicial.");
-        currentUI = UIFactory.listZonedId();
+    private void converterZonedDateTime(ICalculadoraUniversal calculadoraUniversal){
+    	ITextualUI currentUI;
+        printer.print("Insira o fuso e data-hora inicial.");
+        currentUI = UIFactory.listZonedId(printer.clone());
         ZoneId zoneI,zoneF ;
         zoneI = zoneF = null;
-        int index =currentUI.printMenu();
+        int index = currentUI.printMenu();
         
         if (index >= 1 && index <= 26) {
             zoneI = ZoneId.of(getZoneId(index-1)); 
         }else{
-            Printer.print("Não existe essa opção");
+            printer.print("Não existe essa opção");
         }
         
-        ZonedDateTime zdtI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
-        Printer.print("Insira o novo fuso.");
-        currentUI = UIFactory.listZonedId();
+        ZonedDateTime zdtI = ZonedDateTime.of(printer.pedirData(), printer.pedirHoras(), zoneI);
+        printer.print("Insira o novo fuso.");
+        //currentUI = UIFactory.listZonedId(printer.clone());
         index =currentUI.printMenu();
         
         if (index >= 1 && index <= 26) {
             zoneF = ZoneId.of(getZoneId(index-1)); 
         }else{
-            Printer.print("Não existe essa opção");
+            printer.print("Não existe essa opção");
          }
-        Printer.print(calculadoraUniversal.convertZonedDateTime(zdtI, zoneF).toString());
+        printer.print(calculadoraUniversal.convertZonedDateTime(zdtI, zoneF).toString());
     }
     
 
-    private static void diferencaTempoEntreCidades(){
-        Printer.print("Insira o fuso e data-hora da cidade inicial.");
-        currentUI = UIFactory.listZonedId();
+    private void diferencaTempoEntreCidades(ICalculadoraUniversal calculadoraUniversal){
+    	ITextualUI currentUI = new Utils().getCurrentUI();
+        printer.print("Insira o fuso e data-hora da cidade inicial.");
+        currentUI = UIFactory.listZonedId(printer.clone());
         ZoneId zoneI,zoneF ;
         zoneI = zoneF = null;
         int index =currentUI.printMenu();
         if (index >= 1 && index <= 26) 
             zoneI = ZoneId.of(getZoneId(index-1)); 
         else{
-            Printer.print("Não existe essa opção");
+            printer.print("Não existe essa opção");
             }
-        ZonedDateTime zdtI = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneI);
-        Printer.print("Insira o fuso e data-hora da cidade final.");
+        ZonedDateTime zdtI = ZonedDateTime.of(printer.pedirData(), printer.pedirHoras(), zoneI);
+        printer.print("Insira o fuso e data-hora da cidade final.");
         index =currentUI.printMenu();
         if (index >= 1 && index <= 26) 
             zoneF = ZoneId.of(getZoneId(index-1)); 
         else{
-            Printer.print("Não existe essa opção");
+            printer.print("Não existe essa opção");
             }
-        ZonedDateTime zdtF = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneF);
-        Printer.print(calculadoraUniversal.diferencaEntreFusos(zdtI, zdtF).toString());
+        ZonedDateTime zdtF = ZonedDateTime.of(printer.pedirData(), printer.pedirHoras(), zoneF);
+        printer.print(calculadoraUniversal.diferencaEntreFusos(zdtI, zdtF).toString());
     }
     
-    private static void tempoAteOutroFuso(){
+    private void tempoAteOutroFuso(ICalculadoraUniversal calculadoraUniversal){
+    	ITextualUI currentUI = new Utils().getCurrentUI();
         LocalDateTime agora = LocalDateTime.now();
         ZoneOffset zoneOff = OffsetDateTime.now().getOffset();
         ZonedDateTime zdtAtual = ZonedDateTime.of(agora, zoneOff);
-        Printer.print("Insira o fuso e data-hora da cidade inicial.");
-        currentUI = UIFactory.listZonedId();
+        printer.print("Insira o fuso e data-hora da cidade inicial.");
+        currentUI = UIFactory.listZonedId(printer.clone());
         ZoneId zoneFinal = null;
         int index =currentUI.printMenu();
         if (index >= 1 && index <= 26) 
             zoneFinal = ZoneId.of(getZoneId(index-1)); 
         else{
-            Printer.print("Não existe essa opção");
-            tempoAteOutroFuso();
+            printer.print("Não existe essa opção");
+            tempoAteOutroFuso(calculadoraUniversal);
             }
-        ZonedDateTime zdtFinal = ZonedDateTime.of(Printer.pedirData(), Printer.pedirHoras(), zoneFinal);
+        ZonedDateTime zdtFinal = ZonedDateTime.of(printer.pedirData(), printer.pedirHoras(), zoneFinal);
         
-       Printer.print(calculadoraUniversal.diferencaEntreFusos(zdtAtual, zdtFinal).toString());
+       printer.print(calculadoraUniversal.diferencaEntreFusos(zdtAtual, zdtFinal).toString());
     }
     
 
-    private static void cronometro(){
+    private void cronometro(){
+    	    ITextualUI currentUI= UIFactory.cronometroUI(printer.clone());
             ICronometro crono = CalculadoraUniversalFactory.getCrono();
-            currentUI = UIFactory.cronometroUI();
             boolean quit = false;
             while(! quit){
               switch(currentUI.printMenu()){
-                  
                   case 1:
-                         if(crono.start()) Printer.print("Cronometro lançado.");
-                         else Printer.print("O cronometro ja esta a correr.");
+                         if(crono.start()) printer.print("Cronometro lançado.");
+                         else printer.print("O cronometro ja esta a correr.");
                          break;
                   case 2:
                          Optional<Duration> duration = crono.stop();
-                         if(duration.isPresent()) Printer.print(duration.get());
-                         else Printer.print("O crono ja esta parado.");
+                         if(duration.isPresent()) printer.print(duration.get());
+                         else printer.print("O crono ja esta parado.");
                          break;
                   case 3:
-                         if(crono.reset()) Printer.print("Cronómetro reset.");
-                         else Printer.print("O cronómetro não pode ser reset enquanto estiver a correr.");
+                         if(crono.reset()) printer.print("Cronómetro reset.");
+                         else printer.print("O cronómetro não pode ser reset enquanto estiver a correr.");
                          break;
                   case 4:
                           quit = true;
                           break;
                   default:
-                          Printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
+                          printer.print("Valor invalido. Escolhe uma das opções disponiveis.");
               }
                 
             }
     }
         
-    private static String getZoneId(int index){
+    private String getZoneId(int index){
         
         String[] zoneId = {"Pacific/Apia",
                         "Pacific/Chatham",
@@ -687,19 +737,22 @@ public class UserInterface{
         return zoneId[index];
         }  
     
-    private static void outputFormatingInteraction(){
-            currentUI = UIFactory.formatingOutputUI();
+    private void outputFormatingInteraction(){
+            ITextualUI currentUI = new Utils().getCurrentUI();
+            currentUI = UIFactory.formatingOutputUI(printer);
             switch(currentUI.printMenu()){
                 case 1:
-                      Printer.setPrintMode(1);
+                      printer.setPrintMode(1);
                       break;
                 case 2:
-                      Printer.setPrintMode(2);
+                      printer.setPrintMode(2);
                       break;
                 default:
                       break;
             }
-    }
+        }
+         
+
     
 
 }

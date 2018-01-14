@@ -19,24 +19,40 @@ import java.util.Scanner;
  * and open the template in the editor.
  */
 
-public class Printer {
-    // Every method for printing simple strings
-    public static final PrintStream out = System.out;
-    public static final Scanner in = new Scanner(System.in);
-    private static final String completeNumericalPattern = "[d-M-yyyy ][H:mm:ss ][VV ][O ][G]";
-    private static final String extendedPattern = "[EEEE d MMMM yyyy ][H:mm:ss ][VV ][OOOO ]['Era' G ]['Trimestre' Q]";
-    private static DateTimeFormatter printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
+public class Printer implements IPrinter {
+//    // Every method for printing simple strings
+    private PrintStream out;
+    private Scanner in;
+    private String completeNumericalPattern ;
+    private String extendedPattern ;
+    private DateTimeFormatter printFormat ;
+    private int mode;
      
+    private Printer(){
+        out = System.out;
+        in = new Scanner(System.in);
+        completeNumericalPattern = "[d-M-yyyy ][H:mm:ss ][VV ][O ][G]";
+        extendedPattern = "[EEEE d MMMM yyyy ][H:mm:ss ][VV ][OOOO ]['Era' G ]['Trimestre' Q]";
+        printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
+        mode = 1;
+    }
+    
+    public static IPrinter getPrinter(){
+        return new Printer();
+    }
     
     
-    public static void setPrintMode(int mode){
+    public void setPrintMode(int mode){
         if( mode== 2 ){
             printFormat = DateTimeFormatter.ofPattern(extendedPattern);
+            this.mode = mode;
         }
         else{
             printFormat = DateTimeFormatter.ofPattern(completeNumericalPattern);
+            this.mode = 1;
         }
     }
+    
     
     /**
      * Imprima no ecrã um temporalAccessor passado como parametro segundo um padrão
@@ -45,14 +61,14 @@ public class Printer {
      * Exemplos de temporal Accessor que não dao nada: Instant, MonthDay, DayOfWeek,Year,Month, YearMonth.
      * @param t 
      */
-    public static void print(TemporalAccessor t){
+    public void print(TemporalAccessor t){
         if( t != null){
-              Printer.print( printFormat.format(t) );
+              print( printFormat.format(t) );
         }
     }
     
 
-    public static void print(Duration d){
+    public void print(Duration d){
           if( d != null){
               long horas = d.toHours();
               if(horas > 0){
@@ -70,7 +86,7 @@ public class Printer {
     /**
     * Variação de print(Duration). Imprima anos,meses, dias, horas,minutos,segundos,millisegundos.Aproximado.
     */
-    public static void printBigDuration(Duration d){
+    public void printBigDuration(Duration d){
         if(d != null){
             long anos =(long)(d.toDays() / 365); // Assume 1 year = 365.25 always. Wich means some days might be losts, maybe.
             if(anos != 0){
@@ -110,7 +126,7 @@ public class Printer {
         
     }
     
-    public static void print(Period p){
+    public void print(Period p){
            if( p != null){
                Period period = p.normalized();
                out.println(  "Anos: " +period.get(ChronoUnit.YEARS) + " \tMeses: " + period.get(ChronoUnit.MONTHS) + " \tDias: "+ period.get(ChronoUnit.DAYS) );       
@@ -125,7 +141,7 @@ public class Printer {
      * @param s - string a imprimir.
      * @return Linha lida.
      */
-    public static String ask(String s){
+    public String ask(String s){
         out.print(s);
         return in.nextLine();
     }
@@ -133,16 +149,16 @@ public class Printer {
      * Imprima no output uma string.
      * @param s - string a imprimir.
      */
-    public static void print(String s){
+    public void print(String s){
         out.println(s);
     }
     
-    public static void printErro(String s){
+    public void printErro(String s){
         err.print(s);
     }
     
-    public static void print(boolean b){
-        out.println(b);
+    public void print(boolean b){
+    	out.println(b);
     }
     
    /**
@@ -150,7 +166,7 @@ public class Printer {
      * @param s
      * @return 
      */
-    public static OptionalInt getInt(){
+    public OptionalInt getInt(){
             String input = in.nextLine();
             try{
                 return OptionalInt.of( Integer.parseInt(input));
@@ -159,7 +175,7 @@ public class Printer {
             }
     }
     
-    public static OptionalInt getPositiveInt(){
+    public OptionalInt getPositiveInt(){
            String input = in.nextLine();
            try{
                int intInput = Integer.parseInt(input);
@@ -169,15 +185,14 @@ public class Printer {
            return OptionalInt.empty();
     }
     
-    
- public static LocalDate pedirData(){
+    public LocalDate pedirData(){
         
         print("Ano: ");
-        OptionalInt ano = Printer.getPositiveInt();
+        OptionalInt ano = getPositiveInt();
         print("Mês: ");
-        OptionalInt mes = Printer.getPositiveInt();
+        OptionalInt mes = getPositiveInt();
         print("Dia: ");
-        OptionalInt dia = Printer.getPositiveInt();
+        OptionalInt dia = getPositiveInt();
         if((ano != null) && (mes != null) && (dia != null) && (ano.isPresent()) && (mes.isPresent()) && (dia.isPresent())){
         	LocalDate lt = LocalDate.of(ano.getAsInt(), mes.getAsInt(), dia.getAsInt());
             return lt;
@@ -187,13 +202,13 @@ public class Printer {
         
     }
     
-    public static LocalTime pedirHoras(){
+    public LocalTime pedirHoras(){
         print("Hora: ");
-        OptionalInt hora = Printer.getInt();
+        OptionalInt hora = getInt();
         print("Minutos: ");
-        OptionalInt min = Printer.getInt();
+        OptionalInt min = getInt();
         print("Segundos: ");
-        OptionalInt seg = Printer.getInt();
+        OptionalInt seg = getInt();
         if((hora != null) && (min != null) && (seg != null)){
             LocalTime lt  = null;
             try{
@@ -206,17 +221,21 @@ public class Printer {
         
     }
     
-    public static LocalDate pedirComSemana(){
+    public LocalDate pedirComSemana(){
         LocalDate local = pedirData();
         if( local == null) return null;
         print("Semanas: ");
-        OptionalInt semanas =  Printer.getPositiveInt();
+        OptionalInt semanas =  getPositiveInt();
         if( semanas.isPresent())
             local = local.plusWeeks(semanas.getAsInt());
         else return null;
         return local;
+    }   
+    
+    public IPrinter clone(){
+        IPrinter r = new Printer();
+        r.setPrintMode(mode);
+        return r;
     }
-    
-    
-
 }
+

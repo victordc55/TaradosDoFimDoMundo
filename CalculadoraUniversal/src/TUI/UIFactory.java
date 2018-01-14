@@ -21,21 +21,21 @@ public class UIFactory {
      * Cria um TextualUI com diversas opções predefinidas.
      * @return 
      */
-    public static ITextualUI isoLocalDateTimeMainUI(){
+    public static ITextualUI isoLocalDateTimeMainUI(IPrinter p){
             List<String> options = Arrays.asList( "Adicionar ou substrair datas.",
                                                   "Numero de dias até atingir o prazo.",
                                                   "Determinar um dia do ano",
                                                   "Determinar em que estação está.",
                                                   "Quit.");
             String head = "Bem vindo.Escolha uma das operações disponiveis:";
-            return TextualUI.of(options, head);       
+            return TextualUI.of(options, head,p);       
     }
     
     /**
      * Cria um TextualUI para a adicção ou substração de datas e tempos com um header e opções predefinidas.
      * @return 
      */
-    public static ITextualUI isoAdSubsDateUI(){
+    public static ITextualUI isoAdSubsDateUI(IPrinter p){
             List<String> options = Arrays.asList( "Substrair duas datas.",
                                                   "Substrair a uma data.",
                                                   "Adicionar a uma data.",
@@ -50,11 +50,11 @@ public class UIFactory {
            
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
-           return TextualUI.of(options, head);            
+           return TextualUI.of(options, head,p);            
     }
     
 
-    public static ITextualUI isoAddSubsTimeUI(){
+    public static ITextualUI isoAddSubsTimeUI(IPrinter p){
             
             List<String> options = Arrays.asList( "Substrair duas datas.",
                                                   "Substrair a uma data.",
@@ -64,7 +64,7 @@ public class UIFactory {
         
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
-           return TextualUI.of(options, head);      
+           return TextualUI.of(options, head,p);      
     }
     
     
@@ -73,16 +73,16 @@ public class UIFactory {
      * @param head - header usado.
      * @return uma interface com o utilizador no formato textual.
      */
-    public static ITextualUI isoAdsSubsUI(String head){
+    public static ITextualUI isoAdsSubsUI(String head,IPrinter p){
         List<String> options = Arrays.asList( "Substrair duas datas ou tempo.",
                                               "Substrair a uma data.",
                                               "Adicionar a uma data.",
                                               "Quit.");
-        return TextualUI.of(options, head);      
+        return TextualUI.of(options, head,p);      
     }
     
     
-    public static ITextualUI firstUI(){
+    public static ITextualUI firstUI(IPrinter p){
             List<String> options = Arrays.asList("Calcular data e tempos locais.",
                                                  "Calcular data e tempos segundo diferentes fusos horarios.",
                                                  "Cronometro.",
@@ -92,11 +92,11 @@ public class UIFactory {
         
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
-           return TextualUI.of(options, head);      
+           return TextualUI.of(options, head,p);      
         
     }
     
-    public static ITextualUI localDataTimeUI(){
+    public static ITextualUI localDataTimeUI(IPrinter p){
         
            List<String> options = Arrays.asList("Adicionar ou substrair a uma data.",
                                                 "Adicionar ou substrair a uma hora.",
@@ -110,12 +110,12 @@ public class UIFactory {
         
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
-           return TextualUI.of(options, head);    
+           return TextualUI.of(options, head,p);    
     }
     
     
     
-    public static ITextualUI zonedDateTimeUI(){
+    public static ITextualUI zonedDateTimeUI(IPrinter p){
         
            List<String> options = Arrays.asList( "Calcular a duração entre duas datas.",
                                                  "Converter uma data e hora para um outro fuso horario.",
@@ -126,11 +126,11 @@ public class UIFactory {
            
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
-           return TextualUI.of(options, head);    
+           return TextualUI.of(options, head,p);    
     }
     
     
-    public static ITextualUI formatingOutputUI(){
+    public static ITextualUI formatingOutputUI(IPrinter p){
          
            List<String> options = Arrays.asList( "Numérico (ex:9-10-2017 15:52:18  GMT+00:00 L/P 4) .",
                                                  "Expandido (ex: Sabado 9 Outubro 2017 15:55:18 GMT+00:00 Lisbon/Portugal Trimestre 4).",
@@ -139,12 +139,12 @@ public class UIFactory {
         
            String head = "Só as informações disponiveis serão apresentadas.Formato padrão : Numérico.\nEscolhe o formato desejado:";
            
-           return TextualUI.of(options, head);        
+           return TextualUI.of(options, head,p);        
         
     }
 
 
-    public static ITextualUI curiosidadesUI(){
+    public static ITextualUI curiosidadesUI(IPrinter p){
          
            List<String> options = Arrays.asList( "Determinar o primeiro dia do ano.",
                                                  "Determinar o ultimo dia do ano.",
@@ -160,12 +160,12 @@ public class UIFactory {
         
            String head = "Bem vindo.Escolha uma das operações disponiveis:";
            
-           return TextualUI.of(options, head);         
+           return TextualUI.of(options, head,p);         
     }
     
     
     
-    public static ITextualUI hojeOuOutraDataUI(){
+    public static ITextualUI hojeOuOutraDataUI(IPrinter p){
           
            List<String> options = Arrays.asList( "Hoje.",
                                                  "Introduzir data.",
@@ -174,13 +174,13 @@ public class UIFactory {
         
            String head = "Escolha uma das opções:";
            
-           return TextualUI.of(options, head);        
+           return TextualUI.of(options, head,p);        
     }
 
 
 
 
-    public static ITextualUI cronometroUI(){
+    public static ITextualUI cronometroUI(IPrinter p){
            // Sera que posso fazer start ao chronometro, sair e depois voltar nele e ele ter continuado a correr?       
            List<String> options = Arrays.asList( "Start.",
                                                  "Stop.",
@@ -190,41 +190,41 @@ public class UIFactory {
         
            String head = "Escolha uma das opções:";
            
-           return TextualUI.of(options, head);       
+           return TextualUI.of(options, head,p);       
         
     }
 
 	
 	
-	 public static ITextualUI diferencaEntreTempos(){
+	 public static ITextualUI diferencaEntreTempos(IPrinter p){
 	        List<String> options = Arrays.asList( "Difença entre datas.",
 	                                                "Diferença entre horas.",
 	                                                "Diferença entre Tempos.",
 	                                                "Voltar para trás.");
 	        String head = "Escolha uma das operações disponiveis:";
-	        return TextualUI.of(options, head);    
+	        return TextualUI.of(options, head,p);    
 	    }
 	    
-	    public static ITextualUI infoDatas(){
+	    public static ITextualUI infoDatas(IPrinter p){
 	        List<String> options = Arrays.asList( "Dia da Semana.",
 	                                                "Trimestre.",
 	                                                "Dia do Ano.",
 	                                                "Semana do Ano",
 	                                                "Voltar para trás");
 	        String head = "Escolha uma das operações disponiveis:";
-	        return TextualUI.of(options, head);    
+	        return TextualUI.of(options, head,p);    
 	    }
 	    
 	    
-	    public static ITextualUI addSubtrair(){
+	    public static ITextualUI addSubtrair(IPrinter p){
 	        List<String> options = Arrays.asList( "Adicionar.",
 	                                                "Subtrair.",
 	                                                "Voltar para trás");
 	        String head = "Escolha uma das operações disponiveis:";
-	        return TextualUI.of(options, head);
+	        return TextualUI.of(options, head,p);
 	    }
 	    
-    public static ITextualUI listZonedId(){
+    public static ITextualUI listZonedId(IPrinter p){
         List<String> options = Arrays.asList("Pacific/Apia",
                                              "Pacific/Chatham",
                                              "Pacific/Fiji",
@@ -254,7 +254,7 @@ public class UIFactory {
                                              "Pacific/Samoa");        
         
         String head = "Bem vindo.Escolha uma das operações disponiveis:";
-        return TextualUI.of(options, head);    
+        return TextualUI.of(options, head,p);    
     }         
 
 

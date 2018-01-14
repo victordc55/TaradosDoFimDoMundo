@@ -11,8 +11,10 @@ public class Relogio implements Runnable{
       private  Thread t;
       private int time;
       private boolean stop;
+      private IPrinter printer;
       
-    public Relogio(){
+    public Relogio(IPrinter p){
+        printer = p;
         t = new Thread(this);
         stop = false;
         time = 59950;
@@ -23,7 +25,7 @@ public class Relogio implements Runnable{
         ZonedDateTime zdtnow ;
         while(!stop){
             zdtnow = ZonedDateTime.now();
-            Printer.print(zdtnow);
+            printer.print(zdtnow);
             
             synchronized(this){
                 try{
@@ -40,6 +42,11 @@ public class Relogio implements Runnable{
         if( time > 0)
             this.time = time;
     }
+    
+    public void setPrinter(IPrinter p){
+        if( p != null ) printer = p;
+    }
+    
     public void stop(){
         stop = true;
         t.interrupt();

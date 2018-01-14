@@ -15,15 +15,15 @@ public class TextualUI implements ITextualUI{
     private final List<String> options;
     private final String header;
     private int lastChosenOption;
+    private final IPrinter printer;
     //private final int pageSize;// without head
     //private int thisPage;
     
-    private TextualUI(List<String> opt, String head/*,int pageSize*/){
+    private TextualUI(List<String> opt, String head,IPrinter print){
         options = opt;
         header = head;
         lastChosenOption = -1;
-        /*this.pageSize = pageSize;
-        thisPage = 0;*/
+        printer = print;
     }
     
     /**
@@ -32,15 +32,15 @@ public class TextualUI implements ITextualUI{
      * @param head
      * @return 
      */
-    public static ITextualUI of(List<String> opt, String head){
-        return new TextualUI(opt,head);
+    public static ITextualUI of(List<String> opt, String head,IPrinter p){
+        return new TextualUI(opt,head,p);
     }
     /**
      * Imprima o header do menu.
      * @return 
      */
     public boolean printHeader(){
-        Printer.print(header);
+        printer.print(header);
         return true;
     }
     /**
@@ -54,7 +54,7 @@ public class TextualUI implements ITextualUI{
              sb.append( i + "." + s + "\n");
              i++;
         }
-        Printer.print(sb.toString());
+        printer.print(sb.toString());
         return true;
     }
     
@@ -66,7 +66,7 @@ public class TextualUI implements ITextualUI{
         lastChosenOption = -1;
         printHeader();
         printOptions();
-        String line = Printer.ask("");
+        String line = printer.ask("");
         try{
             lastChosenOption = Integer.parseInt(line);
         }catch(Exception e){
