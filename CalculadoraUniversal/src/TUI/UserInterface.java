@@ -251,10 +251,10 @@ public class UserInterface{
                                 Optional<Duration> op = calculadoraUniversal.diferencaEntreTempos(ini, fi, false);
                                 if( op.isPresent()) Printer.printBigDuration(op.get());
                                 else  Printer.print("Não foi possivel calcular a diferença de tempos. Pedimos desculpa.");
-                              Printer.print(calculadoraUniversal.diferencaEntreTempos(ini, fi, false).toString());
                             }else {
                             	Printer.printErro("Os valores inseridos são incorretos.\n");
 							}
+                            break;
                 case 4: 
                         wantToQuit = true;  
                         break;
@@ -300,9 +300,9 @@ public class UserInterface{
 
 	private static void diferençaEntreTempos() {
 		boolean wantToQuit = false;
-                LocalDate inicio;LocalDateTime ini,fi; // Deveriam ser criados metodos para cada funcionalidade em vez de termos tantas variaveis
-                LocalDate fim;
-                LocalTime time1,time2;
+                LocalDate inicio=null;LocalDateTime ini= null,fi= null; // Deveriam ser criados metodos para cada funcionalidade em vez de termos tantas variaveis
+                LocalDate fim=null;
+                LocalTime time1= null,time2=null;
                 boolean weGotAProblem;
 	        while(!wantToQuit){
 	           currentUI = UIFactory.diferencaEntreTempos();
@@ -336,9 +336,15 @@ public class UserInterface{
                                     break;
                             case 3 :
 	                            Printer.print("Insira a hora inicial.");
-	                            ini = LocalDateTime.of(Printer.pedirData(),Printer.pedirHoras());
+                                    inicio = Printer.pedirData();
+                                    time1 = Printer.pedirHoras();
+                                    if( inicio != null && time1 != null)
+                                        ini = LocalDateTime.of(inicio,time1);
 	                            Printer.print("Insira a hora final");
-	                            fi = LocalDateTime.of(Printer.pedirData(),Printer.pedirHoras());
+                                    inicio = Printer.pedirData();
+                                    time1 = Printer.pedirHoras();
+                                    if( inicio != null && time1 != null)
+                                        fi = LocalDateTime.of(inicio,time1);
 	                            if(ini != null && fi  != null){
                                         Optional<Duration> op = calculadoraUniversal.diferencaEntreTempos(ini, fi, false);
                                         if(op.isPresent()) Printer.print(op.get());

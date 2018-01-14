@@ -121,6 +121,7 @@ public class UIFactory {
                                                  "Converter uma data e hora para um outro fuso horario.",
                                                  "Calcular duração de um voo de avião entre duas cidades.",
                                                  "Tempo até uma data e hora usando diferentes fusos horarios.",
+                                                 "Tempo até outro fuso.",
                                                  "Voltar atras.");
            
            String head = "Bem vindo.Escolha uma das operações disponiveis:";

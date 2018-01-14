@@ -23,7 +23,7 @@ import java.util.OptionalInt;
 
 /**
  *
- * @author VICTOR CUNHA
+ * @author 
  */
 public class CalculadoraUniversalISOZDT implements ICalculadoraUniversal{
     
@@ -35,15 +35,15 @@ public class CalculadoraUniversalISOZDT implements ICalculadoraUniversal{
      
     public Optional<LocalDate> addSubDatas(TemporalAccessor data, TemporalAccessor valor, boolean bool){
         
-        
+        return Optional.empty();
     }
 	    
     public Optional<LocalTime> addSubHoras(TemporalAccessor horas,TemporalAccessor valor, boolean bool){
-        
+        return Optional.empty();
     }
 	    
     public LocalDateTime addSubTempos(TemporalAccessor tempos, TemporalAccessor valor, boolean bool){
-        
+        return null;
     }
 	    
     public Optional<Duration> diferencaEntreTempos(TemporalAccessor dataInicial, TemporalAccessor dataFinal, boolean bool){
@@ -77,6 +77,10 @@ public class CalculadoraUniversalISOZDT implements ICalculadoraUniversal{
         return Optional.empty();
     }
 	  
+    public Optional<Instant> addSubZonedDateTime(TemporalAccessor ldt, ZoneId zone, TemporalAccessor tempo){
+           return Optional.empty();   
+    }
+
 
         @Override
     public Optional<Duration> diferencaEntreFusos(TemporalAccessor ldtInicial, TemporalAccessor ldtFinal) {
@@ -89,6 +93,10 @@ public class CalculadoraUniversalISOZDT implements ICalculadoraUniversal{
         Instant agora = Instant.from(zdtInicial);
         Optional<ZonedDateTime> zddt = czdt.conversaoDeFusos(agora, zone);
         return zddt;
+    }
+    
+    public OptionalInt trimestre(TemporalAccessor data){
+        return OptionalInt.empty();
     }
     
 }

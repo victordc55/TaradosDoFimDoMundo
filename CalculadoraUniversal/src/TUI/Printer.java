@@ -72,38 +72,40 @@ public class Printer {
     */
     public static void printBigDuration(Duration d){
         if(d != null){
-            long anos =(long)(d.toDays() / 365.25); // Assume 1 year = 365.25 always. Wich means some days might be losts, maybe.
-            if(anos > 0){
+            long anos =(long)(d.toDays() / 365); // Assume 1 year = 365.25 always. Wich means some days might be losts, maybe.
+            if(anos != 0){
                 if( anos == 1)
                     out.print( anos + " ano ");
                 else out.print( anos + " anos ");
             }
-            long meses = (long) (d.toDays() / 30.42) - (anos * 12); // Assuma-se 1 mes = 30 dias sempre logo ganha-se/perda-se meses, provavelmente.
-            if( meses > 0){
+            long meses =(long) (d.toDays() / 30.42) - (anos * 12); // Assuma-se 1 mes = 30 dias sempre logo ganha-se/perda-se meses, provavelmente.
+            if( meses != 0){
                 if( meses == 1)
                     out.print(meses +" mes ");
                 else out.print(meses +" meses ");
             }
-            long dias =(long)( d.toDays() - anos*365.25 - meses * 30.42 );
-            if( dias > 0){
+            long dias;
+            if(meses > 0) dias = (long)( d.toDays() - anos*365.25 + meses * 30.42 );
+            else dias = (long)( d.toDays() - (anos*365.25) - (meses * 30.42) );
+            if( dias != 0){
                  if( dias == 1)
                      out.print( dias + " dia ");
                  else out.print(dias + " dias ");
             }
             long horas = (long) d.toHours() - (d.toDays()/24);
-            if(horas > 0){
+            if(horas != 0){
                  if( horas == 1)
                   out.print(horas + " hora ");
                  else out.print(horas + " horas ");
               }
             long min = d.toMinutes() - d.toHours()*60;
-            if(min > 0){
+            if(min != 0){
                   out.print( min + " min ");
             }
             long segundos = d.get(ChronoUnit.SECONDS) - d.toMinutes() *60;
-            if( segundos > 0)
+            if( segundos != 0)
                 out.print( segundos  + " segundos ");
-              out.println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " e millisegundos" );
+              out.println( d.get(ChronoUnit.NANOS) / Math.pow(10,6) + " millisegundos" );
         }
         
     }
@@ -157,7 +159,7 @@ public class Printer {
             }
     }
     
-    public static OptionalInt getPostiveInt(){
+    public static OptionalInt getPositiveInt(){
            String input = in.nextLine();
            try{
                int intInput = Integer.parseInt(input);
@@ -171,11 +173,11 @@ public class Printer {
  public static LocalDate pedirData(){
         
         print("Ano: ");
-        OptionalInt ano = Printer.getPostiveInt();
+        OptionalInt ano = Printer.getPositiveInt();
         print("Mês: ");
-        OptionalInt mes = Printer.getPostiveInt();
+        OptionalInt mes = Printer.getPositiveInt();
         print("Dia: ");
-        OptionalInt dia = Printer.getPostiveInt();
+        OptionalInt dia = Printer.getPositiveInt();
         if((ano != null) && (mes != null) && (dia != null) && (ano.isPresent()) && (mes.isPresent()) && (dia.isPresent())){
         	LocalDate lt = LocalDate.of(ano.getAsInt(), mes.getAsInt(), dia.getAsInt());
             return lt;
@@ -205,10 +207,13 @@ public class Printer {
     }
     
     public static LocalDate pedirComSemana(){
-        LocalDate local = LocalDate.from(pedirData());
+        LocalDate local = pedirData();
+        if( local == null) return null;
         print("Semanas: ");
-        int semanas = Printer.getInt().getAsInt();
-        local = local.plusWeeks(semanas);
+        OptionalInt semanas =  Printer.getPositiveInt();
+        if( semanas.isPresent())
+            local = local.plusWeeks(semanas.getAsInt());
+        else return null;
         return local;
     }
     
