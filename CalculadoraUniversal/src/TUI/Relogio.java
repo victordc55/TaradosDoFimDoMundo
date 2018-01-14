@@ -8,20 +8,20 @@ import java.time.ZonedDateTime;
 
 
 public class Relogio implements Runnable{
-      private  Thread t;
+//      private  Thread t;
       private int time;
-      private boolean stop;
+     private boolean stop;
       private IPrinter printer;
       
     public Relogio(IPrinter p){
         printer = p;
-        t = new Thread(this);
-        stop = false;
-        time = 59950;
-        t.start();
+      //  t = new Thread(this);
+       stop = false;
+       time = 59950;
+   //     t.start();
     }
     
-    public void run(){
+    public void run(){/*
         ZonedDateTime zdtnow ;
         while(!stop){
             zdtnow = ZonedDateTime.now();
@@ -35,7 +35,15 @@ public class Relogio implements Runnable{
                 }
             }
         }
-         
+         */
+    }
+    
+    public ZonedDateTime getTime(){
+        return ZonedDateTime.now();
+    }
+    
+    public void showTime(){
+        printer.print(ZonedDateTime.now());
     }
     
     public void changeActuTime(int time){
@@ -49,7 +57,7 @@ public class Relogio implements Runnable{
     
     public void stop(){
         stop = true;
-        t.interrupt();
+      //  t.interrupt();
     }
     
 }

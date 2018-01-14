@@ -85,6 +85,7 @@ public class UserInterface{
         boolean wantToQuit = false;
         while(!wantToQuit){
           currentUI = UIFactory.firstUI(printer.clone());
+          relogio.showTime();
           switch(currentUI.printMenu()){
               case 1:
                    firstModeInteraction();
@@ -111,8 +112,11 @@ public class UserInterface{
     	ITextualUI currentUI;
     	ICalculadoraUniversal calculadoraUniversal = CalculadoraUniversalFactory.mode(Mode.ISO_LDATETIME);;
         boolean wantToQuit = false;
+            
             while(!wantToQuit){
+                
                 currentUI = UIFactory.localDataTimeUI(printer.clone());
+                relogio.showTime();
                 switch(currentUI.printMenu()){
                     case 1:
                         addSubDatas(calculadoraUniversal);
@@ -150,7 +154,9 @@ public class UserInterface{
     	boolean wantToQuit = false;
         ICalculadoraUniversalCuriosidade curiosidades = CalculadoraUniversalFactory.getCuriosidade();
          while(!wantToQuit){
+                
         	currentUI = UIFactory.curiosidadesUI(printer.clone());
+                relogio.showTime();
         	 switch(currentUI.printMenu()){
 	        	 case 1: // Primeiro dia do ano
 	        		 printer.print("Insira o ano. \n");
@@ -254,6 +260,7 @@ public class UserInterface{
         LocalDateTime ini,fi=null; // Divisão em metodos...
         while(!wantToQuit){
             currentUI = UIFactory.diferencaEntreTempos(printer.clone());
+            relogio.showTime();
             switch(currentUI.printMenu()){
                 case 1:
                             inicio = LocalDate.now();
@@ -308,21 +315,21 @@ public class UserInterface{
     private void infoDatas(ICalculadoraUniversal calculadoraUniversal) {
             String answer = printer.ask("Quere informações sobre hoje ou outra data? [h/hoje] [qualquer outro input = outro]\n");
             if( answer.contentEquals("hoje") || answer.contentEquals("h")){
-                    infoDatas2(LocalDate.now());
+                    infoDatas2(LocalDate.now(),calculadoraUniversal);
             }else{
                     printer.print("Insira a data.");
 	            LocalDate data = printer.pedirData();
-                    infoDatas2(data);
+                    infoDatas2(data,calculadoraUniversal);
 	        }
 	}
         
-    private void infoDatas2(LocalDate data){
+    private void infoDatas2(LocalDate data,ICalculadoraUniversal calculadoraUniversal){
             if(data != null){
-	            Optional<DayOfWeek> dayOfWeek = new Utils().getCalculadoraUniversal().diaDaSemana(data);
-	            OptionalInt trimestre = new Utils().getCalculadoraUniversal().trimestre(data);
-                    OptionalInt diaNoAno = new Utils().getCalculadoraUniversal().numeroDoDiaNoAno(data);
-	            OptionalInt semanaNoAno =new Utils().getCalculadoraUniversal().semanaNoAno(data);
-                    Optional<EstacaoTemperada> estacao = new Utils().getCalculadoraUniversal().estaçãoDoAnoNorte(data, true);
+	            Optional<DayOfWeek> dayOfWeek = calculadoraUniversal.diaDaSemana(data);
+	            OptionalInt trimestre = calculadoraUniversal.trimestre(data);
+                    OptionalInt diaNoAno = calculadoraUniversal.numeroDoDiaNoAno(data);
+	            OptionalInt semanaNoAno = calculadoraUniversal.semanaNoAno(data);
+                    Optional<EstacaoTemperada> estacao = calculadoraUniversal.estaçãoDoAnoNorte(data, true);
                     StringBuilder sb = new StringBuilder();
                     if( dayOfWeek.isPresent()) sb.append( dayOfWeek.get().name() +" ");
                     if( trimestre.isPresent()) sb.append( "Trimestre: " +trimestre.getAsInt()  + " ");
@@ -347,6 +354,7 @@ public class UserInterface{
 	        while(!wantToQuit){
 	           currentUI = UIFactory.diferencaEntreTempos(printer.clone());
                    weGotAProblem = false;
+                   relogio.showTime();
 	            switch(currentUI.printMenu()){
                             case 1: 
 	                            printer.print("Insira a hora inicial.");
@@ -409,6 +417,7 @@ public class UserInterface{
 	boolean wantToQuit = false;
          while(!wantToQuit){
             currentUI = UIFactory.addSubtrair(printer.clone());
+            relogio.showTime();
            int  option = currentUI.printMenu();
                 try {
                     if (option <3) {
@@ -443,6 +452,7 @@ public class UserInterface{
         int option;
         while(!wantToQuit){
             currentUI = UIFactory.addSubtrair(printer.clone());
+            relogio.showTime();
             option = currentUI.printMenu();
                 try {
                     if (option <3) {
@@ -476,6 +486,7 @@ public class UserInterface{
         int option; ITextualUI currentUI;
         while(!wantToQuit){
              currentUI = UIFactory.addSubtrair(printer.clone());
+             relogio.showTime();
             option = currentUI.printMenu();
            
                 try {
@@ -513,6 +524,7 @@ public class UserInterface{
            ICalculadoraUniversal calculadoraUniversal = CalculadoraUniversalFactory.mode(Mode.ISO_ZODATETIME);
            while(! quit){
              currentUI = UIFactory.zonedDateTimeUI(printer.clone());
+             relogio.showTime();
              switch(currentUI.printMenu()){
 	            case 1:
                             addSubTempoZonedDateTime(calculadoraUniversal);
@@ -545,6 +557,7 @@ public class UserInterface{
         ZoneId zone;
     	while(!wantToQuit){
             currentUI = UIFactory.addSubtrair(printer.clone());
+            relogio.showTime();
             int  option = currentUI.printMenu();
             try {
                 if (option <3) {
@@ -681,6 +694,7 @@ public class UserInterface{
             ICronometro crono = CalculadoraUniversalFactory.getCrono();
             boolean quit = false;
             while(! quit){
+              relogio.showTime();
               switch(currentUI.printMenu()){
                   case 1:
                          if(crono.start()) printer.print("Cronometro lançado.");
@@ -740,6 +754,7 @@ public class UserInterface{
     private void outputFormatingInteraction(){
             ITextualUI currentUI = new Utils().getCurrentUI();
             currentUI = UIFactory.formatingOutputUI(printer);
+            relogio.showTime();
             switch(currentUI.printMenu()){
                 case 1:
                       printer.setPrintMode(1);
